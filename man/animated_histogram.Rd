@@ -13,6 +13,7 @@ animated_histogram(
   ylimits = NULL,
   default_title = FALSE,
   duration = NULL,
+  animate_plot = TRUE,
   save_filename = NULL,
   save_path = NULL
 )
@@ -22,21 +23,23 @@ animated_histogram(
 
 \item{parameter}{The parameter we wish to histogram.}
 
-\item{pre_weighting}{(optional) If TRUE, will ignore particle weights in the histogram. If FALSE, will use the particle weights (defaults to FALSE).}
+\item{pre_weighting}{(optional) If TRUE, will ignore particle weights in the histogram. If FALSE, will use the particle weights. (defaults to FALSE)}
 
-\item{bins}{(optional) Number of bins for the histogram (default 30).}
+\item{bins}{(optional) Number of bins for the histogram. (default 30)}
 
 \item{xlimits}{(optional) Input of the form c(start,end), which specifies the ends of the x-axis.}
 
 \item{ylimits}{(optional) Input of the form c(start,end), which specifies the ends of the y-axis.}
 
-\item{default_title}{(optional) If TRUE, will provide a default title for the figure. If FALSE, no title is used (defaults to FALSE).}
+\item{default_title}{(optional) If TRUE, will provide a default title for the figure. If FALSE, no title is used. (defaults to FALSE)}
 
-\item{duration}{(optional) The duration of the animation (defaults to producing an animation that uses 10 frames per second).}
+\item{duration}{(optional) The duration of the animation. (defaults to producing an animation that uses 10 frames per second)}
 
-\item{save_filename}{(optional) If specified, the animation will be saved to a gif with this filename (default is not to save).}
+\item{animate_plot}{(optiional) If TRUE, will return an animation. If FALSE, returns a gganim object that can be furher modified before animating. (defaults to FALSE)}
 
-\item{save_path}{(optional) If specified along with save_filename, will save the gif to save_path/save_filename (defaults to working directory).}
+\item{save_filename}{(optional) If specified, the animation will be saved to a gif with this filename. (default is not to save)}
+
+\item{save_path}{(optional) If specified along with save_filename, will save the gif to save_path/save_filename. (defaults to working directory)}
 }
 \value{
 An animated histogram

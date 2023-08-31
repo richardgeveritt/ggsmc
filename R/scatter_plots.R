@@ -3,13 +3,13 @@
 #' @param output Output from the SMC or EnK algorithm.
 #' @param x_parameter The parameter indexed by the x-axis.
 #' @param y_parameter The parameter indexed by the y-axis.
-#' @param target (optional) The index of the target we wish to plot (default to final target).
-#' @param pre_weighting (optional) If TRUE, will ignore particle weights in the histogram. If FALSE, will use the particle weights (defaults to FALSE).
+#' @param target (optional) The index of the target we wish to plot. (default to final target)
+#' @param pre_weighting (optional) If TRUE, will ignore particle weights in the histogram. If FALSE, will use the particle weights. (defaults to FALSE)
 #' @param xlimits (optional) Input of the form c(start,end), which specifies the ends of the x-axis.
 #' @param ylimits (optional) Input of the form c(start,end), which specifies the ends of the y-axis.
-#' @param default_title (optional) If TRUE, will provide a default title for the figure. If FALSE, no title is used (defaults to FALSE).
-#' @param max_size (optional) The maximum size of the points in the plot (default=1).
-#' @param alpha (optional) The transparency of the points in the plot (default=0.1).
+#' @param default_title (optional) If TRUE, will provide a default title for the figure. If FALSE, no title is used. (defaults to FALSE)
+#' @param max_size (optional) The maximum size of the points in the plot. (default=1)
+#' @param alpha (optional) The transparency of the points in the plot. (default=0.1)
 #' @return A scatter plot in a ggplot figure.
 #' @export
 scatter_plot = function(output,
@@ -141,15 +141,19 @@ scatter_plot = function(output,
 #' @param output Output from the SMC or EnK algorithm.
 #' @param x_parameter The parameter indexed by the x-axis.
 #' @param y_parameter The parameter indexed by the y-axis.
-#' @param pre_weighting (optional) If TRUE, will ignore particle weights in the histogram. If FALSE, will use the particle weights (defaults to FALSE).
+#' @param pre_weighting (optional) If TRUE, will ignore particle weights in the histogram. If FALSE, will use the particle weights. (defaults to FALSE)
 #' @param xlimits (optional) Input of the form c(start,end), which specifies the ends of the x-axis.
 #' @param ylimits (optional) Input of the form c(start,end), which specifies the ends of the y-axis.
-#' @param default_title (optional) If TRUE, will provide a default title for the figure. If FALSE, no title is used (defaults to FALSE).
-#' @param max_size (optional) The maximum size of the points in the plot (default=1).
-#' @param alpha (optional) The transparency of the points in the plot (default=0.1).
-#' @param duration (optional) The duration of the animation (defaults to producing an animation that uses 10 frames per second).
-#' @param save_filename (optional) If specified, the animation will be saved to a gif with this filename (default is not to save).
-#' @param save_path (optional) If specified along with save_filename, will save the gif to save_path/save_filename (defaults to working directory).
+#' @param default_title (optional) If TRUE, will provide a default title for the figure. If FALSE, no title is used. (defaults to FALSE)
+#' @param max_size (optional) The maximum size of the points in the plot. (default=1)
+#' @param alpha (optional) The transparency of the points in the plot. (default=0.1)
+#' @param view_follow (optional) If TRUE, the view will follow the particles. (default FALSE)
+#' @param shadow_mark_proportion_of_max_size (optional) If set, the animation will leave behind shadow points, of a size (and transparency) specified by this proportion. (default to not set)
+#' @param shadow_wake_length (optional) If set, the animation will leave a shadow wake behind each point, of a duration given by this parameter (proportion of the entire animation length). (default to not set)
+#' @param duration (optional) The duration of the animation. (defaults to producing an animation that uses 10 frames per second)
+#' @param animate_plot (optiional) If TRUE, will return an animation. If FALSE, returns a gganim object that can be furher modified before animating. (defaults to FALSE)
+#' @param save_filename (optional) If specified, the animation will be saved to a gif with this filename. (default is not to save)
+#' @param save_path (optional) If specified along with save_filename, will save the gif to save_path/save_filename. (defaults to working directory)
 #' @return A scatter plot in a ggplot figure.
 #' @export
 animated_scatter_plot = function(output,
@@ -161,7 +165,11 @@ animated_scatter_plot = function(output,
                                  default_title=FALSE,
                                  max_size=1,
                                  alpha=0.1,
+                                 view_follow=FALSE,
+                                 shadow_mark_proportion_of_max_size=NULL,
+                                 shadow_wake_length=NULL,
                                  duration=NULL,
+                                 animate_plot=TRUE,
                                  save_filename=NULL,
                                  save_path=NULL)
 {
@@ -176,30 +184,73 @@ animated_scatter_plot = function(output,
                    max_size=max_size,
                    alpha=alpha)
 
+  if (view_follow)
+  {
+    p = p + view_follow()
+  }
+
+  if (!is.null(shadow_mark_proportion_of_max_size))
+  {
+    if ( (shadow_mark_proportion_of_max_size>=0) && (shadow_mark_proportion_of_max_size<=1) )
+    {
+      p = p + shadow_mark(alpha = alpha*shadow_mark_proportion_of_max_size, size = max_size*shadow_mark_proportion_of_max_size)
+    }
+    else
+    {
+      stop("shadow_mark_proportion_of_max_size must be between 0 and 1")
+    }
+  }
+
+  if (!is.null(shadow_wake_length))
+  {
+    if ( (shadow_wake_length>=0) && (shadow_wake_length<=1) )
+    {
+      p = p + shadow_wake(wake_length = shadow_wake_length, alpha = TRUE)
+    }
+    else
+    {
+      stop("shadow_wake_length must be between 0 and 1")
+    }
+  }
+
   to_animate = p + gganimate::transition_time(Target)
 
   nframes = length(unique(output$Target))
 
-  if (is.null(duration))
+  if (animate_plot)
   {
-    animated = animate(to_animate,nframes=nframes)
-  }
-  else
-  {
-    animated = animate(to_animate,nframes=nframes,duration=duration)
-  }
-
-  if (!is.null(save_filename))
-  {
-    if (is.null(save_path))
+    if (is.null(duration))
     {
-      anim_save(filename=save_filename,animation=animated)
+      animated = animate(to_animate,nframes=nframes)
     }
     else
     {
-      anim_save(filename=save_filename,animation=animated,path=save_path)
+      animated = animate(to_animate,nframes=nframes,duration=duration)
+    }
+
+    if (!is.null(save_filename))
+    {
+      if (is.null(save_path))
+      {
+        anim_save(filename=save_filename,animation=animated)
+      }
+      else
+      {
+        anim_save(filename=save_filename,animation=animated,path=save_path)
+      }
+    }
+
+    return(animated)
+  }
+  else
+  {
+    if (!is.null(save_filename))
+    {
+      stop("Cannot save, since plot not animated.")
+    }
+    else
+    {
+      return(to_animate)
     }
   }
-
-  return(animated)
 }

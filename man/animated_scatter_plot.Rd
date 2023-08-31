@@ -14,7 +14,11 @@ animated_scatter_plot(
   default_title = FALSE,
   max_size = 1,
   alpha = 0.1,
+  view_follow = FALSE,
+  shadow_mark_proportion_of_max_size = NULL,
+  shadow_wake_length = NULL,
   duration = NULL,
+  animate_plot = TRUE,
   save_filename = NULL,
   save_path = NULL
 )
@@ -26,23 +30,31 @@ animated_scatter_plot(
 
 \item{y_parameter}{The parameter indexed by the y-axis.}
 
-\item{pre_weighting}{(optional) If TRUE, will ignore particle weights in the histogram. If FALSE, will use the particle weights (defaults to FALSE).}
+\item{pre_weighting}{(optional) If TRUE, will ignore particle weights in the histogram. If FALSE, will use the particle weights. (defaults to FALSE)}
 
 \item{xlimits}{(optional) Input of the form c(start,end), which specifies the ends of the x-axis.}
 
 \item{ylimits}{(optional) Input of the form c(start,end), which specifies the ends of the y-axis.}
 
-\item{default_title}{(optional) If TRUE, will provide a default title for the figure. If FALSE, no title is used (defaults to FALSE).}
+\item{default_title}{(optional) If TRUE, will provide a default title for the figure. If FALSE, no title is used. (defaults to FALSE)}
 
-\item{max_size}{(optional) The maximum size of the points in the plot (default=1).}
+\item{max_size}{(optional) The maximum size of the points in the plot. (default=1)}
 
-\item{alpha}{(optional) The transparency of the points in the plot (default=0.1).}
+\item{alpha}{(optional) The transparency of the points in the plot. (default=0.1)}
 
-\item{duration}{(optional) The duration of the animation (defaults to producing an animation that uses 10 frames per second).}
+\item{view_follow}{(optional) If TRUE, the view will follow the particles. (default FALSE)}
 
-\item{save_filename}{(optional) If specified, the animation will be saved to a gif with this filename (default is not to save).}
+\item{shadow_mark_proportion_of_max_size}{(optional) If set, the animation will leave behind shadow points, of a size (and transparency) specified by this proportion. (default to not set)}
 
-\item{save_path}{(optional) If specified along with save_filename, will save the gif to save_path/save_filename (defaults to working directory).}
+\item{shadow_wake_length}{(optional) If set, the animation will leave a shadow wake behind each point, of a duration given by this parameter (proportion of the entire animation length). (default to not set)}
+
+\item{duration}{(optional) The duration of the animation. (defaults to producing an animation that uses 10 frames per second)}
+
+\item{animate_plot}{(optiional) If TRUE, will return an animation. If FALSE, returns a gganim object that can be furher modified before animating. (defaults to FALSE)}
+
+\item{save_filename}{(optional) If specified, the animation will be saved to a gif with this filename. (default is not to save)}
+
+\item{save_path}{(optional) If specified along with save_filename, will save the gif to save_path/save_filename. (defaults to working directory)}
 }
 \value{
 A scatter plot in a ggplot figure.

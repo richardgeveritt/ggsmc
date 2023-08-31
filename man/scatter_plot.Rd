@@ -24,19 +24,19 @@ scatter_plot(
 
 \item{y_parameter}{The parameter indexed by the y-axis.}
 
-\item{target}{(optional) The index of the target we wish to plot (default to final target).}
+\item{target}{(optional) The index of the target we wish to plot. (default to final target)}
 
-\item{pre_weighting}{(optional) If TRUE, will ignore particle weights in the histogram. If FALSE, will use the particle weights (defaults to FALSE).}
+\item{pre_weighting}{(optional) If TRUE, will ignore particle weights in the histogram. If FALSE, will use the particle weights. (defaults to FALSE)}
 
 \item{xlimits}{(optional) Input of the form c(start,end), which specifies the ends of the x-axis.}
 
 \item{ylimits}{(optional) Input of the form c(start,end), which specifies the ends of the y-axis.}
 
-\item{default_title}{(optional) If TRUE, will provide a default title for the figure. If FALSE, no title is used (defaults to FALSE).}
+\item{default_title}{(optional) If TRUE, will provide a default title for the figure. If FALSE, no title is used. (defaults to FALSE)}
 
-\item{max_size}{(optional) The maximum size of the points in the plot (default=1).}
+\item{max_size}{(optional) The maximum size of the points in the plot. (default=1)}
 
-\item{alpha}{(optional) The transparency of the points in the plot (default=0.1).}
+\item{alpha}{(optional) The transparency of the points in the plot. (default=0.1)}
 }
 \value{
 A scatter plot in a ggplot figure.

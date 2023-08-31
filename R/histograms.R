@@ -2,12 +2,12 @@
 #'
 #' @param output Output from the SMC or EnK algorithm.
 #' @param parameter The parameter we wish to histogram.
-#' @param target (optional) The index of the target we wish to histogram (default to final target).
-#' @param pre_weighting (optional) If TRUE, will ignore particle weights in the histogram. If FALSE, will use the particle weights (defaults to FALSE).
-#' @param bins (optional) Number of bins for the histogram (default 30).
+#' @param target (optional) The index of the target we wish to histogram. (default to final target)
+#' @param pre_weighting (optional) If TRUE, will ignore particle weights in the histogram. If FALSE, will use the particle weights. (defaults to FALSE)
+#' @param bins (optional) Number of bins for the histogram. (default 30)
 #' @param xlimits (optional) Input of the form c(start,end), which specifies the ends of the x-axis.
 #' @param ylimits (optional) Input of the form c(start,end), which specifies the ends of the y-axis.
-#' @param default_title (optional) If TRUE, will provide a default title for the figure. If FALSE, no title is used (defaults to FALSE).
+#' @param default_title (optional) If TRUE, will provide a default title for the figure. If FALSE, no title is used. (defaults to FALSE)
 #' @return A histogram in a ggplot figure.
 #' @export
 histogram = function(output,
@@ -99,14 +99,15 @@ histogram = function(output,
 #'
 #' @param output Output from the SMC or EnK algorithm.
 #' @param parameter The parameter we wish to histogram.
-#' @param pre_weighting (optional) If TRUE, will ignore particle weights in the histogram. If FALSE, will use the particle weights (defaults to FALSE).
-#' @param bins (optional) Number of bins for the histogram (default 30).
+#' @param pre_weighting (optional) If TRUE, will ignore particle weights in the histogram. If FALSE, will use the particle weights. (defaults to FALSE)
+#' @param bins (optional) Number of bins for the histogram. (default 30)
 #' @param xlimits (optional) Input of the form c(start,end), which specifies the ends of the x-axis.
 #' @param ylimits (optional) Input of the form c(start,end), which specifies the ends of the y-axis.
-#' @param default_title (optional) If TRUE, will provide a default title for the figure. If FALSE, no title is used (defaults to FALSE).
-#' @param duration (optional) The duration of the animation (defaults to producing an animation that uses 10 frames per second).
-#' @param save_filename (optional) If specified, the animation will be saved to a gif with this filename (default is not to save).
-#' @param save_path (optional) If specified along with save_filename, will save the gif to save_path/save_filename (defaults to working directory).
+#' @param default_title (optional) If TRUE, will provide a default title for the figure. If FALSE, no title is used. (defaults to FALSE)
+#' @param duration (optional) The duration of the animation. (defaults to producing an animation that uses 10 frames per second)
+#' @param animate_plot (optiional) If TRUE, will return an animation. If FALSE, returns a gganim object that can be furher modified before animating. (defaults to FALSE)
+#' @param save_filename (optional) If specified, the animation will be saved to a gif with this filename. (default is not to save)
+#' @param save_path (optional) If specified along with save_filename, will save the gif to save_path/save_filename. (defaults to working directory)
 #' @return An animated histogram
 #' @export
 animated_histogram = function(output,
@@ -117,6 +118,7 @@ animated_histogram = function(output,
                               ylimits=NULL,
                               default_title=FALSE,
                               duration=NULL,
+                              animate_plot=TRUE,
                               save_filename=NULL,
                               save_path=NULL)
 {
@@ -131,26 +133,41 @@ animated_histogram = function(output,
 
   nframes = length(unique(output$Target))
 
-  if (is.null(duration))
+  if (animate_plot)
   {
-    animated = animate(to_animate,nframes=nframes)
-  }
-  else
-  {
-    animated = animate(to_animate,nframes=nframes,duration=duration)
-  }
-
-  if (!is.null(save_filename))
-  {
-    if (is.null(save_path))
+    if (is.null(duration))
     {
-      anim_save(filename=save_filename,animation=animated)
+      animated = animate(to_animate,nframes=nframes)
     }
     else
     {
-      anim_save(filename=save_filename,animation=animated,path=save_path)
+      animated = animate(to_animate,nframes=nframes,duration=duration)
+    }
+
+    if (!is.null(save_filename))
+    {
+      if (is.null(save_path))
+      {
+        anim_save(filename=save_filename,animation=animated)
+      }
+      else
+      {
+        anim_save(filename=save_filename,animation=animated,path=save_path)
+      }
+    }
+
+    return(animated)
+  }
+  else
+  {
+    if (!is.null(save_filename))
+    {
+       stop("Cannot save, since plot not animated.")
+    }
+    else
+    {
+      return(to_animate)
     }
   }
 
-  return(animated)
 }
