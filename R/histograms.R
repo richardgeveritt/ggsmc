@@ -26,7 +26,14 @@ histogram = function(output,
 
   if (!is.null(target))
   {
-    target_parameters = dplyr::filter(output,Target==target)$TargetParameters[1]
+    if ("TargetParameters" %in% names(output))
+    {
+      target_parameters = dplyr::filter(output,Target==target)$TargetParameters[1]
+    }
+    else
+    {
+      target_parameters = ""
+    }
     output_to_use = dplyr::filter(dplyr::filter(output,Target==target),Parameter==parameter)
   }
   else
@@ -51,7 +58,7 @@ histogram = function(output,
   else if (ncol(split_result)==1)
   {
     parameter_for_plot = parameter
-    if (is.null(target))
+    if (is.null(target) || (target_parameters=="") )
     {
       default_title_for_plot = bquote("Histogram of the density of"~.(parameter))
     }
@@ -62,7 +69,7 @@ histogram = function(output,
   }
   else
   {
-    if (is.null(target))
+    if (is.null(target) || (target_parameters=="") )
     {
       default_title_for_plot = bquote("Histogram of the density of"~.(split_result[1])[.(split_result[2])])
     }

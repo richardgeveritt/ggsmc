@@ -34,7 +34,14 @@ scatter_plot = function(output,
 
   if (!is.null(target))
   {
-    target_parameters = dplyr::filter(output_to_use,Target==target)$TargetParameters[1]
+    if ("TargetParameters" %in% names(output))
+    {
+      target_parameters = dplyr::filter(output,Target==target)$TargetParameters[1]
+    }
+    else
+    {
+      target_parameters = ""
+    }
     output_to_use = dplyr::filter(output_to_use,Target==target)
   }
 
@@ -62,7 +69,7 @@ scatter_plot = function(output,
   {
     x_parameter_for_plot = x_parameter
     y_parameter_for_plot = y_parameter
-    if (is.null(target))
+    if (is.null(target) || (target_parameters=="") )
     {
       default_title_for_plot = bquote("Scatter plot of"~.(x_parameter)~"and"~.(y_parameter))
     }
@@ -73,7 +80,7 @@ scatter_plot = function(output,
   }
   else if ( (ncol(x_split_result)==2) && (ncol(y_split_result)==1) )
   {
-    if (is.null(target))
+    if (is.null(target) || (target_parameters=="") )
     {
       default_title_for_plot = bquote("Scatter plot of"~.(x_split_result[1])[.(x_split_result[2])]~"and"~.(y_parameter))
     }
@@ -86,7 +93,7 @@ scatter_plot = function(output,
   }
   else if ( (ncol(x_split_result)==1) && (ncol(y_split_result)==2) )
   {
-    if (is.null(target))
+    if (is.null(target) || (target_parameters=="") )
     {
       default_title_for_plot = bquote("Scatter plot of"~.(x_parameter)~"and"~.(y_split_result[1])[.(y_split_result[2])])
     }
@@ -99,7 +106,7 @@ scatter_plot = function(output,
   }
   else if ( (ncol(x_split_result)==2) && (ncol(y_split_result)==2) )
   {
-    if (is.null(target))
+    if (is.null(target) || (target_parameters=="") )
     {
       default_title_for_plot = bquote("Scatter plot of"~.(x_split_result[1])[.(x_split_result[2])]~"and"~.(y_split_result[1])[.(y_split_result[2])])
     }
