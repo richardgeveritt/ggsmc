@@ -21,8 +21,6 @@ histogram = function(output,
                      ylimits=NULL,
                      default_title=FALSE)
 {
-  browser()
-
   if (!("Value" %in% names(output)))
   {
     stop('Require tidy data with column "Value" as input to this function.')
@@ -43,11 +41,11 @@ histogram = function(output,
     {
       target_parameters = ""
     }
-    output_to_use = dplyr::filter(dplyr::filter(dplyr::filter(output,Target==target),ParameterName==parameter),ParameterIndex==dimension)
+    output_to_use = dplyr::filter(dplyr::filter(dplyr::filter(output,Target==target),ParameterName==parameter),Dimension==dimension)
   }
   else
   {
-    output_to_use = dplyr::filter(dplyr::filter(add_proposed_points(output),ParameterName==parameter),ParameterIndex==dimension)
+    output_to_use = dplyr::filter(dplyr::filter(add_proposed_points(output),ParameterName==parameter),Dimension==dimension)
   }
 
   if ( ("LogWeight" %in% names(output)) && (pre_weighting==FALSE) )
@@ -59,7 +57,7 @@ histogram = function(output,
     plot = ggplot2::ggplot(output_to_use, ggplot2::aes(Value))
   }
 
-  if (length(unique(output$ParameterIndex))==1)
+  if (length(unique(output$Dimension))==1)
   {
     parameter_for_plot = parameter
     if (is.null(target) || (target_parameters=="") )

@@ -1,0 +1,228 @@
+#' @param output Output from the SMC or EnK algorithm.
+#' @param parameters The parameters we wish to be on the y-axis of the line graph.
+#' @param target (optional) The target to plot.
+#' @param pre_weighting (optional) If TRUE, will ignore particle weights in the line graph. If FALSE, will use the particle weights. (defaults to FALSE)
+#' @param max_line_width (optional) The maximum size of the points in the plot. (default=1)
+#' @param alpha (optional) The transparency of the lines in the plot. (default=0.1)
+#' @param xlimits (optional) Input of the form c(start,end), which specifies the ends of the x-axis.
+#' @param ylimits (optional) Input of the form c(start,end), which specifies the ends of the y-axis.
+#' @param default_title (optional) If TRUE, will provide a default title for the figure. If FALSE, no title is used. (defaults to FALSE)
+#' @return A line graph in a ggplot figure.
+#' @export
+line_graph = function(output,
+                      parameters,
+                      target=NULL,
+                      pre_weighting=FALSE,
+                      max_line_width=1,
+                      alpha=0.1,
+                      xlimits=NULL,
+                      ylimits=NULL,
+                      default_title=FALSE)
+{
+  if (!is.null(target))
+  {
+    if ("TargetParameters" %in% names(output))
+    {
+      target_parameters = dplyr::filter(output,Target==target)$TargetParameters[1]
+    }
+    else
+    {
+      target_parameters = ""
+    }
+    output_to_use = dplyr::filter(output,Target==target)
+  }
+  else
+  {
+    output_to_use = output
+  }
+
+  old_output_to_use = output_to_use
+  for (i in 1:length(parameters))
+  {
+    filtered_output = filter(old_output_to_use,(ParameterName==parameters[i]))
+
+    if (i==1)
+    {
+      output_to_use = filtered_output
+    }
+    else
+    {
+      output_to_use = rbind(output_to_use,filtered_output)
+    }
+  }
+
+  if ( ("LogWeight" %in% names(output)) && (pre_weighting==FALSE) )
+  {
+    if ("ExternalIndex" %in% names(output_to_use))
+    {
+      plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Dimension,
+                                                         y=Value,
+                                                         group=interaction(Iteration, Particle, ExternalIndex),
+                                                         colour=ParameterName,
+                                                         linewidth=exp(LogWeight)))
+    }
+    else
+    {
+      plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Dimension,
+                                                         y=Value,
+                                                         group=interaction(Iteration, Particle),
+                                                         colour=ParameterName,
+                                                         linewidth=exp(LogWeight)))
+    }
+  }
+  else
+  {
+    if ("Particle" %in% names(output_to_use))
+    {
+      if ("ExternalIndex" %in% names(output_to_use))
+      {
+        plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Dimension,
+                                                           y=Value,
+                                                           group=interaction(Iteration, Particle, ExternalIndex),
+                                                           colour=ParameterName))
+      }
+      else
+      {
+        plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Dimension,
+                                                           y=Value,
+                                                           group=interaction(Iteration, Particle),
+                                                           colour=ParameterName))
+      }
+    }
+    else if ("Chain" %in% names(output_to_use))
+    {
+      if ("ExternalIndex" %in% names(output_to_use))
+      {
+        plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Dimension,
+                                                           y=Value,
+                                                           group=interaction(Iteration, Chain, ExternalIndex),
+                                                           colour=ParameterName))
+      }
+      else
+      {
+        plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Dimension,
+                                                           y=Value,
+                                                           group=interaction(Iteration, Chain),
+                                                           colour=ParameterName))
+      }
+    }
+    else
+    {
+      stop('output must contain a column named either "Particle" or "Chain".')
+    }
+  }
+
+  # if (is.null(target) || (target_parameters=="") )
+  # {
+  #   default_title_for_plot = bquote("The evolution of"~.(parameter))
+  # }
+  # else
+  # {
+  #   default_title_for_plot = bquote("The evolution of"~.(parameter)~"("*.(target_parameters)*")")
+  # }
+
+  plot = plot +
+    geom_line(show.legend=TRUE,alpha=alpha) +
+    scale_linewidth(range = c(0,max_line_width)) +
+    ggplot2::xlab("Index") #+
+    #ggplot2::ylab(parameter_for_plot)
+
+  if (default_title)
+  {
+    plot = plot + ggplot2::labs(title=default_title_for_plot)
+  }
+
+  if ( (!is.null(xlimits)) && (is.numeric(xlimits)) && (is.vector(xlimits)) )
+  {
+    plot = plot + ggplot2::xlim(xlimits[1],xlimits[2])
+  }
+
+  if ( (!is.null(ylimits)) && (is.numeric(ylimits)) && (is.vector(ylimits)) )
+  {
+    plot = plot + ylim(ylimits[1],ylimits[2])
+  }
+
+  plot = plot +
+    scale_color_discrete(name = "Parameter", labels = sort(parameters)) +
+    guides(linewidth = "none") +
+    guides(colour = guide_legend(override.aes = list(alpha = 1,linewidth=1)))
+
+  return(plot)
+}
+
+#' @param output Output from the SMC or EnK algorithm.
+#' @param parameters The parameters we wish to be on the y-axis of the line graph.
+#' @param pre_weighting (optional) If TRUE, will ignore particle weights in the line graph. If FALSE, will use the particle weights. (defaults to FALSE)
+#' @param max_line_width (optional) The maximum size of the points in the plot. (default=1)
+#' @param alpha (optional) The transparency of the lines in the plot. (default=0.1)
+#' @param xlimits (optional) Input of the form c(start,end), which specifies the ends of the x-axis.
+#' @param ylimits (optional) Input of the form c(start,end), which specifies the ends of the y-axis.
+#' @param default_title (optional) If TRUE, will provide a default title for the figure. If FALSE, no title is used. (defaults to FALSE)
+#' @param duration (optional) The duration of the animation. (defaults to producing an animation that uses 10 frames per second)
+#' @param animate_plot (optiional) If TRUE, will return an animation. If FALSE, returns a gganim object that can be furher modified before animating. (defaults to FALSE)
+#' @param save_filename (optional) If specified, the animation will be saved to a gif with this filename. (default is not to save)
+#' @param save_path (optional) If specified along with save_filename, will save the gif to save_path/save_filename. (defaults to working directory)
+#' @return A line graph in a ggplot figure.
+#' @export
+animated_line_graph = function(output,
+                               parameters,
+                               pre_weighting=FALSE,
+                               max_line_width=1,
+                               alpha=0.1,
+                               xlimits=NULL,
+                               ylimits=NULL,
+                               default_title=FALSE,
+                               duration=NULL,
+                               animate_plot=TRUE,
+                               save_filename=NULL,
+                               save_path=NULL)
+{
+  p = line_graph(output = output,
+                 parameters = parameters,
+                 pre_weighting = pre_weighting,
+                 max_line_width = max_line_width,
+                 alpha = alpha,
+                 xlimits = xlimits,
+                 ylimits = ylimits,
+                 default_title = default_title)
+  to_animate = p + gganimate::transition_reveal(Dimension)
+
+  nframes = length(unique(output$Dimension))
+
+  if (animate_plot)
+  {
+    if (is.null(duration))
+    {
+      animated = animate(to_animate,nframes=nframes)
+    }
+    else
+    {
+      animated = animate(to_animate,nframes=nframes,duration=duration)
+    }
+
+    if (!is.null(save_filename))
+    {
+      if (is.null(save_path))
+      {
+        anim_save(filename=save_filename,animation=animated)
+      }
+      else
+      {
+        anim_save(filename=save_filename,animation=animated,path=save_path)
+      }
+    }
+
+    return(animated)
+  }
+  else
+  {
+    if (!is.null(save_filename))
+    {
+      stop("Cannot save, since plot not animated.")
+    }
+    else
+    {
+      return(to_animate)
+    }
+  }
+}

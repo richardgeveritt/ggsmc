@@ -7,11 +7,11 @@
 #' @param y_dimension (optional) The dimension of the y-parameter we wish to histogram. (default is 1)
 #' @param target (optional) The index of the target we wish to plot. (default to final target)
 #' @param pre_weighting (optional) If TRUE, will ignore particle weights in the histogram. If FALSE, will use the particle weights. (defaults to FALSE)
+#' @param max_size (optional) The maximum size of the points in the plot. (default=1)
+#' @param alpha (optional) The transparency of the points in the plot. (default=0.1)
 #' @param xlimits (optional) Input of the form c(start,end), which specifies the ends of the x-axis.
 #' @param ylimits (optional) Input of the form c(start,end), which specifies the ends of the y-axis.
 #' @param default_title (optional) If TRUE, will provide a default title for the figure. If FALSE, no title is used. (defaults to FALSE)
-#' @param max_size (optional) The maximum size of the points in the plot. (default=1)
-#' @param alpha (optional) The transparency of the points in the plot. (default=0.1)
 #' @return A scatter plot in a ggplot figure.
 #' @export
 scatter_plot = function(output,
@@ -21,18 +21,18 @@ scatter_plot = function(output,
                         y_dimension=1,
                         target=NULL,
                         pre_weighting=FALSE,
+                        max_size=1,
+                        alpha=0.1,
                         xlimits=NULL,
                         ylimits=NULL,
-                        default_title=FALSE,
-                        max_size=1,
-                        alpha=0.1)
+                        default_title=FALSE)
 {
   if ("Value" %in% names(output))
   {
-    new_variable_names = mapply(FUN = function(a,b) { paste(a,"_",b,sep="") },output$ParameterName,output$ParameterIndex)
-    output = subset(output,select = -c(ParameterName,ParameterIndex))
+    new_variable_names = mapply(FUN = function(a,b) { paste(a,"_",b,sep="") },output$ParameterName,output$Dimension)
+    output = subset(output,select = -c(ParameterName,Dimension))
     output$Parameter = new_variable_names
-    output = tidyr::pivot_wider(output, names_from = "Parameter", values_from = "Value")
+    #output = tidyr::pivot_wider(output, names_from = "Parameter", values_from = "Value")
     output_to_use = tidyr::pivot_wider(output,names_from=Parameter,values_from=Value)
   }
   else
@@ -45,9 +45,9 @@ scatter_plot = function(output,
 
   if (!is.null(target))
   {
-    if ("TargetParameters" %in% names(output))
+    if ("TargetParameters" %in% names(output_to_use))
     {
-      target_parameters = dplyr::filter(output,Target==target)$TargetParameters[1]
+      target_parameters = dplyr::filter(output_to_use,Target==target)$TargetParameters[1]
     }
     else
     {
@@ -68,9 +68,8 @@ scatter_plot = function(output,
                                                        y=y_parameter))
   }
 
-
-  x_split_result = strsplit(x_parameter,,"_")[[1]] #stringr::str_split(x_parameter, "(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)", n = Inf, simplify = TRUE)
-  y_split_result = strsplit(y_parameter,,"_")[[1]] #stringr::str_split(y_parameter, "(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)", n = Inf, simplify = TRUE)
+  x_split_result = strsplit(x_parameter,"_")[[1]] #stringr::str_split(x_parameter, "(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)", n = Inf, simplify = TRUE)
+  y_split_result = strsplit(y_parameter,"_")[[1]] #stringr::str_split(y_parameter, "(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)", n = Inf, simplify = TRUE)
 
   if ( (length(x_split_result)>2) || (length(x_split_result)==0) || (length(y_split_result)>2) || (length(y_split_result)==0) )
   {
@@ -162,11 +161,11 @@ scatter_plot = function(output,
 #' @param y_parameter The parameter indexed by the y-axis.
 #' @param y_dimension (optional) The dimension of the y-parameter we wish to histogram. (default is 1)
 #' @param pre_weighting (optional) If TRUE, will ignore particle weights in the histogram. If FALSE, will use the particle weights. (defaults to FALSE)
+#' @param max_size (optional) The maximum size of the points in the plot. (default=1)
+#' @param alpha (optional) The transparency of the points in the plot. (default=0.1)
 #' @param xlimits (optional) Input of the form c(start,end), which specifies the ends of the x-axis.
 #' @param ylimits (optional) Input of the form c(start,end), which specifies the ends of the y-axis.
 #' @param default_title (optional) If TRUE, will provide a default title for the figure. If FALSE, no title is used. (defaults to FALSE)
-#' @param max_size (optional) The maximum size of the points in the plot. (default=1)
-#' @param alpha (optional) The transparency of the points in the plot. (default=0.1)
 #' @param view_follow (optional) If TRUE, the view will follow the particles. (default FALSE)
 #' @param shadow_mark_proportion_of_max_size (optional) If set, the animation will leave behind shadow points, of a size (and transparency) specified by this proportion. (default to not set)
 #' @param shadow_wake_length (optional) If set, the animation will leave a shadow wake behind each point, of a duration given by this parameter (proportion of the entire animation length). (default to not set)
@@ -182,11 +181,11 @@ animated_scatter_plot = function(output,
                                  y_parameter,
                                  y_dimension,
                                  pre_weighting=FALSE,
+                                 max_size=1,
+                                 alpha=0.1,
                                  xlimits=NULL,
                                  ylimits=NULL,
                                  default_title=FALSE,
-                                 max_size=1,
-                                 alpha=0.1,
                                  view_follow=FALSE,
                                  shadow_mark_proportion_of_max_size=NULL,
                                  shadow_wake_length=NULL,
@@ -202,11 +201,11 @@ animated_scatter_plot = function(output,
                    y_parameter = y_parameter,
                    y_dimension = y_dimension,
                    pre_weighting = pre_weighting,
+                   max_size=max_size,
+                   alpha=alpha,
                    xlimits=xlimits,
                    ylimits=ylimits,
-                   default_title=default_title,
-                   max_size=max_size,
-                   alpha=alpha)
+                   default_title=default_title,)
 
   if (view_follow)
   {
