@@ -7,6 +7,7 @@
 histogram(
   output,
   parameter,
+  dimension = 1,
   target = NULL,
   pre_weighting = FALSE,
   bins = 30,
@@ -19,6 +20,8 @@ histogram(
 \item{output}{Output from the SMC or EnK algorithm.}
 
 \item{parameter}{The parameter we wish to histogram.}
+
+\item{dimension}{(optional) The dimension of the parameter we wish to histogram. (default is 1)}
 
 \item{target}{(optional) The index of the target we wish to histogram. (default to final target)}
 

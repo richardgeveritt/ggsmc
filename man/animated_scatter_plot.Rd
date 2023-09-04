@@ -7,7 +7,9 @@
 animated_scatter_plot(
   output,
   x_parameter,
+  x_dimension,
   y_parameter,
+  y_dimension,
   pre_weighting = FALSE,
   xlimits = NULL,
   ylimits = NULL,
@@ -28,7 +30,11 @@ animated_scatter_plot(
 
 \item{x_parameter}{The parameter indexed by the x-axis.}
 
+\item{x_dimension}{(optional) The dimension of the x-parameter we wish to histogram. (default is 1)}
+
 \item{y_parameter}{The parameter indexed by the y-axis.}
+
+\item{y_dimension}{(optional) The dimension of the y-parameter we wish to histogram. (default is 1)}
 
 \item{pre_weighting}{(optional) If TRUE, will ignore particle weights in the histogram. If FALSE, will use the particle weights. (defaults to FALSE)}
 

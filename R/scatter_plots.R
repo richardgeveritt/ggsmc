@@ -2,7 +2,9 @@
 #'
 #' @param output Output from the SMC or EnK algorithm.
 #' @param x_parameter The parameter indexed by the x-axis.
+#' @param x_dimension (optional) The dimension of the x-parameter we wish to histogram. (default is 1)
 #' @param y_parameter The parameter indexed by the y-axis.
+#' @param y_dimension (optional) The dimension of the y-parameter we wish to histogram. (default is 1)
 #' @param target (optional) The index of the target we wish to plot. (default to final target)
 #' @param pre_weighting (optional) If TRUE, will ignore particle weights in the histogram. If FALSE, will use the particle weights. (defaults to FALSE)
 #' @param xlimits (optional) Input of the form c(start,end), which specifies the ends of the x-axis.
@@ -14,7 +16,9 @@
 #' @export
 scatter_plot = function(output,
                         x_parameter,
+                        x_dimension=1,
                         y_parameter,
+                        y_dimension=1,
                         target=NULL,
                         pre_weighting=FALSE,
                         xlimits=NULL,
@@ -25,12 +29,19 @@ scatter_plot = function(output,
 {
   if ("Value" %in% names(output))
   {
+    new_variable_names = mapply(FUN = function(a,b) { paste(a,"_",b,sep="") },output$ParameterName,output$ParameterIndex)
+    output = subset(output,select = -c(ParameterName,ParameterIndex))
+    output$Parameter = new_variable_names
+    output = tidyr::pivot_wider(output, names_from = "Parameter", values_from = "Value")
     output_to_use = tidyr::pivot_wider(output,names_from=Parameter,values_from=Value)
   }
   else
   {
     output_to_use = output
   }
+
+  x_parameter = paste(x_parameter,"_",x_dimension,sep="")
+  y_parameter = paste(y_parameter,"_",y_dimension,sep="")
 
   if (!is.null(target))
   {
@@ -58,14 +69,14 @@ scatter_plot = function(output,
   }
 
 
-  x_split_result = stringr::str_split(x_parameter, "(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)", n = Inf, simplify = TRUE)
-  y_split_result = stringr::str_split(y_parameter, "(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)", n = Inf, simplify = TRUE)
+  x_split_result = strsplit(x_parameter,,"_")[[1]] #stringr::str_split(x_parameter, "(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)", n = Inf, simplify = TRUE)
+  y_split_result = strsplit(y_parameter,,"_")[[1]] #stringr::str_split(y_parameter, "(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)", n = Inf, simplify = TRUE)
 
-  if ( (ncol(x_split_result)>2) || (ncol(x_split_result)==0) || (ncol(y_split_result)>2) || (ncol(y_split_result)==0) )
+  if ( (length(x_split_result)>2) || (length(x_split_result)==0) || (length(y_split_result)>2) || (length(y_split_result)==0) )
   {
-    stop("For automated captions, parameters need to be of the form charactersnumber.")
+    stop("For automated captions, parameters need to be of the form name_number (with no other underscores in the name).")
   }
-  else if ( (ncol(x_split_result)==1) && (ncol(y_split_result)==1) )
+  if ( (length(x_split_result)==1) && (length(y_split_result)==1) )
   {
     x_parameter_for_plot = x_parameter
     y_parameter_for_plot = y_parameter
@@ -78,7 +89,7 @@ scatter_plot = function(output,
       default_title_for_plot = bquote("Scatter plot of"~.(x_parameter)~"and"~.(y_parameter)~"("*.(target_parameters)*")")
     }
   }
-  else if ( (ncol(x_split_result)==2) && (ncol(y_split_result)==1) )
+  else if ( (length(x_split_result)==2) && (length(y_split_result)==1) )
   {
     if (is.null(target) || (target_parameters=="") )
     {
@@ -91,7 +102,7 @@ scatter_plot = function(output,
     x_parameter_for_plot = bquote(.(x_split_result[1])[.(x_split_result[2])])
     y_parameter_for_plot = y_parameter
   }
-  else if ( (ncol(x_split_result)==1) && (ncol(y_split_result)==2) )
+  else if ( (length(x_split_result)==1) && (length(y_split_result)==2) )
   {
     if (is.null(target) || (target_parameters=="") )
     {
@@ -104,7 +115,7 @@ scatter_plot = function(output,
     x_parameter_for_plot = x_parameter
     y_parameter_for_plot = bquote(.(y_split_result[1])[.(y_split_result[2])])
   }
-  else if ( (ncol(x_split_result)==2) && (ncol(y_split_result)==2) )
+  else if ( (length(x_split_result)==2) && (length(y_split_result)==2) )
   {
     if (is.null(target) || (target_parameters=="") )
     {
@@ -147,7 +158,9 @@ scatter_plot = function(output,
 #'
 #' @param output Output from the SMC or EnK algorithm.
 #' @param x_parameter The parameter indexed by the x-axis.
+#' @param x_dimension (optional) The dimension of the x-parameter we wish to histogram. (default is 1)
 #' @param y_parameter The parameter indexed by the y-axis.
+#' @param y_dimension (optional) The dimension of the y-parameter we wish to histogram. (default is 1)
 #' @param pre_weighting (optional) If TRUE, will ignore particle weights in the histogram. If FALSE, will use the particle weights. (defaults to FALSE)
 #' @param xlimits (optional) Input of the form c(start,end), which specifies the ends of the x-axis.
 #' @param ylimits (optional) Input of the form c(start,end), which specifies the ends of the y-axis.
@@ -165,7 +178,9 @@ scatter_plot = function(output,
 #' @export
 animated_scatter_plot = function(output,
                                  x_parameter,
+                                 x_dimension,
                                  y_parameter,
+                                 y_dimension,
                                  pre_weighting=FALSE,
                                  xlimits=NULL,
                                  ylimits=NULL,
@@ -183,7 +198,9 @@ animated_scatter_plot = function(output,
   output_to_use = tidyr::pivot_wider(output,names_from=Parameter,values_from=Value)
   p = scatter_plot(output = output_to_use,
                    x_parameter = x_parameter,
+                   x_dimension = x_dimension,
                    y_parameter = y_parameter,
+                   y_dimension = y_dimension,
                    pre_weighting = pre_weighting,
                    xlimits=xlimits,
                    ylimits=ylimits,

@@ -7,6 +7,7 @@
 animated_histogram(
   output,
   parameter,
+  dimension,
   pre_weighting = FALSE,
   bins = 30,
   xlimits = NULL,
@@ -22,6 +23,8 @@ animated_histogram(
 \item{output}{Output from the SMC or EnK algorithm.}
 
 \item{parameter}{The parameter we wish to histogram.}
+
+\item{dimension}{(optional) The dimension of the parameter we wish to histogram. (default is 1)}
 
 \item{pre_weighting}{(optional) If TRUE, will ignore particle weights in the histogram. If FALSE, will use the particle weights. (defaults to FALSE)}
 

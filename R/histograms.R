@@ -2,6 +2,7 @@
 #'
 #' @param output Output from the SMC or EnK algorithm.
 #' @param parameter The parameter we wish to histogram.
+#' @param dimension (optional) The dimension of the parameter we wish to histogram. (default is 1)
 #' @param target (optional) The index of the target we wish to histogram. (default to final target)
 #' @param pre_weighting (optional) If TRUE, will ignore particle weights in the histogram. If FALSE, will use the particle weights. (defaults to FALSE)
 #' @param bins (optional) Number of bins for the histogram. (default 30)
@@ -12,6 +13,7 @@
 #' @export
 histogram = function(output,
                      parameter,
+                     dimension=1,
                      target=NULL,
                      pre_weighting=FALSE,
                      bins=30,
@@ -19,6 +21,13 @@ histogram = function(output,
                      ylimits=NULL,
                      default_title=FALSE)
 {
+  browser()
+
+  if (!("Value" %in% names(output)))
+  {
+    stop('Require tidy data with column "Value" as input to this function.')
+  }
+
   # if (is.null(target))
   # {
   #   target = max(output$Target)
@@ -34,11 +43,11 @@ histogram = function(output,
     {
       target_parameters = ""
     }
-    output_to_use = dplyr::filter(dplyr::filter(output,Target==target),Parameter==parameter)
+    output_to_use = dplyr::filter(dplyr::filter(dplyr::filter(output,Target==target),ParameterName==parameter),ParameterIndex==dimension)
   }
   else
   {
-    output_to_use = dplyr::filter(add_proposed_points(output),Parameter==parameter)
+    output_to_use = dplyr::filter(dplyr::filter(add_proposed_points(output),ParameterName==parameter),ParameterIndex==dimension)
   }
 
   if ( ("LogWeight" %in% names(output)) && (pre_weighting==FALSE) )
@@ -50,12 +59,7 @@ histogram = function(output,
     plot = ggplot2::ggplot(output_to_use, ggplot2::aes(Value))
   }
 
-  split_result = stringr::str_split(parameter, "(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)", n = Inf, simplify = TRUE)
-  if ( (ncol(split_result)>2) || (ncol(split_result)==0) )
-  {
-    stop("For automated captions, parameter needs to be of the form charactersnumber.")
-  }
-  else if (ncol(split_result)==1)
+  if (length(unique(output$ParameterIndex))==1)
   {
     parameter_for_plot = parameter
     if (is.null(target) || (target_parameters=="") )
@@ -71,13 +75,13 @@ histogram = function(output,
   {
     if (is.null(target) || (target_parameters=="") )
     {
-      default_title_for_plot = bquote("Histogram of the density of"~.(split_result[1])[.(split_result[2])])
+      default_title_for_plot = bquote("Histogram of the density of"~.(parameter)[.(dimension)])
     }
     else
     {
-      default_title_for_plot = bquote("Histogram of the density of"~.(split_result[1])[.(split_result[2])]~"("*.(target_parameters)*")")
+      default_title_for_plot = bquote("Histogram of the density of"~.(parameter)[.(dimension)]~"("*.(target_parameters)*")")
     }
-    parameter_for_plot = bquote(.(split_result[1])[.(split_result[2])])
+    parameter_for_plot = bquote(.(parameter)[.(dimension)])
   }
 
   plot = plot + ggplot2::geom_histogram(bins=bins) +
@@ -106,6 +110,7 @@ histogram = function(output,
 #'
 #' @param output Output from the SMC or EnK algorithm.
 #' @param parameter The parameter we wish to histogram.
+#' @param dimension (optional) The dimension of the parameter we wish to histogram. (default is 1)
 #' @param pre_weighting (optional) If TRUE, will ignore particle weights in the histogram. If FALSE, will use the particle weights. (defaults to FALSE)
 #' @param bins (optional) Number of bins for the histogram. (default 30)
 #' @param xlimits (optional) Input of the form c(start,end), which specifies the ends of the x-axis.
@@ -119,6 +124,7 @@ histogram = function(output,
 #' @export
 animated_histogram = function(output,
                               parameter,
+                              dimension,
                               pre_weighting=FALSE,
                               bins=30,
                               xlimits=NULL,
@@ -131,6 +137,7 @@ animated_histogram = function(output,
 {
   p = histogram(output = output,
                 parameter = parameter,
+                dimension = dimension,
                 pre_weighting = pre_weighting,
                 bins = bins,
                 xlimits = xlimits,

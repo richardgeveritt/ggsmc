@@ -12,7 +12,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 URL: https://github.com/maugu/ilike
 BugReports: https://github.com/maugu/ilike.output/issues
-Imports: tidyr, ggplot2, gganimate, dplyr, stringr, gifski
+Imports: tidyr, ggplot2, gganimate, dplyr, gifski
 Suggests: knitr, rmarkdown, testthat
 VignetteBuilder: knitr
 Depends: 
