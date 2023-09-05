@@ -12,11 +12,11 @@ scatter_plot(
   y_dimension = 1,
   target = NULL,
   pre_weighting = FALSE,
+  max_size = 1,
+  alpha = 0.1,
   xlimits = NULL,
   ylimits = NULL,
-  default_title = FALSE,
-  max_size = 1,
-  alpha = 0.1
+  default_title = FALSE
 )
 }
 \arguments{
@@ -34,15 +34,15 @@ scatter_plot(
 
 \item{pre_weighting}{(optional) If TRUE, will ignore particle weights in the histogram. If FALSE, will use the particle weights. (defaults to FALSE)}
 
+\item{max_size}{(optional) The maximum size of the points in the plot. (default=1)}
+
+\item{alpha}{(optional) The transparency of the points in the plot. (default=0.1)}
+
 \item{xlimits}{(optional) Input of the form c(start,end), which specifies the ends of the x-axis.}
 
 \item{ylimits}{(optional) Input of the form c(start,end), which specifies the ends of the y-axis.}
 
 \item{default_title}{(optional) If TRUE, will provide a default title for the figure. If FALSE, no title is used. (defaults to FALSE)}
-
-\item{max_size}{(optional) The maximum size of the points in the plot. (default=1)}
-
-\item{alpha}{(optional) The transparency of the points in the plot. (default=0.1)}
 }
 \value{
 A scatter plot in a ggplot figure.

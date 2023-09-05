@@ -122,7 +122,7 @@ histogram = function(output,
 #' @export
 animated_histogram = function(output,
                               parameter,
-                              dimension,
+                              dimension=1,
                               pre_weighting=FALSE,
                               bins=30,
                               xlimits=NULL,
