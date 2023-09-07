@@ -27,11 +27,20 @@ scatter_plot = function(output,
                         ylimits=NULL,
                         default_title=FALSE)
 {
+
+  if (!is.null(target) && !(target %in% output$Target))
+  {
+    stop('target not found in output.')
+  }
+
   if ("Value" %in% names(output))
   {
     new_variable_names = mapply(FUN = function(a,b) { paste(a,"_",b,sep="") },output$ParameterName,output$Dimension)
     output = subset(output,select = -c(ParameterName,Dimension))
     output$Parameter = new_variable_names
+
+    output = output %>% distinct()
+
     #output = tidyr::pivot_wider(output, names_from = "Parameter", values_from = "Value")
     output_to_use = tidyr::pivot_wider(output,names_from=Parameter,values_from=Value)
   }
@@ -54,6 +63,10 @@ scatter_plot = function(output,
       target_parameters = ""
     }
     output_to_use = dplyr::filter(output_to_use,Target==target)
+  }
+  else
+  {
+    output_to_use = add_proposed_points(output)
   }
 
   if ( ("LogWeight" %in% names(output)) && (pre_weighting==FALSE) )
@@ -129,8 +142,8 @@ scatter_plot = function(output,
   }
 
   plot = plot +
-    geom_point(show.legend=FALSE,alpha=alpha) +
-    scale_size_area(max_size = max_size) +
+    ggplot2::geom_point(show.legend=FALSE,alpha=alpha) +
+    ggplot2::scale_size_area(max_size = max_size) +
     ggplot2::xlab(x_parameter_for_plot) +
     ggplot2::ylab(y_parameter_for_plot)
 
@@ -194,7 +207,21 @@ animated_scatter_plot = function(output,
                                  save_filename=NULL,
                                  save_path=NULL)
 {
-  output_to_use = tidyr::pivot_wider(output,names_from=Parameter,values_from=Value)
+  if ("Value" %in% names(output))
+  {
+    new_variable_names = mapply(FUN = function(a,b) { paste(a,"_",b,sep="") },output$ParameterName,output$Dimension)
+    output = subset(output,select = -c(ParameterName,Dimension))
+    output$Parameter = new_variable_names
+    output = dplyr::distinct(output)
+
+    #output = tidyr::pivot_wider(output, names_from = "Parameter", values_from = "Value")
+    output_to_use = tidyr::pivot_wider(output,names_from=Parameter,values_from=Value)
+  }
+  else
+  {
+    output_to_use = output
+  }
+
   p = scatter_plot(output = output_to_use,
                    x_parameter = x_parameter,
                    x_dimension = x_dimension,
@@ -209,14 +236,14 @@ animated_scatter_plot = function(output,
 
   if (view_follow)
   {
-    p = p + view_follow()
+    p = p + gganimate::view_follow()
   }
 
   if (!is.null(shadow_mark_proportion_of_max_size))
   {
     if ( (shadow_mark_proportion_of_max_size>=0) && (shadow_mark_proportion_of_max_size<=1) )
     {
-      p = p + shadow_mark(alpha = alpha*shadow_mark_proportion_of_max_size, size = max_size*shadow_mark_proportion_of_max_size)
+      p = p + gganimate::shadow_mark(alpha = alpha*shadow_mark_proportion_of_max_size, size = max_size*shadow_mark_proportion_of_max_size)
     }
     else
     {
@@ -228,7 +255,7 @@ animated_scatter_plot = function(output,
   {
     if ( (shadow_wake_length>=0) && (shadow_wake_length<=1) )
     {
-      p = p + shadow_wake(wake_length = shadow_wake_length, alpha = TRUE)
+      p = p + gganimate::shadow_wake(wake_length = shadow_wake_length, alpha = TRUE, wrap=FALSE)
     }
     else
     {
@@ -244,22 +271,22 @@ animated_scatter_plot = function(output,
   {
     if (is.null(duration))
     {
-      animated = animate(to_animate,nframes=nframes)
+      animated = gganimate::animate(to_animate,nframes=nframes)
     }
     else
     {
-      animated = animate(to_animate,nframes=nframes,duration=duration)
+      animated = gganimate::animate(to_animate,nframes=nframes,duration=duration)
     }
 
     if (!is.null(save_filename))
     {
       if (is.null(save_path))
       {
-        anim_save(filename=save_filename,animation=animated)
+        gganimate::anim_save(filename=save_filename,animation=animated)
       }
       else
       {
-        anim_save(filename=save_filename,animation=animated,path=save_path)
+        gganimate::anim_save(filename=save_filename,animation=animated,path=save_path)
       }
     }
 

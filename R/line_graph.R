@@ -1,6 +1,7 @@
 #' @param output Output from the SMC or EnK algorithm.
 #' @param parameters The parameters we wish to be on the y-axis of the line graph.
-#' @param target (optional) The target to plot.
+#' @param target (optional) The target to plot. (default is to use all targets)
+#' @param external_target (optional) The target to plot. (default is to use all external targets, or to ignore if the column is not present)
 #' @param pre_weighting (optional) If TRUE, will ignore particle weights in the line graph. If FALSE, will use the particle weights. (defaults to FALSE)
 #' @param max_line_width (optional) The maximum size of the points in the plot. (default=1)
 #' @param alpha (optional) The transparency of the lines in the plot. (default=0.1)
@@ -12,6 +13,7 @@
 line_graph = function(output,
                       parameters,
                       target=NULL,
+                      external_target=NULL,
                       pre_weighting=FALSE,
                       max_line_width=1,
                       alpha=0.1,
@@ -19,37 +21,54 @@ line_graph = function(output,
                       ylimits=NULL,
                       default_title=FALSE)
 {
-  if (!is.null(target))
+  if (!is.null(target) && !(target %in% output$Target))
   {
-    if ("TargetParameters" %in% names(output))
+    stop('target not found in output.')
+  }
+
+  if (!is.null(external_target) && !("ExternalTarget" %in% names(output)))
+  {
+    stop("ExternalTarget column not found in output.")
+  }
+
+  output_to_use = output
+
+  if (!is.null(external_target))
+  {
+    if ("ExternalTargetParameters" %in% names(output))
     {
-      target_parameters = dplyr::filter(output,Target==target)$TargetParameters[1]
+      target_parameters = dplyr::filter(output,ExternalTarget==external_target)$ExternalTargetParameters[1]
     }
     else
     {
       target_parameters = ""
     }
-    output_to_use = dplyr::filter(output,Target==target)
+    output_to_use = dplyr::filter(output,ExternalTarget==external_target)
   }
   else
   {
-    output_to_use = output
+    target_parameters = ""
   }
 
-  old_output_to_use = output_to_use
-  for (i in 1:length(parameters))
+  if (!is.null(target))
   {
-    filtered_output = filter(old_output_to_use,(ParameterName==parameters[i]))
-
-    if (i==1)
+    if ("TargetParameters" %in% names(output_to_use))
     {
-      output_to_use = filtered_output
+      if (target_parameters!="")
+      {
+        target_parameters = paste(target_parameters,",",sep="")
+      }
+
+      target_parameters = paste(target_parameters,dplyr::filter(output_to_use,Target==target)$TargetParameters[1],sep="")
     }
     else
     {
-      output_to_use = rbind(output_to_use,filtered_output)
+      target_parameters = paste(target_parameters,"",sep="")
     }
+    output_to_use = dplyr::filter(output_to_use,Target==target)
   }
+
+  output_to_use = dplyr::filter(output_to_use,(ParameterName %in% parameters))
 
   if ( ("LogWeight" %in% names(output)) && (pre_weighting==FALSE) )
   {
@@ -57,7 +76,7 @@ line_graph = function(output,
     {
       plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Dimension,
                                                          y=Value,
-                                                         group=interaction(Iteration, Particle, ExternalIndex),
+                                                         group=interaction(Iteration, Particle, ExternalIndex, ParameterName),
                                                          colour=ParameterName,
                                                          linewidth=exp(LogWeight)))
     }
@@ -65,7 +84,7 @@ line_graph = function(output,
     {
       plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Dimension,
                                                          y=Value,
-                                                         group=interaction(Iteration, Particle),
+                                                         group=interaction(Iteration, Particle, ParameterName),
                                                          colour=ParameterName,
                                                          linewidth=exp(LogWeight)))
     }
@@ -78,14 +97,14 @@ line_graph = function(output,
       {
         plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Dimension,
                                                            y=Value,
-                                                           group=interaction(Iteration, Particle, ExternalIndex),
+                                                           group=interaction(Iteration, Particle, ExternalIndex, ParameterName),
                                                            colour=ParameterName))
       }
       else
       {
         plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Dimension,
                                                            y=Value,
-                                                           group=interaction(Iteration, Particle),
+                                                           group=interaction(Iteration, Particle, ParameterName),
                                                            colour=ParameterName))
       }
     }
@@ -95,14 +114,14 @@ line_graph = function(output,
       {
         plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Dimension,
                                                            y=Value,
-                                                           group=interaction(Iteration, Chain, ExternalIndex),
+                                                           group=interaction(Iteration, Chain, ExternalIndex, ParameterName),
                                                            colour=ParameterName))
       }
       else
       {
         plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Dimension,
                                                            y=Value,
-                                                           group=interaction(Iteration, Chain),
+                                                           group=interaction(Iteration, Chain, ParameterName),
                                                            colour=ParameterName))
       }
     }
@@ -122,8 +141,8 @@ line_graph = function(output,
   # }
 
   plot = plot +
-    geom_line(show.legend=TRUE,alpha=alpha) +
-    scale_linewidth(range = c(0,max_line_width)) +
+    ggplot2::geom_line(show.legend=TRUE,alpha=alpha) +
+    ggplot2::scale_linewidth(range = c(0,max_line_width)) +
     ggplot2::xlab("Index") #+
     #ggplot2::ylab(parameter_for_plot)
 
@@ -139,13 +158,13 @@ line_graph = function(output,
 
   if ( (!is.null(ylimits)) && (is.numeric(ylimits)) && (is.vector(ylimits)) )
   {
-    plot = plot + ylim(ylimits[1],ylimits[2])
+    plot = plot + ggplot2::ylim(ylimits[1],ylimits[2])
   }
 
   plot = plot +
-    scale_color_discrete(name = "Parameter", labels = sort(parameters)) +
-    guides(linewidth = "none") +
-    guides(colour = guide_legend(override.aes = list(alpha = 1,linewidth=1)))
+    ggplot2::scale_color_discrete(name = "Parameter", labels = sort(parameters)) +
+    ggplot2::guides(linewidth = "none") +
+    ggplot2::guides(colour = ggplot2::guide_legend(override.aes = list(alpha = 1,linewidth=1)))
 
   return(plot)
 }
@@ -193,22 +212,22 @@ animated_line_graph = function(output,
   {
     if (is.null(duration))
     {
-      animated = animate(to_animate,nframes=nframes)
+      animated = gganimate::animate(to_animate,nframes=nframes)
     }
     else
     {
-      animated = animate(to_animate,nframes=nframes,duration=duration)
+      animated = gganimate::animate(to_animate,nframes=nframes,duration=duration)
     }
 
     if (!is.null(save_filename))
     {
       if (is.null(save_path))
       {
-        anim_save(filename=save_filename,animation=animated)
+        gganimate::anim_save(filename=save_filename,animation=animated)
       }
       else
       {
-        anim_save(filename=save_filename,animation=animated,path=save_path)
+        gganimate::anim_save(filename=save_filename,animation=animated,path=save_path)
       }
     }
 

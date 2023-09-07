@@ -21,9 +21,15 @@ histogram = function(output,
                      ylimits=NULL,
                      default_title=FALSE)
 {
+
   if (!("Value" %in% names(output)))
   {
     stop('Require tidy data with column "Value" as input to this function.')
+  }
+
+  if (!is.null(target) && !(target %in% output$Target))
+  {
+    stop('target not found in output.')
   }
 
   # if (is.null(target))
@@ -149,22 +155,22 @@ animated_histogram = function(output,
   {
     if (is.null(duration))
     {
-      animated = animate(to_animate,nframes=nframes)
+      animated = gganimate::animate(to_animate,nframes=nframes)
     }
     else
     {
-      animated = animate(to_animate,nframes=nframes,duration=duration)
+      animated = gganimate::animate(to_animate,nframes=nframes,duration=duration)
     }
 
     if (!is.null(save_filename))
     {
       if (is.null(save_path))
       {
-        anim_save(filename=save_filename,animation=animated)
+        gganimate::anim_save(filename=save_filename,animation=animated)
       }
       else
       {
-        anim_save(filename=save_filename,animation=animated,path=save_path)
+        gganimate::anim_save(filename=save_filename,animation=animated,path=save_path)
       }
     }
 
