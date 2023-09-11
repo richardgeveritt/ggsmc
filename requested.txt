@@ -1,0 +1,10 @@
+ffmpeg
+freetype
+gcc44
+gperf
+gsl
+ImageMagick
+pkgconfig
+python2_select
+readline
+tk

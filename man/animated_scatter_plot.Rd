@@ -10,6 +10,9 @@ animated_scatter_plot(
   x_dimension,
   y_parameter,
   y_dimension,
+  target,
+  external_target,
+  use_initial_points = TRUE,
   pre_weighting = FALSE,
   max_size = 1,
   alpha = 0.1,
@@ -35,6 +38,12 @@ animated_scatter_plot(
 \item{y_parameter}{The parameter indexed by the y-axis.}
 
 \item{y_dimension}{(optional) The dimension of the y-parameter we wish to histogram. (default is 1)}
+
+\item{target}{(optionaL) If specified, will fix to this target, and animate over ExternalTarget (if present in output).}
+
+\item{external_target}{(optionaL) If specified, will fix to this external_target, and animate over Target.}
+
+\item{use_initial_points}{(optional) If target is not specified and this argument is TRUE, will add the initial unweighted proposed points to the output to be plotted. (default is TRUE)}
 
 \item{pre_weighting}{(optional) If TRUE, will ignore particle weights in the histogram. If FALSE, will use the particle weights. (defaults to FALSE)}
 

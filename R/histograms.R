@@ -3,7 +3,9 @@
 #' @param output Output from the SMC or EnK algorithm.
 #' @param parameter The parameter we wish to histogram.
 #' @param dimension (optional) The dimension of the parameter we wish to histogram. (default is 1)
-#' @param target (optional) The index of the target we wish to histogram. (default to final target)
+#' @param target (optional) The index of the target we wish to histogram. (default to all targets)
+#' @param external_target (optional) The index of the external target to plot. (default is to use all external targets, or to ignore if the column is not present)
+#' @param use_initial_points (optional) If target is not specified and this argument is TRUE, will add the initial unweighted proposed points to the output to be plotted. (default is TRUE)
 #' @param pre_weighting (optional) If TRUE, will ignore particle weights in the histogram. If FALSE, will use the particle weights. (defaults to FALSE)
 #' @param bins (optional) Number of bins for the histogram. (default 30)
 #' @param xlimits (optional) Input of the form c(start,end), which specifies the ends of the x-axis.
@@ -15,6 +17,8 @@ histogram = function(output,
                      parameter,
                      dimension=1,
                      target=NULL,
+                     external_target=NULL,
+                     use_initial_points=TRUE,
                      pre_weighting=FALSE,
                      bins=30,
                      xlimits=NULL,
@@ -29,7 +33,12 @@ histogram = function(output,
 
   if (!is.null(target) && !(target %in% output$Target))
   {
-    stop('target not found in output.')
+    stop('Specified target not found in output.')
+  }
+
+  if (!is.null(external_target) && !("ExternalTarget" %in% names(output)))
+  {
+    stop("ExternalTarget column not found in output.")
   }
 
   # if (is.null(target))
@@ -37,22 +46,11 @@ histogram = function(output,
   #   target = max(output$Target)
   # }
 
-  if (!is.null(target))
-  {
-    if ("TargetParameters" %in% names(output))
-    {
-      target_parameters = dplyr::filter(output,Target==target)$TargetParameters[1]
-    }
-    else
-    {
-      target_parameters = ""
-    }
-    output_to_use = dplyr::filter(dplyr::filter(dplyr::filter(output,Target==target),ParameterName==parameter),Dimension==dimension)
-  }
-  else
-  {
-    output_to_use = dplyr::filter(dplyr::filter(add_proposed_points(output),ParameterName==parameter),Dimension==dimension)
-  }
+  target_data = extract_target_data(output,target,external_target,use_initial_points)
+  output_to_use = target_data[[1]]
+  target_parameters = target_data[[2]]
+
+  output_to_use = dplyr::filter(dplyr::filter(output_to_use,ParameterName==parameter),Dimension==dimension)
 
   if ( ("LogWeight" %in% names(output)) && (pre_weighting==FALSE) )
   {
@@ -115,6 +113,9 @@ histogram = function(output,
 #' @param output Output from the SMC or EnK algorithm.
 #' @param parameter The parameter we wish to histogram.
 #' @param dimension (optional) The dimension of the parameter we wish to histogram. (default is 1)
+#' @param target (optionaL) If specified, will fix to this target, and animate over ExternalTarget (if present in output).
+#' @param external_target (optionaL) If specified, will fix to this external_target, and animate over Target.
+#' @param use_initial_points (optional) If target is not specified and this argument is TRUE, will add the initial unweighted proposed points to the output to be plotted. (default is TRUE)
 #' @param pre_weighting (optional) If TRUE, will ignore particle weights in the histogram. If FALSE, will use the particle weights. (defaults to FALSE)
 #' @param bins (optional) Number of bins for the histogram. (default 30)
 #' @param xlimits (optional) Input of the form c(start,end), which specifies the ends of the x-axis.
@@ -129,6 +130,9 @@ histogram = function(output,
 animated_histogram = function(output,
                               parameter,
                               dimension=1,
+                              target=NULL,
+                              external_target=NULL,
+                              use_initial_points=TRUE,
                               pre_weighting=FALSE,
                               bins=30,
                               xlimits=NULL,
@@ -139,17 +143,52 @@ animated_histogram = function(output,
                               save_filename=NULL,
                               save_path=NULL)
 {
+
   p = histogram(output = output,
                 parameter = parameter,
                 dimension = dimension,
+                target = target,
+                external_target = external_target,
+                use_initial_points = use_initial_points,
                 pre_weighting = pre_weighting,
                 bins = bins,
                 xlimits = xlimits,
                 ylimits = ylimits,
                 default_title = default_title)
-  to_animate = p + gganimate::transition_manual(Target)
 
-  nframes = length(unique(output$Target))
+  if (!is.null(external_target) && is.null(target))
+  {
+    to_animate = p + gganimate::transition_manual(Target)
+    nframes = length(unique(output$Target))
+  }
+  else if (is.null(external_target) && !is.null(target))
+  {
+    if ("ExternalTarget" %in% names(output))
+    {
+      to_animate = p + gganimate::transition_manual(ExternalTarget)
+      nframes = length(unique(output$ExternalTarget))
+    }
+    else
+    {
+      stop("ExternalTarget not specified in output, so cannot animate over it.")
+    }
+  }
+  else if (!is.null(external_target) && !is.null(target))
+  {
+    stop("Both target and external_target are specified, so no animation to be done.")
+  }
+  else
+  {
+    if ("ExternalTarget" %in% names(output))
+    {
+      stop("Neither target nor external_target are specified: must specify one or the other when ExternalTarget is present in output.")
+    }
+    else
+    {
+      to_animate = p + gganimate::transition_manual(Target)
+      nframes = length(unique(output$Target))
+    }
+  }
 
   if (animate_plot)
   {

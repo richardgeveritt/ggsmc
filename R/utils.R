@@ -10,3 +10,55 @@ add_proposed_points <- function(output)
   }
   return(rbind(proposed_points,output))
 }
+
+extract_target_data = function(output,
+                               target,
+                               external_target,
+                               use_initial_points)
+{
+  output_to_use = output
+
+  if (!is.null(external_target))
+  {
+    if ("ExternalTargetParameters" %in% names(output))
+    {
+      target_parameters = dplyr::filter(output,ExternalTarget==external_target)$ExternalTargetParameters[1]
+    }
+    else
+    {
+      target_parameters = ""
+    }
+    output_to_use = dplyr::filter(output,ExternalTarget==external_target)
+  }
+  else
+  {
+    target_parameters = ""
+  }
+
+  if (!is.null(target))
+  {
+    if ("TargetParameters" %in% names(output_to_use))
+    {
+      if (target_parameters!="")
+      {
+        target_parameters = paste(target_parameters,",",sep="")
+      }
+
+      target_parameters = paste(target_parameters,dplyr::filter(output_to_use,Target==target)$TargetParameters[1],sep="")
+    }
+    else
+    {
+      target_parameters = paste(target_parameters,"",sep="")
+    }
+    output_to_use = dplyr::filter(output_to_use,Target==target)
+  }
+  else
+  {
+    if (use_initial_points)
+    {
+      output_to_use = add_proposed_points(output_to_use)
+    }
+  }
+
+  return(list(output_to_use,target_parameters))
+}

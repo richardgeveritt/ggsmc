@@ -9,6 +9,8 @@ histogram(
   parameter,
   dimension = 1,
   target = NULL,
+  external_target = NULL,
+  use_initial_points = TRUE,
   pre_weighting = FALSE,
   bins = 30,
   xlimits = NULL,
@@ -23,7 +25,11 @@ histogram(
 
 \item{dimension}{(optional) The dimension of the parameter we wish to histogram. (default is 1)}
 
-\item{target}{(optional) The index of the target we wish to histogram. (default to final target)}
+\item{target}{(optional) The index of the target we wish to histogram. (default to all targets)}
+
+\item{external_target}{(optional) The index of the external target to plot. (default is to use all external targets, or to ignore if the column is not present)}
+
+\item{use_initial_points}{(optional) If target is not specified and this argument is TRUE, will add the initial unweighted proposed points to the output to be plotted. (default is TRUE)}
 
 \item{pre_weighting}{(optional) If TRUE, will ignore particle weights in the histogram. If FALSE, will use the particle weights. (defaults to FALSE)}
 

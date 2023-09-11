@@ -5,7 +5,9 @@
 #' @param x_dimension (optional) The dimension of the x-parameter we wish to histogram. (default is 1)
 #' @param y_parameter The parameter indexed by the y-axis.
 #' @param y_dimension (optional) The dimension of the y-parameter we wish to histogram. (default is 1)
-#' @param target (optional) The index of the target we wish to plot. (default to final target)
+#' @param target (optional) The index of the target we wish to plot. (default is to use all targets)
+#' @param external_target (optional) The index of the external target to plot. (default is to use all external targets, or to ignore if the column is not present)
+#' @param use_initial_points (optional) If target is not specified and this argument is TRUE, will add the initial unweighted proposed points to the output to be plotted. (default is TRUE)
 #' @param pre_weighting (optional) If TRUE, will ignore particle weights in the histogram. If FALSE, will use the particle weights. (defaults to FALSE)
 #' @param max_size (optional) The maximum size of the points in the plot. (default=1)
 #' @param alpha (optional) The transparency of the points in the plot. (default=0.1)
@@ -20,6 +22,8 @@ scatter_plot = function(output,
                         y_parameter,
                         y_dimension=1,
                         target=NULL,
+                        external_target=NULL,
+                        use_initial_points=TRUE,
                         pre_weighting=FALSE,
                         max_size=1,
                         alpha=0.1,
@@ -31,6 +35,11 @@ scatter_plot = function(output,
   if (!is.null(target) && !(target %in% output$Target))
   {
     stop('target not found in output.')
+  }
+
+  if (!is.null(external_target) && !("ExternalTarget" %in% names(output)))
+  {
+    stop("ExternalTarget column not found in output.")
   }
 
   if ("Value" %in% names(output))
@@ -52,24 +61,11 @@ scatter_plot = function(output,
   x_parameter = paste(x_parameter,"_",x_dimension,sep="")
   y_parameter = paste(y_parameter,"_",y_dimension,sep="")
 
-  if (!is.null(target))
-  {
-    if ("TargetParameters" %in% names(output_to_use))
-    {
-      target_parameters = dplyr::filter(output_to_use,Target==target)$TargetParameters[1]
-    }
-    else
-    {
-      target_parameters = ""
-    }
-    output_to_use = dplyr::filter(output_to_use,Target==target)
-  }
-  else
-  {
-    output_to_use = add_proposed_points(output)
-  }
+  extract_target_data(output,target,external_target,use_initial_points)
+  output_to_use = target_data[[1]]
+  target_parameters = target_data[[2]]
 
-  if ( ("LogWeight" %in% names(output)) && (pre_weighting==FALSE) )
+  if ( ("LogWeight" %in% names(output_to_use)) && (pre_weighting==FALSE) )
   {
     plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=.data[[x_parameter]],
                                                        y=.data[[y_parameter]],
@@ -173,6 +169,9 @@ scatter_plot = function(output,
 #' @param x_dimension (optional) The dimension of the x-parameter we wish to histogram. (default is 1)
 #' @param y_parameter The parameter indexed by the y-axis.
 #' @param y_dimension (optional) The dimension of the y-parameter we wish to histogram. (default is 1)
+#' @param target (optionaL) If specified, will fix to this target, and animate over ExternalTarget (if present in output).
+#' @param external_target (optionaL) If specified, will fix to this external_target, and animate over Target.
+#' @param use_initial_points (optional) If target is not specified and this argument is TRUE, will add the initial unweighted proposed points to the output to be plotted. (default is TRUE)
 #' @param pre_weighting (optional) If TRUE, will ignore particle weights in the histogram. If FALSE, will use the particle weights. (defaults to FALSE)
 #' @param max_size (optional) The maximum size of the points in the plot. (default=1)
 #' @param alpha (optional) The transparency of the points in the plot. (default=0.1)
@@ -193,6 +192,9 @@ animated_scatter_plot = function(output,
                                  x_dimension,
                                  y_parameter,
                                  y_dimension,
+                                 target,
+                                 external_target,
+                                 use_initial_points=TRUE,
                                  pre_weighting=FALSE,
                                  max_size=1,
                                  alpha=0.1,
@@ -227,12 +229,15 @@ animated_scatter_plot = function(output,
                    x_dimension = x_dimension,
                    y_parameter = y_parameter,
                    y_dimension = y_dimension,
+                   target = target,
+                   external_target = external_target,
+                   use_initial_points = use_initial_points,
                    pre_weighting = pre_weighting,
                    max_size=max_size,
                    alpha=alpha,
                    xlimits=xlimits,
                    ylimits=ylimits,
-                   default_title=default_title,)
+                   default_title=default_title)
 
   if (view_follow)
   {
@@ -263,9 +268,41 @@ animated_scatter_plot = function(output,
     }
   }
 
-  to_animate = p + gganimate::transition_time(Target)
+  if (!is.null(external_target) && is.null(target))
+  {
+    to_animate = p + gganimate::transition_time(Target)
 
-  nframes = length(unique(output$Target))
+    nframes = length(unique(output_to_use$Target))
+  }
+  else if (is.null(external_target) && !is.null(target))
+  {
+    if ("ExternalTarget" %in% names(output))
+    {
+      to_animate = p + gganimate::transition_time(ExternalTarget)
+
+      nframes = length(unique(output_to_use$ExternalTarget))
+    }
+    else
+    {
+      stop("ExternalTarget not specified in output, so cannot animate over it.")
+    }
+  }
+  else if (!is.null(external_target) && !is.null(target))
+  {
+    stop("Both target and external_target are specified, so no animation to be done.")
+  }
+  else
+  {
+    if ("ExternalTarget" %in% names(output))
+    {
+      stop("Neither target nor external_target are specified: must specify one or the other when ExternalTarget is present in output.")
+    }
+    else
+    {
+      to_animate = p + gganimate::transition_time(Target)
+      nframes = length(unique(output$Target))
+    }
+  }
 
   if (animate_plot)
   {

@@ -1,7 +1,8 @@
 #' @param output Output from the SMC or EnK algorithm.
 #' @param parameters The parameters we wish to be on the y-axis of the line graph.
 #' @param target (optional) The target to plot. (default is to use all targets)
-#' @param external_target (optional) The target to plot. (default is to use all external targets, or to ignore if the column is not present)
+#' @param external_target (optional) The external target to plot. (default is to use all external targets, or to ignore if the column is not present)
+#' @param use_initial_points (optional) If target is not specified and this argument is TRUE, will add the initial unweighted proposed points to the output to be plotted. (default is TRUE)
 #' @param pre_weighting (optional) If TRUE, will ignore particle weights in the line graph. If FALSE, will use the particle weights. (defaults to FALSE)
 #' @param max_line_width (optional) The maximum size of the points in the plot. (default=1)
 #' @param alpha (optional) The transparency of the lines in the plot. (default=0.1)
@@ -10,16 +11,17 @@
 #' @param default_title (optional) If TRUE, will provide a default title for the figure. If FALSE, no title is used. (defaults to FALSE)
 #' @return A line graph in a ggplot figure.
 #' @export
-line_graph = function(output,
-                      parameters,
-                      target=NULL,
-                      external_target=NULL,
-                      pre_weighting=FALSE,
-                      max_line_width=1,
-                      alpha=0.1,
-                      xlimits=NULL,
-                      ylimits=NULL,
-                      default_title=FALSE)
+times_series_line_graph = function(output,
+                                   parameters,
+                                   target=NULL,
+                                   external_target=NULL,
+                                   use_initial_points=TRUE,
+                                   pre_weighting=FALSE,
+                                   max_line_width=1,
+                                   alpha=0.1,
+                                   xlimits=NULL,
+                                   ylimits=NULL,
+                                   default_title=FALSE)
 {
   if (!is.null(target) && !(target %in% output$Target))
   {
@@ -31,42 +33,9 @@ line_graph = function(output,
     stop("ExternalTarget column not found in output.")
   }
 
-  output_to_use = output
-
-  if (!is.null(external_target))
-  {
-    if ("ExternalTargetParameters" %in% names(output))
-    {
-      target_parameters = dplyr::filter(output,ExternalTarget==external_target)$ExternalTargetParameters[1]
-    }
-    else
-    {
-      target_parameters = ""
-    }
-    output_to_use = dplyr::filter(output,ExternalTarget==external_target)
-  }
-  else
-  {
-    target_parameters = ""
-  }
-
-  if (!is.null(target))
-  {
-    if ("TargetParameters" %in% names(output_to_use))
-    {
-      if (target_parameters!="")
-      {
-        target_parameters = paste(target_parameters,",",sep="")
-      }
-
-      target_parameters = paste(target_parameters,dplyr::filter(output_to_use,Target==target)$TargetParameters[1],sep="")
-    }
-    else
-    {
-      target_parameters = paste(target_parameters,"",sep="")
-    }
-    output_to_use = dplyr::filter(output_to_use,Target==target)
-  }
+  extract_target_data(output,target,external_target,use_initial_points)
+  output_to_use = target_data[[1]]
+  target_parameters = target_data[[2]]
 
   output_to_use = dplyr::filter(output_to_use,(ParameterName %in% parameters))
 
@@ -74,19 +43,41 @@ line_graph = function(output,
   {
     if ("ExternalIndex" %in% names(output_to_use))
     {
-      plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Dimension,
-                                                         y=Value,
-                                                         group=interaction(Iteration, Particle, ExternalIndex, ParameterName),
-                                                         colour=ParameterName,
-                                                         linewidth=exp(LogWeight)))
+      if ("ExternalTarget" %in% names(output_to_use))
+      {
+        plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Dimension,
+                                                           y=Value,
+                                                           group=interaction(Iteration, Particle, ExternalIndex, ExternalTarget, Target, ParameterName),
+                                                           colour=ParameterName,
+                                                           linewidth=exp(LogWeight)))
+      }
+      else
+      {
+        plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Dimension,
+                                                           y=Value,
+                                                           group=interaction(Iteration, Particle, ExternalIndex, Target, ParameterName),
+                                                           colour=ParameterName,
+                                                           linewidth=exp(LogWeight)))
+      }
     }
     else
     {
-      plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Dimension,
-                                                         y=Value,
-                                                         group=interaction(Iteration, Particle, ParameterName),
-                                                         colour=ParameterName,
-                                                         linewidth=exp(LogWeight)))
+      if ("ExternalTarget" %in% names(output_to_use))
+      {
+        plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Dimension,
+                                                           y=Value,
+                                                           group=interaction(Iteration, Particle, ExternalTarget, Target, ParameterName),
+                                                           colour=ParameterName,
+                                                           linewidth=exp(LogWeight)))
+      }
+      else
+      {
+        plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Dimension,
+                                                           y=Value,
+                                                           group=interaction(Iteration, Particle, Target, ParameterName),
+                                                           colour=ParameterName,
+                                                           linewidth=exp(LogWeight)))
+      }
     }
   }
   else
@@ -95,34 +86,74 @@ line_graph = function(output,
     {
       if ("ExternalIndex" %in% names(output_to_use))
       {
-        plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Dimension,
-                                                           y=Value,
-                                                           group=interaction(Iteration, Particle, ExternalIndex, ParameterName),
-                                                           colour=ParameterName))
+        if ("ExternalTarget" %in% names(output_to_use))
+        {
+          plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Dimension,
+                                                             y=Value,
+                                                             group=interaction(Iteration, Particle, ExternalIndex, Target, ExternalTarget, ParameterName),
+                                                             colour=ParameterName))
+        }
+        else
+        {
+          plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Dimension,
+                                                             y=Value,
+                                                             group=interaction(Iteration, Particle, ExternalIndex, Target, ParameterName),
+                                                             colour=ParameterName))
+        }
       }
       else
       {
-        plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Dimension,
-                                                           y=Value,
-                                                           group=interaction(Iteration, Particle, ParameterName),
-                                                           colour=ParameterName))
+        if ("ExternalTarget" %in% names(output_to_use))
+        {
+          plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Dimension,
+                                                             y=Value,
+                                                             group=interaction(Iteration, Particle, ExternalTarget, Target, ParameterName),
+                                                             colour=ParameterName))
+        }
+        else
+        {
+          plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Dimension,
+                                                             y=Value,
+                                                             group=interaction(Iteration, Particle, Target, ParameterName),
+                                                             colour=ParameterName))
+        }
       }
     }
     else if ("Chain" %in% names(output_to_use))
     {
       if ("ExternalIndex" %in% names(output_to_use))
       {
-        plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Dimension,
-                                                           y=Value,
-                                                           group=interaction(Iteration, Chain, ExternalIndex, ParameterName),
-                                                           colour=ParameterName))
+        if ("ExternalTarget" %in% names(output_to_use))
+        {
+          plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Dimension,
+                                                             y=Value,
+                                                             group=interaction(Iteration, Chain, ExternalIndex, ExternalTarget, ParameterName),
+                                                             colour=ParameterName))
+        }
+        else
+        {
+          plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Dimension,
+                                                             y=Value,
+                                                             group=interaction(Iteration, Chain, ExternalIndex, ParameterName),
+                                                             colour=ParameterName))
+        }
       }
       else
       {
-        plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Dimension,
-                                                           y=Value,
-                                                           group=interaction(Iteration, Chain, ParameterName),
-                                                           colour=ParameterName))
+        if ("ExternalTarget" %in% names(output_to_use))
+        {
+          plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Dimension,
+                                                             y=Value,
+                                                             group=interaction(Iteration, Chain, ExternalTarget, ParameterName),
+                                                             colour=ParameterName))
+        }
+        else
+        {
+          plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Dimension,
+                                                             y=Value,
+                                                             group=interaction(Iteration, Chain, ParameterName),
+                                                             colour=ParameterName))
+        }
       }
     }
     else
@@ -171,6 +202,9 @@ line_graph = function(output,
 
 #' @param output Output from the SMC or EnK algorithm.
 #' @param parameters The parameters we wish to be on the y-axis of the line graph.
+#' @param target (optional) The target to plot. (default is to use all targets)
+#' @param external_target (optional) The external target to plot. (default is to use all external targets, or to ignore if the column is not present)
+#' @param use_initial_points (optional) If target is not specified and this argument is TRUE, will add the initial unweighted proposed points to the output to be plotted. (default is TRUE)
 #' @param pre_weighting (optional) If TRUE, will ignore particle weights in the line graph. If FALSE, will use the particle weights. (defaults to FALSE)
 #' @param max_line_width (optional) The maximum size of the points in the plot. (default=1)
 #' @param alpha (optional) The transparency of the lines in the plot. (default=0.1)
@@ -183,27 +217,33 @@ line_graph = function(output,
 #' @param save_path (optional) If specified along with save_filename, will save the gif to save_path/save_filename. (defaults to working directory)
 #' @return A line graph in a ggplot figure.
 #' @export
-animated_line_graph = function(output,
-                               parameters,
-                               pre_weighting=FALSE,
-                               max_line_width=1,
-                               alpha=0.1,
-                               xlimits=NULL,
-                               ylimits=NULL,
-                               default_title=FALSE,
-                               duration=NULL,
-                               animate_plot=TRUE,
-                               save_filename=NULL,
-                               save_path=NULL)
+animated_reveal_time_series_line_graph = function(output,
+                                                  parameters,
+                                                  target=NULL,
+                                                  external_target=NULL,
+                                                  use_initial_points=TRUE,
+                                                  pre_weighting=FALSE,
+                                                  max_line_width=1,
+                                                  alpha=0.1,
+                                                  xlimits=NULL,
+                                                  ylimits=NULL,
+                                                  default_title=FALSE,
+                                                  duration=NULL,
+                                                  animate_plot=TRUE,
+                                                  save_filename=NULL,
+                                                  save_path=NULL)
 {
-  p = line_graph(output = output,
-                 parameters = parameters,
-                 pre_weighting = pre_weighting,
-                 max_line_width = max_line_width,
-                 alpha = alpha,
-                 xlimits = xlimits,
-                 ylimits = ylimits,
-                 default_title = default_title)
+  p = time_series_line_graph(output = output,
+                             parameters = parameters,
+                             target = target,
+                             external_target = external_target,
+                             use_initial_points = use_initial_points,
+                             pre_weighting = pre_weighting,
+                             max_line_width = max_line_width,
+                             alpha = alpha,
+                             xlimits = xlimits,
+                             ylimits = ylimits,
+                             default_title = default_title)
   to_animate = p + gganimate::transition_reveal(Dimension)
 
   nframes = length(unique(output$Dimension))
@@ -245,3 +285,122 @@ animated_line_graph = function(output,
     }
   }
 }
+
+
+#' @param output Output from the SMC or EnK algorithm.
+#' @param parameters The parameters we wish to be on the y-axis of the line graph.
+#' @param target (optional) The target to plot. (default is to use all targets)
+#' @param external_target (optional) The external target to plot. (default is to use all external targets, or to ignore if the column is not present)
+#' @param use_initial_points (optional) If target is not specified and this argument is TRUE, will add the initial unweighted proposed points to the output to be plotted. (default is TRUE)
+#' @param pre_weighting (optional) If TRUE, will ignore particle weights in the line graph. If FALSE, will use the particle weights. (defaults to FALSE)
+#' @param max_line_width (optional) The maximum size of the points in the plot. (default=1)
+#' @param alpha (optional) The transparency of the lines in the plot. (default=0.1)
+#' @param xlimits (optional) Input of the form c(start,end), which specifies the ends of the x-axis.
+#' @param ylimits (optional) Input of the form c(start,end), which specifies the ends of the y-axis.
+#' @param default_title (optional) If TRUE, will provide a default title for the figure. If FALSE, no title is used. (defaults to FALSE)
+#' @param duration (optional) The duration of the animation. (defaults to producing an animation that uses 10 frames per second)
+#' @param animate_plot (optiional) If TRUE, will return an animation. If FALSE, returns a gganim object that can be furher modified before animating. (defaults to FALSE)
+#' @param save_filename (optional) If specified, the animation will be saved to a gif with this filename. (default is not to save)
+#' @param save_path (optional) If specified along with save_filename, will save the gif to save_path/save_filename. (defaults to working directory)
+#' @return A line graph in a ggplot figure.
+#' @export
+animated_time_series_line_graph = function(output,
+                                           parameters,
+                                           target=NULL,
+                                           external_target=NULL,
+                                           use_initial_points=TRUE,
+                                           pre_weighting=FALSE,
+                                           max_line_width=1,
+                                           alpha=0.1,
+                                           xlimits=NULL,
+                                           ylimits=NULL,
+                                           default_title=FALSE,
+                                           duration=NULL,
+                                           animate_plot=TRUE,
+                                           save_filename=NULL,
+                                           save_path=NULL)
+{
+  p = time_series_line_graph(output = output,
+                             parameters = parameters,
+                             target = target,
+                             external_target = external_target,
+                             use_initial_points = use_initial_points,
+                             pre_weighting = pre_weighting,
+                             max_line_width = max_line_width,
+                             alpha = alpha,
+                             xlimits = xlimits,
+                             ylimits = ylimits,
+                             default_title = default_title)
+
+  if (!is.null(external_target) && is.null(target))
+  {
+    to_animate = p + gganimate::transition_manual(Target)
+    nframes = length(unique(output$Target))
+  }
+  else if (is.null(external_target) && !is.null(target))
+  {
+    if ("ExternalTarget" %in% names(output))
+    {
+      to_animate = p + gganimate::transition_manual(ExternalTarget)
+      nframes = length(unique(output$ExternalTarget))
+    }
+    else
+    {
+      stop("ExternalTarget not specified in output, so cannot animate over it.")
+    }
+  }
+  else if (!is.null(external_target) && !is.null(target))
+  {
+    stop("Both target and external_target are specified, so no animation to be done.")
+  }
+  else
+  {
+    if ("ExternalTarget" %in% names(output))
+    {
+      stop("Neither target nor external_target are specified: must specify one or the other when ExternalTarget is present in output.")
+    }
+    else
+    {
+      to_animate = p + gganimate::transition_manual(Target)
+      nframes = length(unique(output$Target))
+    }
+  }
+
+  if (animate_plot)
+  {
+    if (is.null(duration))
+    {
+      animated = gganimate::animate(to_animate,nframes=nframes)
+    }
+    else
+    {
+      animated = gganimate::animate(to_animate,nframes=nframes,duration=duration)
+    }
+
+    if (!is.null(save_filename))
+    {
+      if (is.null(save_path))
+      {
+        gganimate::anim_save(filename=save_filename,animation=animated)
+      }
+      else
+      {
+        gganimate::anim_save(filename=save_filename,animation=animated,path=save_path)
+      }
+    }
+
+    return(animated)
+  }
+  else
+  {
+    if (!is.null(save_filename))
+    {
+      stop("Cannot save, since plot not animated.")
+    }
+    else
+    {
+      return(to_animate)
+    }
+  }
+}
+

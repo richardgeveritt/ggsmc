@@ -11,6 +11,8 @@ scatter_plot(
   y_parameter,
   y_dimension = 1,
   target = NULL,
+  external_target = NULL,
+  use_initial_points = TRUE,
   pre_weighting = FALSE,
   max_size = 1,
   alpha = 0.1,
@@ -30,7 +32,11 @@ scatter_plot(
 
 \item{y_dimension}{(optional) The dimension of the y-parameter we wish to histogram. (default is 1)}
 
-\item{target}{(optional) The index of the target we wish to plot. (default to final target)}
+\item{target}{(optional) The index of the target we wish to plot. (default is to use all targets)}
+
+\item{external_target}{(optional) The index of the external target to plot. (default is to use all external targets, or to ignore if the column is not present)}
+
+\item{use_initial_points}{(optional) If target is not specified and this argument is TRUE, will add the initial unweighted proposed points to the output to be plotted. (default is TRUE)}
 
 \item{pre_weighting}{(optional) If TRUE, will ignore particle weights in the histogram. If FALSE, will use the particle weights. (defaults to FALSE)}
 
