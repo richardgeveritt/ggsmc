@@ -11,17 +11,17 @@
 #' @param default_title (optional) If TRUE, will provide a default title for the figure. If FALSE, no title is used. (defaults to FALSE)
 #' @return A line graph in a ggplot figure.
 #' @export
-times_series_line_graph = function(output,
-                                   parameters,
-                                   target=NULL,
-                                   external_target=NULL,
-                                   use_initial_points=TRUE,
-                                   pre_weighting=FALSE,
-                                   max_line_width=1,
-                                   alpha=0.1,
-                                   xlimits=NULL,
-                                   ylimits=NULL,
-                                   default_title=FALSE)
+time_series_line_graph = function(output,
+                                  parameters,
+                                  target=NULL,
+                                  external_target=NULL,
+                                  use_initial_points=TRUE,
+                                  pre_weighting=FALSE,
+                                  max_line_width=1,
+                                  alpha=0.1,
+                                  xlimits=NULL,
+                                  ylimits=NULL,
+                                  default_title=FALSE)
 {
   if (!is.null(target) && !(target %in% output$Target))
   {
@@ -33,11 +33,13 @@ times_series_line_graph = function(output,
     stop("ExternalTarget column not found in output.")
   }
 
-  extract_target_data(output,target,external_target,use_initial_points)
+  target_data = extract_target_data(output,target,external_target,use_initial_points)
   output_to_use = target_data[[1]]
   target_parameters = target_data[[2]]
 
   output_to_use = dplyr::filter(output_to_use,(ParameterName %in% parameters))
+
+  #browser()
 
   if ( ("LogWeight" %in% names(output)) && (pre_weighting==FALSE) )
   {
@@ -403,4 +405,3 @@ animated_time_series_line_graph = function(output,
     }
   }
 }
-

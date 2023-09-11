@@ -102,7 +102,7 @@ histogram = function(output,
 
   if ( (!is.null(ylimits)) && (is.numeric(ylimits)) && (is.vector(ylimits)) )
   {
-    plot = plot + ylim(ylimits[1],ylimits[2])
+    plot = plot + ggplot2::ylim(ylimits[1],ylimits[2])
   }
 
   return(plot)

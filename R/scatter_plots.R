@@ -48,7 +48,7 @@ scatter_plot = function(output,
     output = subset(output,select = -c(ParameterName,Dimension))
     output$Parameter = new_variable_names
 
-    output = output %>% distinct()
+    output = dplyr::distinct(output)
 
     #output = tidyr::pivot_wider(output, names_from = "Parameter", values_from = "Value")
     output_to_use = tidyr::pivot_wider(output,names_from=Parameter,values_from=Value)
@@ -61,7 +61,7 @@ scatter_plot = function(output,
   x_parameter = paste(x_parameter,"_",x_dimension,sep="")
   y_parameter = paste(y_parameter,"_",y_dimension,sep="")
 
-  extract_target_data(output,target,external_target,use_initial_points)
+  target_data = extract_target_data(output_to_use,target,external_target,use_initial_points)
   output_to_use = target_data[[1]]
   target_parameters = target_data[[2]]
 
@@ -148,14 +148,14 @@ scatter_plot = function(output,
     plot = plot + ggplot2::labs(title=default_title_for_plot)
   }
 
+  if ( (!is.null(ylimits)) && (is.numeric(ylimits)) && (is.vector(ylimits)) )
+  {
+    plot = plot + ggplot2::ylim(ylimits[1],ylimits[2])
+  }
+
   if ( (!is.null(xlimits)) && (is.numeric(xlimits)) && (is.vector(xlimits)) )
   {
     plot = plot + ggplot2::xlim(xlimits[1],xlimits[2])
-  }
-
-  if ( (!is.null(ylimits)) && (is.numeric(ylimits)) && (is.vector(ylimits)) )
-  {
-    plot = plot + ylim(ylimits[1],ylimits[2])
   }
 
   return(plot)
@@ -192,8 +192,8 @@ animated_scatter_plot = function(output,
                                  x_dimension,
                                  y_parameter,
                                  y_dimension,
-                                 target,
-                                 external_target,
+                                 target=NULL,
+                                 external_target=NULL,
                                  use_initial_points=TRUE,
                                  pre_weighting=FALSE,
                                  max_size=1,
