@@ -3,7 +3,7 @@
 #' @param target (optional) The target to plot. (default is to use all targets)
 #' @param external_target (optional) The external target to plot. (default is to use all external targets, or to ignore if the column is not present)
 #' @param use_initial_points (optional) If target is not specified and this argument is TRUE, will add the initial unweighted proposed points to the output to be plotted. (default is TRUE)
-#' @param pre_weighting (optional) If TRUE, will ignore particle weights in the line graph. If FALSE, will use the particle weights. (defaults to FALSE)
+#' @param use_weights (optional) If FALSE, will ignore particle weights in the line graph. If TRUE, will use the particle weights. (defaults to TRUE)
 #' @param max_line_width (optional) The maximum size of the points in the plot. (default=1)
 #' @param alpha (optional) The transparency of the lines in the plot. (default=0.1)
 #' @param xlimits (optional) Input of the form c(start,end), which specifies the ends of the x-axis.
@@ -16,7 +16,7 @@ time_series_line_graph = function(output,
                                   target=NULL,
                                   external_target=NULL,
                                   use_initial_points=TRUE,
-                                  pre_weighting=FALSE,
+                                  use_weights=TRUE,
                                   max_line_width=1,
                                   alpha=0.1,
                                   xlimits=NULL,
@@ -41,7 +41,7 @@ time_series_line_graph = function(output,
 
   #browser()
 
-  if ( ("LogWeight" %in% names(output)) && (pre_weighting==FALSE) )
+  if ( ("LogWeight" %in% names(output)) && (use_weights==TRUE) )
   {
     if ("ExternalIndex" %in% names(output_to_use))
     {
@@ -207,7 +207,7 @@ time_series_line_graph = function(output,
 #' @param target (optional) The target to plot. (default is to use all targets)
 #' @param external_target (optional) The external target to plot. (default is to use all external targets, or to ignore if the column is not present)
 #' @param use_initial_points (optional) If target is not specified and this argument is TRUE, will add the initial unweighted proposed points to the output to be plotted. (default is TRUE)
-#' @param pre_weighting (optional) If TRUE, will ignore particle weights in the line graph. If FALSE, will use the particle weights. (defaults to FALSE)
+#' @param use_weights (optional) If FALSE, will ignore particle weights in the line graph. If TRUE, will use the particle weights. (defaults to TRUE)
 #' @param max_line_width (optional) The maximum size of the points in the plot. (default=1)
 #' @param alpha (optional) The transparency of the lines in the plot. (default=0.1)
 #' @param xlimits (optional) Input of the form c(start,end), which specifies the ends of the x-axis.
@@ -224,7 +224,7 @@ animated_reveal_time_series_line_graph = function(output,
                                                   target=NULL,
                                                   external_target=NULL,
                                                   use_initial_points=TRUE,
-                                                  pre_weighting=FALSE,
+                                                  use_weights=TRUE,
                                                   max_line_width=1,
                                                   alpha=0.1,
                                                   xlimits=NULL,
@@ -240,7 +240,7 @@ animated_reveal_time_series_line_graph = function(output,
                              target = target,
                              external_target = external_target,
                              use_initial_points = use_initial_points,
-                             pre_weighting = pre_weighting,
+                             use_weights = use_weights,
                              max_line_width = max_line_width,
                              alpha = alpha,
                              xlimits = xlimits,
@@ -294,7 +294,7 @@ animated_reveal_time_series_line_graph = function(output,
 #' @param target (optional) The target to plot. (default is to use all targets)
 #' @param external_target (optional) The external target to plot. (default is to use all external targets, or to ignore if the column is not present)
 #' @param use_initial_points (optional) If target is not specified and this argument is TRUE, will add the initial unweighted proposed points to the output to be plotted. (default is TRUE)
-#' @param pre_weighting (optional) If TRUE, will ignore particle weights in the line graph. If FALSE, will use the particle weights. (defaults to FALSE)
+#' @param use_weights (optional) If FALSE, will ignore particle weights in the line graph. If TRUE, will use the particle weights. (defaults to TRUE)
 #' @param max_line_width (optional) The maximum size of the points in the plot. (default=1)
 #' @param alpha (optional) The transparency of the lines in the plot. (default=0.1)
 #' @param xlimits (optional) Input of the form c(start,end), which specifies the ends of the x-axis.
@@ -311,7 +311,7 @@ animated_time_series_line_graph = function(output,
                                            target=NULL,
                                            external_target=NULL,
                                            use_initial_points=TRUE,
-                                           pre_weighting=FALSE,
+                                           use_weights=TRUE,
                                            max_line_width=1,
                                            alpha=0.1,
                                            xlimits=NULL,
@@ -327,7 +327,7 @@ animated_time_series_line_graph = function(output,
                              target = target,
                              external_target = external_target,
                              use_initial_points = use_initial_points,
-                             pre_weighting = pre_weighting,
+                             use_weights = use_weights,
                              max_line_width = max_line_width,
                              alpha = alpha,
                              xlimits = xlimits,

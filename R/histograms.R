@@ -6,7 +6,7 @@
 #' @param target (optional) The index of the target we wish to histogram. (default to all targets)
 #' @param external_target (optional) The index of the external target to plot. (default is to use all external targets, or to ignore if the column is not present)
 #' @param use_initial_points (optional) If target is not specified and this argument is TRUE, will add the initial unweighted proposed points to the output to be plotted. (default is TRUE)
-#' @param pre_weighting (optional) If TRUE, will ignore particle weights in the histogram. If FALSE, will use the particle weights. (defaults to FALSE)
+#' @param use_weights (optional) If FALSE, will ignore particle weights in the histogram. If TRUE, will use the particle weights. (defaults to TRUE)
 #' @param bins (optional) Number of bins for the histogram. (default 30)
 #' @param xlimits (optional) Input of the form c(start,end), which specifies the ends of the x-axis.
 #' @param ylimits (optional) Input of the form c(start,end), which specifies the ends of the y-axis.
@@ -19,7 +19,7 @@ histogram = function(output,
                      target=NULL,
                      external_target=NULL,
                      use_initial_points=TRUE,
-                     pre_weighting=FALSE,
+                     use_weights=TRUE,
                      bins=30,
                      xlimits=NULL,
                      ylimits=NULL,
@@ -52,7 +52,7 @@ histogram = function(output,
 
   output_to_use = dplyr::filter(dplyr::filter(output_to_use,ParameterName==parameter),Dimension==dimension)
 
-  if ( ("LogWeight" %in% names(output)) && (pre_weighting==FALSE) )
+  if ( ("LogWeight" %in% names(output)) && (use_weights==TRUE) )
   {
     plot = ggplot2::ggplot(output_to_use, ggplot2::aes(Value, weight = exp(LogWeight)))
   }
@@ -116,7 +116,7 @@ histogram = function(output,
 #' @param target (optionaL) If specified, will fix to this target, and animate over ExternalTarget (if present in output).
 #' @param external_target (optionaL) If specified, will fix to this external_target, and animate over Target.
 #' @param use_initial_points (optional) If target is not specified and this argument is TRUE, will add the initial unweighted proposed points to the output to be plotted. (default is TRUE)
-#' @param pre_weighting (optional) If TRUE, will ignore particle weights in the histogram. If FALSE, will use the particle weights. (defaults to FALSE)
+#' @param use_weights (optional) If FALSE, will ignore particle weights in the histogram. If TRUE, will use the particle weights. (defaults to TRUE)
 #' @param bins (optional) Number of bins for the histogram. (default 30)
 #' @param xlimits (optional) Input of the form c(start,end), which specifies the ends of the x-axis.
 #' @param ylimits (optional) Input of the form c(start,end), which specifies the ends of the y-axis.
@@ -133,7 +133,7 @@ animated_histogram = function(output,
                               target=NULL,
                               external_target=NULL,
                               use_initial_points=TRUE,
-                              pre_weighting=FALSE,
+                              use_weights=TRUE,
                               bins=30,
                               xlimits=NULL,
                               ylimits=NULL,
@@ -150,7 +150,7 @@ animated_histogram = function(output,
                 target = target,
                 external_target = external_target,
                 use_initial_points = use_initial_points,
-                pre_weighting = pre_weighting,
+                use_weights = use_weights,
                 bins = bins,
                 xlimits = xlimits,
                 ylimits = ylimits,

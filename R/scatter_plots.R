@@ -8,7 +8,7 @@
 #' @param target (optional) The index of the target we wish to plot. (default is to use all targets)
 #' @param external_target (optional) The index of the external target to plot. (default is to use all external targets, or to ignore if the column is not present)
 #' @param use_initial_points (optional) If target is not specified and this argument is TRUE, will add the initial unweighted proposed points to the output to be plotted. (default is TRUE)
-#' @param pre_weighting (optional) If TRUE, will ignore particle weights in the histogram. If FALSE, will use the particle weights. (defaults to FALSE)
+#' @param use_weights (optional) If FALSE, will ignore particle weights in the scatter plot. If TRUE, will use the particle weights. (defaults to TRUE)
 #' @param max_size (optional) The maximum size of the points in the plot. (default=1)
 #' @param alpha (optional) The transparency of the points in the plot. (default=0.1)
 #' @param xlimits (optional) Input of the form c(start,end), which specifies the ends of the x-axis.
@@ -24,7 +24,7 @@ scatter_plot = function(output,
                         target=NULL,
                         external_target=NULL,
                         use_initial_points=TRUE,
-                        pre_weighting=FALSE,
+                        use_weights=TRUE,
                         max_size=1,
                         alpha=0.1,
                         xlimits=NULL,
@@ -65,7 +65,7 @@ scatter_plot = function(output,
   output_to_use = target_data[[1]]
   target_parameters = target_data[[2]]
 
-  if ( ("LogWeight" %in% names(output_to_use)) && (pre_weighting==FALSE) )
+  if ( ("LogWeight" %in% names(output_to_use)) && (use_weights==TRUE) )
   {
     plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=.data[[x_parameter]],
                                                        y=.data[[y_parameter]],
@@ -172,7 +172,7 @@ scatter_plot = function(output,
 #' @param target (optionaL) If specified, will fix to this target, and animate over ExternalTarget (if present in output).
 #' @param external_target (optionaL) If specified, will fix to this external_target, and animate over Target.
 #' @param use_initial_points (optional) If target is not specified and this argument is TRUE, will add the initial unweighted proposed points to the output to be plotted. (default is TRUE)
-#' @param pre_weighting (optional) If TRUE, will ignore particle weights in the histogram. If FALSE, will use the particle weights. (defaults to FALSE)
+#' @param use_weights (optional) If FALSE, will ignore particle weights in the scatter plot. If TRUE, will use the particle weights. (defaults to TRUE)
 #' @param max_size (optional) The maximum size of the points in the plot. (default=1)
 #' @param alpha (optional) The transparency of the points in the plot. (default=0.1)
 #' @param xlimits (optional) Input of the form c(start,end), which specifies the ends of the x-axis.
@@ -195,7 +195,7 @@ animated_scatter_plot = function(output,
                                  target=NULL,
                                  external_target=NULL,
                                  use_initial_points=TRUE,
-                                 pre_weighting=FALSE,
+                                 use_weights=TRUE,
                                  max_size=1,
                                  alpha=0.1,
                                  xlimits=NULL,
@@ -232,7 +232,7 @@ animated_scatter_plot = function(output,
                    target = target,
                    external_target = external_target,
                    use_initial_points = use_initial_points,
-                   pre_weighting = pre_weighting,
+                   use_weights = use_weights,
                    max_size=max_size,
                    alpha=alpha,
                    xlimits=xlimits,
