@@ -13,7 +13,7 @@ animated_scatter_plot(
   target = NULL,
   external_target = NULL,
   use_initial_points = TRUE,
-  pre_weighting = FALSE,
+  use_weights = TRUE,
   max_size = 1,
   alpha = 0.1,
   xlimits = NULL,
@@ -45,7 +45,7 @@ animated_scatter_plot(
 
 \item{use_initial_points}{(optional) If target is not specified and this argument is TRUE, will add the initial unweighted proposed points to the output to be plotted. (default is TRUE)}
 
-\item{pre_weighting}{(optional) If TRUE, will ignore particle weights in the histogram. If FALSE, will use the particle weights. (defaults to FALSE)}
+\item{use_weights}{(optional) If FALSE, will ignore particle weights in the scatter plot. If TRUE, will use the particle weights. (defaults to TRUE)}
 
 \item{max_size}{(optional) The maximum size of the points in the plot. (default=1)}
 

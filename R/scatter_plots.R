@@ -73,8 +73,9 @@ scatter_plot = function(output,
   }
   else
   {
-    plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=x_parameter,
-                                                       y=y_parameter))
+    plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=.data[[x_parameter]],
+                                                       y=.data[[y_parameter]],
+                                                       size=1/nrow(output_to_use)))
   }
 
   x_split_result = strsplit(x_parameter,"_")[[1]] #stringr::str_split(x_parameter, "(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)", n = Inf, simplify = TRUE)
