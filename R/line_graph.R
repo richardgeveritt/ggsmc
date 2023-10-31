@@ -217,7 +217,7 @@ time_series_line_graph = function(output,
 #' @param animate_plot (optiional) If TRUE, will return an animation. If FALSE, returns a gganim object that can be furher modified before animating. (defaults to FALSE)
 #' @param save_filename (optional) If specified, the animation will be saved to a gif with this filename. (default is not to save)
 #' @param save_path (optional) If specified along with save_filename, will save the gif to save_path/save_filename. (defaults to working directory)
-#' @return A line graph in a ggplot figure.
+#' @return An animated line graph, which successively adds points along the time axis.
 #' @export
 animated_reveal_time_series_line_graph = function(output,
                                                   parameters,
@@ -304,7 +304,7 @@ animated_reveal_time_series_line_graph = function(output,
 #' @param animate_plot (optiional) If TRUE, will return an animation. If FALSE, returns a gganim object that can be furher modified before animating. (defaults to FALSE)
 #' @param save_filename (optional) If specified, the animation will be saved to a gif with this filename. (default is not to save)
 #' @param save_path (optional) If specified along with save_filename, will save the gif to save_path/save_filename. (defaults to working directory)
-#' @return A line graph in a ggplot figure.
+#' @return An animated line graph, showing how the lines evolve through the sequence of targets.
 #' @export
 animated_time_series_line_graph = function(output,
                                            parameters,

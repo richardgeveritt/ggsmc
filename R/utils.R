@@ -2,7 +2,10 @@ add_proposed_points <- function(output)
 {
   min_target = min(output$Target)
   proposed_points = dplyr::filter(output,Target==min_target)
-  proposed_points$LogWeight = matrix(-log(nrow(proposed_points)),nrow(proposed_points))
+  if ("LogWeight" %in% output)
+  {
+    proposed_points$LogWeight = matrix(-log(nrow(proposed_points)),nrow(proposed_points))
+  }
   proposed_points$Target = as.integer(matrix(min_target-1,nrow(proposed_points)))
   if ("TargetParameters" %in% names(output))
   {
@@ -61,4 +64,16 @@ extract_target_data = function(output,
   }
 
   return(list(output_to_use,target_parameters))
+}
+
+
+# From https://joshuacook.netlify.app/post/integer-values-ggplot-axis/
+integer_breaks <- function(n = 5, ...)
+{
+  fxn <- function(x) {
+    breaks <- floor(pretty(x, n, ...))
+    names(breaks) <- attr(breaks, "labels")
+    breaks
+  }
+  return(fxn)
 }
