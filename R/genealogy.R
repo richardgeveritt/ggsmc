@@ -5,11 +5,11 @@
 #' @param external_target (optional) The external target to plot. (default is to use all external targets, or to ignore if the column is not present)
 #' @param use_initial_points (optional) If target is not specified and this argument is TRUE, will add the initial unweighted proposed points to the output to be plotted. (default is TRUE)
 #' @param use_weights (optional) If FALSE, will ignore particle weights in the line graph. If TRUE, will use the particle weights. (defaults to TRUE)
-#' @param max_line_width (optional) The maximum size of the points in the plot. (default=1)
-#' @param alpha (optional) The transparency of the lines in the plot. (default=0.1)
+#' @param alpha_points (optional) The transparency of the points in the plot. (default=0.1)
+#' @param alpha_lines (optional) The transparency of the lines in the plot. (default=0.1)
 #' @param axis_limits (optional) Input of the form c(start,end), which specifies the ends of the parameter axis.
 #' @param vertical (optional) If TRUE (default), plots a genealogy vertically. If FALSE, plots horizontally.
-#' @param vertical (optional) If TRUE (default), includes arrowheads. If FALSE, arrowheads are omitted.
+#' @param arrows (optional) If TRUE (default), includes arrowheads. If FALSE, arrowheads are omitted.
 #' @param default_title (optional) If TRUE, will provide a default title for the figure. If FALSE, no title is used. (defaults to FALSE)
 #' @return A particle genealogy in a ggplot figure.
 #' @export
@@ -21,7 +21,8 @@ genealogy = function(output,
                      use_initial_points=TRUE,
                      use_weights=TRUE,
                      max_line_width=1,
-                     alpha=0.1,
+                     alpha_points=0.1,
+                     alpha_lines=0.1,
                      axis_limits=NULL,
                      vertical=TRUE,
                      arrows=TRUE,
@@ -68,6 +69,8 @@ genealogy = function(output,
   output_to_use = target_data[[1]]
   target_parameters = target_data[[2]]
 
+  browser()
+
   if (length(unique(output$Dimension))==1)
   {
     parameter_for_plot = parameter
@@ -103,7 +106,7 @@ genealogy = function(output,
   if (is.null(target))
   {
     # Iterating over target.
-    output_to_use$AncestorValue = unlist(lapply(unique(output_to_use$Target),FUN = function(i) { if (i==min(output_to_use$Target)) { return(dplyr::filter(output_to_use,Target==i)$Value) } else { previous_target = dplyr::filter(output_to_use,Target==(i-1)); current_target = dplyr::filter(output_to_use,Target==(i-1)); return(previous_target$Value[current_target$AncestorIndex]) } } ))
+    output_to_use$AncestorValue = unlist(lapply(unique(output_to_use$Target),FUN = function(i) { if (i==min(output_to_use$Target)) { return(dplyr::filter(output_to_use,Target==i)$Value) } else { previous_target = dplyr::filter(output_to_use,Target==(i-1)); current_target = dplyr::filter(output_to_use,Target==i); return(previous_target$Value[current_target$AncestorIndex]) } } ))
 
   }
 
@@ -352,15 +355,13 @@ genealogy = function(output,
     if (vertical)
     {
       plot = plot +
-        ggplot2::geom_point(alpha=alpha) + ggplot2::geom_segment(data=dplyr::filter(output_to_use,Target!=min(Target)),ggplot2::aes(y = Target-1, x = AncestorValue, yend = Target, xend = Value),alpha=alpha,arrow=grid::arrow(type="closed",length = grid::unit(.1, "inches"))) +
-        ggplot2::scale_linewidth(range = c(0,max_line_width)) +
+        ggplot2::geom_point(alpha=alpha_points) + ggplot2::geom_segment(data=dplyr::filter(output_to_use,Target!=min(Target)),inherit.aes=FALSE,ggplot2::aes(y = Target-1, x = AncestorValue, yend = Target, xend = Value),alpha=alpha_lines,arrow=grid::arrow(type="closed",length = grid::unit(.1, "inches"))) +
         ggplot2::xlab(parameter_for_plot)
     }
     else
     {
       plot = plot +
-        ggplot2::geom_point(alpha=alpha) + ggplot2::geom_segment(data=dplyr::filter(output_to_use,Target!=min(Target)),ggplot2::aes(x = Target-1, y = AncestorValue, xend = Target, yend = Value),alpha=alpha,arrow=grid::arrow(type="closed",length = grid::unit(.1, "inches"))) +
-        ggplot2::scale_linewidth(range = c(0,max_line_width)) +
+        ggplot2::geom_point(alpha=alpha_points) + ggplot2::geom_segment(data=dplyr::filter(output_to_use,Target!=min(Target)),inherit.aes=FALSE,ggplot2::aes(x = Target-1, y = AncestorValue, xend = Target, yend = Value),alpha=alpha_lines,arrow=grid::arrow(type="closed",length = grid::unit(.1, "inches"))) +
         ggplot2::ylab(parameter_for_plot)
     }
   }
@@ -369,15 +370,13 @@ genealogy = function(output,
     if (vertical)
     {
       plot = plot +
-        ggplot2::geom_point(alpha=alpha) + ggplot2::geom_segment(data=dplyr::filter(output_to_use,Target!=min(Target)),ggplot2::aes(y = Target-1, x = AncestorValue, yend = Target, xend = Value),alpha=alpha) +
-        ggplot2::scale_linewidth(range = c(0,max_line_width)) +
+        ggplot2::geom_point(alpha=alpha_points) + ggplot2::geom_segment(data=dplyr::filter(output_to_use,Target!=min(Target)),inherit.aes=FALSE,ggplot2::aes(y = Target-1, x = AncestorValue, yend = Target, xend = Value),alpha=alpha_lines) +
         ggplot2::xlab(parameter_for_plot)
     }
     else
     {
       plot = plot +
-        ggplot2::geom_point(alpha=alpha) + ggplot2::geom_segment(data=dplyr::filter(output_to_use,Target!=min(Target)),ggplot2::aes(x = Target-1, y = AncestorValue, xend = Target, yend = Value),alpha=alpha) +
-        ggplot2::scale_linewidth(range = c(0,max_line_width)) +
+        ggplot2::geom_point(alpha=alpha_points) + ggplot2::geom_segment(data=dplyr::filter(output_to_use,Target!=min(Target)),inherit.aes=FALSE,ggplot2::aes(x = Target-1, y = AncestorValue, xend = Target, yend = Value),alpha=alpha_lines) +
         ggplot2::ylab(parameter_for_plot)
     }
   }
@@ -422,11 +421,11 @@ genealogy = function(output,
 #' @param external_target (optional) The external target to plot. (default is to use all external targets, or to ignore if the column is not present)
 #' @param use_initial_points (optional) If target is not specified and this argument is TRUE, will add the initial unweighted proposed points to the output to be plotted. (default is TRUE)
 #' @param use_weights (optional) If FALSE, will ignore particle weights in the line graph. If TRUE, will use the particle weights. (defaults to TRUE)
-#' @param max_line_width (optional) The maximum size of the points in the plot. (default=1)
-#' @param alpha (optional) The transparency of the lines in the plot. (default=0.1)
+#' @param alpha_points (optional) The transparency of the points in the plot. (default=0.1)
+#' @param alpha_lines (optional) The transparency of the lines in the plot. (default=0.1)
 #' @param axis_limits (optional) Input of the form c(start,end), which specifies the ends of the parameter axis.
 #' @param vertical (optional) If TRUE (default), plots a genealogy vertically. If FALSE, plots horizontally.
-#' @param vertical (optional) If TRUE (default), includes arrowheads. If FALSE, arrowheads are omitted.
+#' @param arrows (optional) If TRUE (default), includes arrowheads. If FALSE, arrowheads are omitted.
 #' @param default_title (optional) If TRUE, will provide a default title for the figure. If FALSE, no title is used. (defaults to FALSE)
 #' @param duration (optional) The duration of the animation. (defaults to producing an animation that uses 10 frames per second)
 #' @param animate_plot (optiional) If TRUE, will return an animation. If FALSE, returns a gganim object that can be furher modified before animating. (defaults to FALSE)
@@ -458,8 +457,8 @@ genealogy = function(output,
 #                 external_target = external_target,
 #                 use_initial_points = use_initial_points,
 #                 use_weights = use_weights,
-#                 max_line_width = max_line_width,
-#                 alpha = alpha,
+#                 alpha_points = alpha_points,
+#                 alpha_lines = alpha_lines,
 #                 axis_limits = axis_limits,
 #                 vertical = vertical,
 #                 arrows = arrows,

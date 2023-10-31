@@ -2,7 +2,7 @@ add_proposed_points <- function(output)
 {
   min_target = min(output$Target)
   proposed_points = dplyr::filter(output,Target==min_target)
-  if ("LogWeight" %in% output)
+  if ("LogWeight" %in% names(output))
   {
     proposed_points$LogWeight = matrix(-log(nrow(proposed_points)),nrow(proposed_points))
   }
