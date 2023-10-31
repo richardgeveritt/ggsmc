@@ -20,7 +20,6 @@ genealogy = function(output,
                      external_target=NULL,
                      use_initial_points=TRUE,
                      use_weights=TRUE,
-                     max_line_width=1,
                      alpha_points=0.1,
                      alpha_lines=0.1,
                      axis_limits=NULL,
@@ -68,8 +67,6 @@ genealogy = function(output,
   target_data = extract_target_data(output,target,external_target,use_initial_points)
   output_to_use = target_data[[1]]
   target_parameters = target_data[[2]]
-
-  browser()
 
   if (length(unique(output$Dimension))==1)
   {
