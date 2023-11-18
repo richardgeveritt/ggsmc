@@ -69,13 +69,15 @@ scatter_plot = function(output,
   {
     plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=.data[[x_parameter]],
                                                        y=.data[[y_parameter]],
-                                                       size=exp(LogWeight)))
+                                                       size=exp(LogWeight),
+                                                       stroke=0))
   }
   else
   {
     plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=.data[[x_parameter]],
                                                        y=.data[[y_parameter]],
-                                                       size=1/nrow(output_to_use)))
+                                                       size=1/nrow(output_to_use),
+                                                       stroke=0))
   }
 
   x_split_result = strsplit(x_parameter,"_")[[1]] #stringr::str_split(x_parameter, "(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)", n = Inf, simplify = TRUE)
