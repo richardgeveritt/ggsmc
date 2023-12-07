@@ -1,3 +1,5 @@
+#' Plot line graph showing parameter value vs dimension from algorithm output.
+#'
 #' @param output Output from the SMC or EnK algorithm.
 #' @param parameters The parameters we wish to be on the y-axis of the line graph.
 #' @param target (optional) The target to plot. (default is to use all targets)
@@ -202,6 +204,8 @@ time_series_line_graph = function(output,
   return(plot)
 }
 
+#' Plot animated line graph showing parameter value vs dimension (revealed in tthe animation) from algorithm output.
+#'
 #' @param output Output from the SMC or EnK algorithm.
 #' @param parameters The parameters we wish to be on the y-axis of the line graph.
 #' @param target (optional) The target to plot. (default is to use all targets)
@@ -289,6 +293,8 @@ animated_reveal_time_series_line_graph = function(output,
 }
 
 
+#' Plot animated line graph showing parameter value vs dimension across targets from algorithm output.
+#'
 #' @param output Output from the SMC or EnK algorithm.
 #' @param parameters The parameters we wish to be on the y-axis of the line graph.
 #' @param target (optional) The target to plot. (default is to use all targets)

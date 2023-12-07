@@ -1,3 +1,5 @@
+#' Plot an SMC or EnK genealogy from algorithm output.
+#'
 #' @param output Output from the SMC or EnK algorithm.
 #' @param parameter The parameter we wish to see the evolution of.
 #' @param dimension (optional) The dimension of the parameter we wish to see the evolution of. (default is 1)
@@ -425,7 +427,7 @@ genealogy = function(output,
 #' @param arrows (optional) If TRUE (default), includes arrowheads. If FALSE, arrowheads are omitted.
 #' @param default_title (optional) If TRUE, will provide a default title for the figure. If FALSE, no title is used. (defaults to FALSE)
 #' @param duration (optional) The duration of the animation. (defaults to producing an animation that uses 10 frames per second)
-#' @param animate_plot (optiional) If TRUE, will return an animation. If FALSE, returns a gganim object that can be furher modified before animating. (defaults to FALSE)
+#' @param animate_plot (optional) If TRUE, will return an animation. If FALSE, returns a gganim object that can be furher modified before animating. (defaults to FALSE)
 #' @param save_filename (optional) If specified, the animation will be saved to a gif with this filename. (default is not to save)
 #' @param save_path (optional) If specified along with save_filename, will save the gif to save_path/save_filename. (defaults to working directory)
 #' @return An animated line graph, which successively adds points along the time axis.
