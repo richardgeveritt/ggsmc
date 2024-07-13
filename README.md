@@ -1,4 +1,4 @@
 # ggsmc
 Visualising output from SMC samplers and EnK methods.
 
-animated_histogram()
+help("animated_histogram")
