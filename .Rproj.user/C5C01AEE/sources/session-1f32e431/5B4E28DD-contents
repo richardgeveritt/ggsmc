@@ -1,0 +1,1060 @@
+library(ggplot2)
+library(dplyr)
+
+# M
+# eps
+
+# EnK
+
+# Estimator
+# Significance
+# Targets
+# Shifter
+
+# Look at for different epsilons...
+# Plot bias, sd, RMSEscaled, RMSE v M for ABC, SL and 3 different EnKI and estimator with sig 1 and each #targets
+# For fixed M...
+# Plot bias, sd, RMSEscaled, RMSE v targets (line for ABC/SL)
+# For fixed M, maybe different targets
+# Plot bias, sd, RMSEscaled, RMSE v sig (line for ABC/SL)
+
+# Plot RMSE against number of points with different line for each conditions.
+
+
+epsilon = 0.1
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter((Method=="ABC") | (Method=="SL")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=Bias, group=interaction(Method), color=Method)) +
+  geom_line()
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter((Method=="ABC") | (Method=="SL")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=SD, group=interaction(Method), color=Method)) +
+  geom_line()
+
+all_statistics %>%
+  dplyr::filter(ε=epsilon) %>%
+  dplyr::filter((Method=="ABC") | (Method=="SL")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=RMSE, group=interaction(Method), color=Method)) +
+  geom_line()
+
+all_statistics %>%
+  dplyr::filter(ε=epsilon) %>%
+  dplyr::filter((Method=="ABC") | (Method=="SL")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=`Scaled MSE`, group=interaction(Method), color=Method)) +
+  geom_line()
+
+# Shows dimininshing returhs for increasing n in both. SL seems to be better, and scale better with n.
+
+epsilon = 0.01
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter((Method=="ABC") | (Method=="SL")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=Bias, group=interaction(Method), color=Method)) +
+  geom_line()
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter((Method=="ABC") | (Method=="SL")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=SD, group=interaction(Method), color=Method)) +
+  geom_line()
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter((Method=="ABC") | (Method=="SL")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=RMSE, group=interaction(Method), color=Method)) +
+  geom_line()
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter((Method=="ABC") | (Method=="SL")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=`Scaled MSE`, group=interaction(Method), color=Method)) +
+  geom_line()
+
+# Bias and variance (variance possibly just coming from larger magnitude?) of ABC completely dominates now epsilon is smaller.
+
+epsilon = 0.001
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter((Method=="ABC") | (Method=="SL")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=Bias, group=interaction(Method), color=Method)) +
+  geom_line()
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter((Method=="ABC") | (Method=="SL")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=SD, group=interaction(Method), color=Method)) +
+  geom_line()
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter((Method=="ABC") | (Method=="SL")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=RMSE, group=interaction(Method), color=Method)) +
+  geom_line()
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter((Method=="ABC") | (Method=="SL")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=`Scaled MSE`, group=interaction(Method), color=Method)) +
+  geom_line()
+
+# ABC even worse
+
+epsilon = 0.0001
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter((Method=="ABC") | (Method=="SL")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=Bias, group=interaction(Method), color=Method)) +
+  geom_line()
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter((Method=="ABC") | (Method=="SL")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=SD, group=interaction(Method), color=Method)) +
+  geom_line()
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter((Method=="ABC") | (Method=="SL")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=RMSE, group=interaction(Method), color=Method)) +
+  geom_line()
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter((Method=="ABC") | (Method=="SL")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=`Scaled MSE`, group=interaction(Method), color=Method)) +
+  geom_line()
+
+# So bad, let's look at SL on its own.
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter((Method=="SL")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=Bias, group=interaction(Method), color=Method)) +
+  geom_line()
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter((Method=="SL")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=SD, group=interaction(Method), color=Method)) +
+  geom_line()
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter((Method=="SL")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=RMSE, group=interaction(Method), color=Method)) +
+  geom_line()
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter((Method=="SL")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=`Scaled MSE`, group=interaction(Method), color=Method)) +
+  geom_line()
+
+# Can now see some disadvantage to smaller n for SL: gives some variance. But errors relatively small.
+
+epsilon = 0.1
+estimator = 1
+significance = 1
+targets = 5
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=Bias, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=Bias, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=SD, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=SD, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=RMSE, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=RMSE, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=`Scaled MSE`, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=`Scaled MSE`, group=interaction(Method), color=Method))
+
+# Bias is negligible. n has expected Monte Carlo effect.
+# Sqrt and adjustment have less variance - essentially the same as SL.
+# Adjustment poor comp.
+
+epsilon = 0.0001
+estimator = 1
+significance = 1
+targets = 5
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=Bias, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=Bias, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=SD, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=SD, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=RMSE, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=RMSE, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=`Scaled MSE`, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=`Scaled MSE`, group=interaction(Method), color=Method))
+
+# Same pattern for smaller epsilon.
+
+
+epsilon = 0.1
+estimator = 2
+significance = 1
+targets = 5
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=Bias, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=Bias, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=SD, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=SD, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=RMSE, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=RMSE, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=`Scaled MSE`, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=`Scaled MSE`, group=interaction(Method), color=Method))
+
+# Unbiased version has similar properties.
+
+epsilon = 0.0001
+estimator = 2
+significance = 1
+targets = 5
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=Bias, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=Bias, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=SD, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=SD, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=RMSE, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=RMSE, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=`Scaled MSE`, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=`Scaled MSE`, group=interaction(Method), color=Method))
+
+# Unbiased version has similar properties.
+
+
+epsilon = 0.1
+estimator = 3
+significance = 1
+targets = 5
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=Bias, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=Bias, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=SD, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=SD, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=RMSE, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=RMSE, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=`Scaled MSE`, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=`Scaled MSE`, group=interaction(Method), color=Method))
+
+# Path sampling version not working - lower variance, but big bias.
+
+epsilon = 0.0001
+estimator = 3
+significance = 1
+targets = 5
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=Bias, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=Bias, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=SD, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=SD, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=RMSE, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=RMSE, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=`Scaled MSE`, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=`Scaled MSE`, group=interaction(Method), color=Method))
+
+# Path not really working.
+
+
+epsilon = 0.1
+estimator = 4
+significance = 1
+targets = 5
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=Bias, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=Bias, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=SD, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=SD, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=RMSE, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=RMSE, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=`Scaled MSE`, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=`Scaled MSE`, group=interaction(Method), color=Method))
+
+# path sampling version not working for small number of targets - lower variance, but big bias.
+
+epsilon = 0.0001
+estimator = 4
+significance = 1
+targets = 5
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=Bias, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=Bias, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=SD, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=SD, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=RMSE, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=RMSE, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=`Scaled MSE`, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=`Scaled MSE`, group=interaction(Method), color=Method))
+
+# Path 2 not working either (much worse).
+
+
+epsilon = 0.1
+estimator = 1
+the_n = 100
+significance = 1
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(n==the_n) %>%
+  ggplot( aes(x=Targets, y=Bias, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_hline(yintercept=dplyr::filter(dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),n==the_n),Method=="SL")$Bias)
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(n==the_n) %>%
+  ggplot( aes(x=Targets, y=SD, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_hline(yintercept=dplyr::filter(dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),n==the_n),Method=="SL")$SD)
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(n==the_n) %>%
+  ggplot( aes(x=Targets, y=RMSE, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_hline(yintercept=dplyr::filter(dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),n==the_n),Method=="SL")$RMSE)
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(n==the_n) %>%
+  ggplot( aes(x=Targets, y=`Scaled MSE`, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_hline(yintercept=dplyr::filter(dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),n==the_n),Method=="SL")$`Scaled MSE`)
+
+
+
+epsilon = 0.0001
+estimator = 1
+the_n = 100
+significance = 1
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(n==the_n) %>%
+  ggplot( aes(x=Targets, y=Bias, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_hline(yintercept=dplyr::filter(dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),n==the_n),Method=="SL")$Bias)
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(n==the_n) %>%
+  ggplot( aes(x=Targets, y=SD, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_hline(yintercept=dplyr::filter(dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),n==the_n),Method=="SL")$SD)
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(n==the_n) %>%
+  ggplot( aes(x=Targets, y=RMSE, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_hline(yintercept=dplyr::filter(dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),n==the_n),Method=="SL")$RMSE)
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(n==the_n) %>%
+  ggplot( aes(x=Targets, y=`Scaled MSE`, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_hline(yintercept=dplyr::filter(dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),n==the_n),Method=="SL")$`Scaled MSE`)
+
+# Performance of deterninistic methods is precisely the same as SL (only comp cost is more).
+# Stochastic adds variance as targets increase
+
+
+epsilon = 0.1
+estimator = 1
+the_n = 100
+targets = 5
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Targets==targets) %>%
+  dplyr::filter(n==the_n) %>%
+  ggplot( aes(x=Significance, y=Bias, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_hline(yintercept=dplyr::filter(dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),n==the_n),Method=="SL")$Bias)
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Targets==targets) %>%
+  dplyr::filter(n==the_n) %>%
+  ggplot( aes(x=Significance, y=SD, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_hline(yintercept=dplyr::filter(dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),n==the_n),Method=="SL")$SD)
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Targets==targets) %>%
+  dplyr::filter(n==the_n) %>%
+  ggplot( aes(x=Significance, y=RMSE, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_hline(yintercept=dplyr::filter(dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),n==the_n),Method=="SL")$RMSE)
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Targets==targets) %>%
+  dplyr::filter(n==the_n) %>%
+  ggplot( aes(x=Significance, y=`Scaled MSE`, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_hline(yintercept=dplyr::filter(dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),n==the_n),Method=="SL")$`Scaled MSE`)
+
+# Bias is reduced when significance increases (mighr be error in ests), but bias only small compared to stochastic SD and comp cost.
+
+
+epsilon = 0.0001
+estimator = 1
+the_n = 100
+targets = 5
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Targets==targets) %>%
+  dplyr::filter(n==the_n) %>%
+  ggplot( aes(x=Significance, y=Bias, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_hline(yintercept=dplyr::filter(dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),n==the_n),Method=="SL")$Bias)
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Targets==targets) %>%
+  dplyr::filter(n==the_n) %>%
+  ggplot( aes(x=Significance, y=SD, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_hline(yintercept=dplyr::filter(dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),n==the_n),Method=="SL")$SD)
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Targets==targets) %>%
+  dplyr::filter(n==the_n) %>%
+  ggplot( aes(x=Significance, y=RMSE, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_hline(yintercept=dplyr::filter(dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),n==the_n),Method=="SL")$RMSE)
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Targets==targets) %>%
+  dplyr::filter(n==the_n) %>%
+  ggplot( aes(x=Significance, y=`Scaled MSE`, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_hline(yintercept=dplyr::filter(dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),n==the_n),Method=="SL")$`Scaled MSE`)
+
+# Bias is reduced when significance increases, but bias only small compared to stochastic SD and comp cost.
+
+
+epsilon = 0.1
+estimator = 1
+the_n = 100
+targets = 20
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Targets==targets) %>%
+  dplyr::filter(n==the_n) %>%
+  ggplot( aes(x=Significance, y=Bias, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_hline(yintercept=dplyr::filter(dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),n==the_n),Method=="SL")$Bias)
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Targets==targets) %>%
+  dplyr::filter(n==the_n) %>%
+  ggplot( aes(x=Significance, y=SD, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_hline(yintercept=dplyr::filter(dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),n==the_n),Method=="SL")$SD)
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Targets==targets) %>%
+  dplyr::filter(n==the_n) %>%
+  ggplot( aes(x=Significance, y=RMSE, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_hline(yintercept=dplyr::filter(dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),n==the_n),Method=="SL")$RMSE)
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Targets==targets) %>%
+  dplyr::filter(n==the_n) %>%
+  ggplot( aes(x=Significance, y=`Scaled MSE`, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_hline(yintercept=dplyr::filter(dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),n==the_n),Method=="SL")$`Scaled MSE`)
+
+# Bias is reduced when significance increases (mighr be error in ests), but bias only small compared to stochastic SD and comp cost.
+
+
+epsilon = 0.0001
+estimator = 1
+the_n = 100
+targets = 20
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Targets==targets) %>%
+  dplyr::filter(n==the_n) %>%
+  ggplot( aes(x=Significance, y=Bias, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_hline(yintercept=dplyr::filter(dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),n==the_n),Method=="SL")$Bias)
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Targets==targets) %>%
+  dplyr::filter(n==the_n) %>%
+  ggplot( aes(x=Significance, y=SD, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_hline(yintercept=dplyr::filter(dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),n==the_n),Method=="SL")$SD)
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Targets==targets) %>%
+  dplyr::filter(n==the_n) %>%
+  ggplot( aes(x=Significance, y=RMSE, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_hline(yintercept=dplyr::filter(dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),n==the_n),Method=="SL")$RMSE)
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Targets==targets) %>%
+  dplyr::filter(n==the_n) %>%
+  ggplot( aes(x=Significance, y=`Scaled MSE`, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_hline(yintercept=dplyr::filter(dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),n==the_n),Method=="SL")$`Scaled MSE`)
+
+
+
+
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=Bias, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=Bias, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=SD, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=SD, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=RMSE, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=RMSE, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=`Scaled MSE`, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=`Scaled MSE`, group=interaction(Method), color=Method))
+
+# Bug in path sampling version - lower variance, but big bias.
+
+# Early truncation is a good idea for the stochastic approach.
+
+
+
+
+all_enki_statistics %>%
+  dplyr::filter(ε==0.001) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(n==50) %>%
+  ggplot( aes(x=Targets, y=RMSE, group=interaction(Shifter), color=Shifter)) +
+  geom_line()
+
+
+
+epsilon = 0.01
+n = 100
+estimator = 1
+significance = 1
+targets = 5
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=Bias, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=Bias, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=SD, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=SD, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=RMSE, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=RMSE, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=`Scaled MSE`, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="SL"),aes(x=n, y=`Scaled MSE`, group=interaction(Method), color=Method))
+
+
+
+
+
+
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  dplyr::filter(Shifter==shifter) %>%
+  ggplot( aes(x=n, y=Bias, group=interaction(Method), color=Method)) +
+  geom_line()
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  dplyr::filter(Shifter==shifter) %>%
+  ggplot( aes(x=n, y=SD, group=interaction(Method), color=Method)) +
+  geom_line()
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  dplyr::filter(Shifter==shifter) %>%
+  ggplot( aes(x=n, y=RMSE, group=interaction(Method), color=Method)) +
+  geom_line()
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  dplyr::filter(Shifter==shifter) %>%
+  ggplot( aes(x=n, y=`Scaled MSE`, group=interaction(Method), color=Method)) +
+  geom_line()
+
+
+epsilon = 0.1
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter((Method=="ABC") | (Method=="PF") | (Method=="sEnKF") | (Method=="aEnKF") | (Method=="rEnKF") | (Method=="SL")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=SD, group=interaction(Method), color=Method)) +
+  geom_line()
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter( (Method=="sEnKF") | (Method=="aEnKF") | (Method=="rEnKF")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=RMSE, group=interaction(Method), color=Method)) +
+  geom_line()
+
+
+(all_statistics %>%
+  dplyr::filter(ε==1) %>%
+  dplyr::filter(n==100) %>%
+  dplyr::filter(Method=="ABC" | (Method=="PF") | (Method=="sEnKF")))$`RMSE`
+
+
+all_enki_statistics %>%
+  dplyr::filter(ε==1) %>%
+  dplyr::filter(Shifter=='Stochastic') %>%
+  dplyr::filter(n==100) %>%
+  ggplot( aes(x=Significance, y=`RMSE`, group=interaction(ESS,Shifter), color=ESS)) +
+  geom_line()
+
+
+
+
+
+
+
+
+# Cost...
+
+# Cost of adjustment scales badly with n (does not compensate for reduction in MC error).
+
+# Cost of other two are v similar.
+
+
+# Variance...
+
+# With deterministic methods, no difference in SD no matter how many targets.
+# With stochastic, variance increases something like linearly with number of targets.
+
+
+# Bias...
+
+# Deterministic - estimating the same thing but with different computational costs.
+# overestimating a little with larger epsilon
+# underestimating a small amount when epsilon gets too small
+
+# Stochastic - bias seems to get worse the longer we run it (seems to decrease - why?)
+# Variance is bigger issue though!
+
+# Termination...
+# Should be to control cost, but actually controlling variance in stochastic case (due to exact problem we are looking at).
+# In deterministic case makes no difference since we are in an exact case.
+
+
+
+# LV case
+
+# SL is worst for biggest eps, then ABC. Others are much closer. Then switch as eps gets smaller. ABC bias&var suffers - when SL fails it is bias.
+# PF worst of the rest, stochastic worst of other two.
+# PF even futher away as eps gets smaller.
+# Sqrt starts failing as eps gets small (why?) and stoch close to adj for more n (but only small diff).
+
+# Adjustment is bad for cost
+
+
+# eps 10, n 100
+
+# dplyr::filter(Method=="ABC" | (Method=="PF") | (Method=="sEnKF")))$RMSE
+# 178.6789558   1.7780961   0.6151886
+
+# Trunc 13.7, non just over 12
+# Actually gets a big worse as n increases!
+
+
+# # eps 1, n 100
+#
+# dplyr::filter(Method=="ABC" | (Method=="PF") | (Method=="sEnKF")))$RMSE
+# [1] 2.042070e+04 3.278229e+02 8.132592e-01
+#
+# # Trunc 15, non just over 11
+#
+#
+#
+# # eps 0.1, n 100
+#
+# dplyr::filter(Method=="ABC" | (Method=="PF") | (Method=="sEnKF")))$RMSE
+# [1] 2.050679e+06 3.564956e+04 4.183615e+01
+#
+# # Trunc 56, non just over 46
+#
+#
+#
+# # eps 0.01, n 100
+#
+# dplyr::filter(Method=="ABC" | (Method=="PF") | (Method=="aEnKF")))$RMSE
+# [1] 2.050792e+08 3.569594e+06 1.111268e+02
+#
+# # Trunc 122, non just over 110
+# # Worse when n is bigger. Why?
+
+
+# Do same results hold for X only, and bad point?
+
+# Basically a similar story for X only.
+
+# For bad point, ABC is worst, then PF, then SL as eps gets smaller. For eps=10 worst is SL, then ABC, then PF.
+# EnKF similar for each - root is worst, then stochastic, adjustment best.
+
+# # eps 10, n 100
+#
+# +   dplyr::filter(Method=="ABC" | (Method=="PF") | (Method=="sEnKF")))$`RMSE`
+# [1] 251.597133  22.863642   2.177733
+#
+# # Trunc 5.7, non just over 7 (noise when running for longer)
+
+# As eps goes down, lowest error is for most aggressive seq, near fastest trunction. A bit worse than filtering, but much better than the rest.

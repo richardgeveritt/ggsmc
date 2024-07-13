@@ -1,0 +1,526 @@
+---
+title: "Fishing"
+author: "Richard Everitt"
+date: "11/08/2023"
+output: html_document
+---
+
+```{r setup, include=FALSE, echo=FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(readxl)
+library(knitr)
+library(lubridate)
+library(dplyr)
+library(ggplot2)
+```
+
+```{r format_weight, echo=FALSE, message=FALSE}
+format_weight = function(unformatted_weights)
+{
+  pounds = floor(unformatted_weights)
+  ounces = floor(16*(unformatted_weights %% 1))
+  remainder_ounces = 16*(unformatted_weights %% 1)
+  drams = round(16*(remainder_ounces %% 1))
+  output = matrix(0,length(pounds))
+  for (i in 1:length(pounds))
+  {
+    if (pounds[i]!=0)
+    {
+      if (ounces[i]!=0)
+      {
+        if (drams[i]!=0)
+        {
+          output[i] = paste(pounds[i],"lb ",ounces[i],"oz ",drams[i],"dr",sep="")
+        }
+        else
+        {
+          output[i] = paste(pounds[i],"lb ",ounces[i],"oz",sep="")
+        }
+      }
+      else
+      {
+        if (drams[i]!=0)
+        {
+          output[i] = paste(pounds[i],"lb ",drams[i],"dr",sep="")
+        }
+        else
+        {
+          output[i] = paste(pounds[i],"lb",sep="")
+        }
+      }
+    }
+    else
+    {
+      if (ounces[i]!=0)
+      {
+        if (drams[i]!=0)
+        {
+          output[i] = paste(ounces[i],"oz ",drams[i],"dr",sep="")
+        }
+        else
+        {
+          output[i] = paste(ounces[i],"oz",sep="")
+        }
+      }
+      else
+      {
+        if (drams[i]!=0)
+        {
+          output[i] = paste(drams[i],"dr",sep="")
+        }
+        else
+        {
+          output[i] = ""
+        }
+      }
+    }
+  }
+  return(output)
+}
+```
+
+```{r data, echo=FALSE, message=FALSE}
+suppressWarnings({sheets = excel_sheets("freshwater_fishing.xls")[!is.na(as.numeric(excel_sheets("freshwater_fishing.xls")))]})
+
+AllFishingData = list()
+for (i in 1:length(sheets))
+{
+  NewFishingData <- read_excel("freshwater_fishing.xls",sheets[i])
+  which_rows = suppressWarnings({!is.na(as.numeric(NewFishingData$Date))})
+  max_index = 1
+  for (j in 1:length(which_rows))
+  {
+    if (which_rows[j]==TRUE)
+    {
+      max_index = j
+    }
+    else
+    {
+      break
+    }
+  }
+  
+  NewFishingData = NewFishingData[1:max_index,]
+  if (!is.POSIXct(NewFishingData$Date[1]))
+  {
+    NewFishingData$`Total fish`= as.numeric(NewFishingData$`Total fish`)
+    NewFishingData$Date = as.Date(as.numeric(NewFishingData$Date), origin="1899-12-30")
+  }
+  
+  if (i==1)
+  {
+    FishingData = NewFishingData
+  }
+  else
+  {
+    FishingData = bind_rows(FishingData,NewFishingData)
+  }
+  
+  AllFishingData[[sheets[i]]] = NewFishingData
+}
+
+```
+
+## Totals
+
+```{r basics, echo=FALSE, comment=FALSE}
+years = sheets
+num_fish = matrix(0,length(sheets))
+total_weight = matrix(0,length(sheets))
+biggest_fish = matrix(0,length(sheets))
+biggest_fish_type = matrix(0,length(sheets))
+biggest_fish_text = matrix(0,length(sheets))
+
+for (i in 1:length(sheets))
+{
+  years[i] = paste(years[i],as.numeric(years[i])+1,sep="-")
+  num_fish[i] = sum(AllFishingData[[i]]$'Total fish')
+  total_weight[i] = sum(AllFishingData[[i]]$'Total weight')
+  biggest_fish[i] = max(AllFishingData[[i]]$`Biggest fish weight`)
+  which_max = which(AllFishingData[[i]]$`Biggest fish weight`==biggest_fish[[i]])
+  biggest_fish_text[i] = ""
+  biggest_fish_type[i] = ""
+  for (j in 1:length(which_max))
+  {
+    if (j>1)
+    {
+      biggest_fish_text[i] = paste(biggest_fish_text[i],", ",sep="")
+      biggest_fish_type[i] = paste(biggest_fish_type[i]," and ",sep="")
+    }
+    biggest_fish_text[i] = paste(biggest_fish_text[i],AllFishingData[[i]]$`Biggest fish type`[which_max[j]],": ",format_weight(AllFishingData[[i]]$`Biggest fish weight`[which_max[j]]),sep="")
+    
+    biggest_fish_type[i] = paste(biggest_fish_type[i],AllFishingData[[i]]$`Biggest fish type`[which_max[j]],sep="")
+  }
+}
+years[length(sheets)+1] = "All"
+num_fish[length(sheets)+1] = sum(num_fish[1:length(sheets)])
+total_weight[length(sheets)+1] = sum(total_weight[1:length(sheets)])
+biggest_fish[length(sheets)+1] = max(biggest_fish[1:length(sheets)])
+
+i = length(sheets)+1
+which_max = which(biggest_fish[1:length(sheets)]==biggest_fish[[i]])
+biggest_fish_text[i] = ""
+for (j in 1:length(which_max))
+{
+  if (j>1)
+  {
+    biggest_fish_text[i] = paste(biggest_fish_text[i]," / ",sep="")
+  }
+  biggest_fish_text[i] = paste(biggest_fish_text[i],biggest_fish_type[which_max[j]],": ",format_weight(biggest_fish[which_max[j]]),sep="")
+}
+
+total_weight = format_weight(total_weight)
+
+Basic = data.frame(years,
+                   as.character(num_fish),
+                   total_weight,
+                   biggest_fish_text)
+
+names(Basic) = c("Season","Number of fish","Total weight","Biggest fish")
+
+kable(Basic,digits=2)
+
+# Basic$'Number of fish' = as.numeric(Basic$'Number of fish')
+# 
+# p<-ggplot(Basic, aes(x=factor(Season), y='biggest_fish')) + 
+#   geom_col() +
+#   scale_x_discrete()
+# p
+
+
+# For each type of fish.
+Type = matrix(0,42+ncol(FishingData)-72)
+Number = matrix(0,42+ncol(FishingData)-72)
+
+counter = 1
+for (i in 10:51)
+{
+  Type[counter] = colnames(FishingData)[i]
+  FishingData[is.na(FishingData[,i]),i] = 0
+  Number[counter] = sum(FishingData[,i])
+  counter = counter + 1
+}
+
+for (i in 73:ncol(FishingData))
+{
+  Type[counter] = colnames(FishingData)[i]
+  FishingData[is.na(FishingData[,i]),i] = 0
+  Number[counter] = sum(FishingData[,i])
+  counter = counter + 1
+}
+
+TypesNum = data.frame(Type,
+                      Number)
+
+TypesNum = filter(arrange(TypesNum,desc(Number)),Number!=0)
+the_names = names(TypesNum)
+TypesNum = cbind(1:nrow(TypesNum),TypesNum)
+names(TypesNum) = c("Rank",the_names)
+kable(TypesNum,digits=2)
+
+```
+
+## Biggest fish
+
+```{r biggest_fish, echo=FALSE, comment=FALSE}
+
+# Fish = data.frame(Date,
+#                   Venue,
+#                   Bait,
+#                   FishType,
+#                   FishWeightText,
+#                   FishWeight)
+
+records = read_excel("records.xlsx")
+
+for (i in 1:10)
+{
+  type_index = 50+2*i
+  weight_index = 51+2*i
+  
+  if (i==1)
+  {
+    Fish = FishingData[,c(1,2,5,type_index,weight_index)]
+  }
+  else
+  {
+    Fish = na.omit(rbind(Fish,setNames(FishingData[,c(1,2,5,type_index,weight_index)],names(Fish))))
+  }
+}
+
+Fish$Weight = format_weight(Fish$`Biggest fish weight`)
+
+names(Fish) = c("Date","Venue","Bait","Species","raw_weight","Weight")
+
+Percentage = matrix(0,nrow(Fish))
+records$Weight = as.numeric(records$Weight)
+
+for (i in 1:length(records$Species))
+{
+  CurrentType = records$Species[i]
+  which_current = which(Fish$Species==CurrentType)
+  Percentage[which_current] = Fish$raw_weight[which_current]/records$Weight[i]
+}
+
+Fish$Percentage = Percentage
+
+Biggest = filter(arrange(Fish,desc(raw_weight)),raw_weight>=6)[,c(1,2,3,4,6,7)]
+the_names = names(Biggest)
+Biggest = cbind(1:nrow(Biggest),Biggest)
+names(Biggest) = c("Rank",the_names)
+kable(Biggest,digits=2,caption="Biggest fish")
+
+Best = filter(arrange(Fish,desc(Percentage)))[1:50,c(1,2,3,4,6,7)]
+the_names = names(Best)
+Best = cbind(1:nrow(Best),Best)
+names(Best) = c("Rank",the_names)
+kable(Best,digits=2,caption="Best fish")
+
+t = "Barbel"
+CurrentType = filter(arrange(Fish,desc(raw_weight)),Species==t)[,c(1,2,3,4,6,7)]
+CurrentType = CurrentType[1:min(10,nrow(CurrentType)),]
+the_names = names(CurrentType)
+CurrentType = cbind(1:nrow(CurrentType),CurrentType)
+names(CurrentType) = c("Rank",the_names)
+kable(CurrentType,digits=2,caption=t)
+
+t = "Bleak"
+CurrentType = filter(arrange(Fish,desc(raw_weight)),Species==t)[,c(1,2,3,4,6,7)]
+CurrentType = CurrentType[1:min(10,nrow(CurrentType)),]
+the_names = names(CurrentType)
+CurrentType = cbind(1:nrow(CurrentType),CurrentType)
+names(CurrentType) = c("Rank",the_names)
+kable(CurrentType,digits=2,caption=t)
+
+t = "Bream"
+CurrentType = filter(arrange(Fish,desc(raw_weight)),Species==t)[,c(1,2,3,4,6,7)]
+CurrentType = CurrentType[1:min(10,nrow(CurrentType)),]
+the_names = names(CurrentType)
+CurrentType = cbind(1:nrow(CurrentType),CurrentType)
+names(CurrentType) = c("Rank",the_names)
+kable(CurrentType,digits=2,caption=t)
+
+t = "Common Carp"
+CurrentType = filter(arrange(Fish,desc(raw_weight)),Species==t)[,c(1,2,3,4,6,7)]
+CurrentType = CurrentType[1:min(10,nrow(CurrentType)),]
+the_names = names(CurrentType)
+CurrentType = cbind(1:nrow(CurrentType),CurrentType)
+names(CurrentType) = c("Rank",the_names)
+kable(CurrentType,digits=2,caption="Carp (Common)")
+
+t = "Ghost Carp"
+CurrentType = filter(arrange(Fish,desc(raw_weight)),Species==t)[,c(1,2,3,4,6,7)]
+CurrentType = CurrentType[1:min(10,nrow(CurrentType)),]
+the_names = names(CurrentType)
+CurrentType = cbind(1:nrow(CurrentType),CurrentType)
+names(CurrentType) = c("Rank",the_names)
+kable(CurrentType,digits=2,caption="Carp (Ghost)")
+
+t = "Leather Carp"
+CurrentType = filter(arrange(Fish,desc(raw_weight)),Species==t)[,c(1,2,3,4,6,7)]
+CurrentType = CurrentType[1:min(10,nrow(CurrentType)),]
+the_names = names(CurrentType)
+CurrentType = cbind(1:nrow(CurrentType),CurrentType)
+names(CurrentType) = c("Rank",the_names)
+kable(CurrentType,digits=2,caption="Carp (Leather)")
+
+t = "Mirror Carp"
+CurrentType = filter(arrange(Fish,desc(raw_weight)),Species==t)[,c(1,2,3,4,6,7)]
+CurrentType = CurrentType[1:min(10,nrow(CurrentType)),]
+the_names = names(CurrentType)
+CurrentType = cbind(1:nrow(CurrentType),CurrentType)
+names(CurrentType) = c("Rank",the_names)
+kable(CurrentType,digits=2,caption="Carp (Mirror)")
+
+t = "Carp/crucian hybrid"
+CurrentType = filter(arrange(Fish,desc(raw_weight)),Species==t)[,c(1,2,3,4,6,7)]
+CurrentType = CurrentType[1:min(10,nrow(CurrentType)),]
+the_names = names(CurrentType)
+CurrentType = cbind(1:nrow(CurrentType),CurrentType)
+names(CurrentType) = c("Rank",the_names)
+kable(CurrentType,digits=2,caption=t)
+
+t = "Chub"
+CurrentType = filter(arrange(Fish,desc(raw_weight)),Species==t)[,c(1,2,3,4,6,7)]
+CurrentType = CurrentType[1:min(10,nrow(CurrentType)),]
+the_names = names(CurrentType)
+CurrentType = cbind(1:nrow(CurrentType),CurrentType)
+names(CurrentType) = c("Rank",the_names)
+kable(CurrentType,digits=2,caption=t)
+
+t = "Crucian Carp"
+CurrentType = filter(arrange(Fish,desc(raw_weight)),Species==t)[,c(1,2,3,4,6,7)]
+CurrentType = CurrentType[1:min(10,nrow(CurrentType)),]
+the_names = names(CurrentType)
+CurrentType = cbind(1:nrow(CurrentType),CurrentType)
+names(CurrentType) = c("Rank",the_names)
+kable(CurrentType,digits=2,caption=t)
+
+t = "Dace"
+CurrentType = filter(arrange(Fish,desc(raw_weight)),Species==t)[,c(1,2,3,4,6,7)]
+CurrentType = CurrentType[1:min(10,nrow(CurrentType)),]
+the_names = names(CurrentType)
+CurrentType = cbind(1:nrow(CurrentType),CurrentType)
+names(CurrentType) = c("Rank",the_names)
+kable(CurrentType,digits=2,caption=t)
+
+t = "Eel"
+CurrentType = filter(arrange(Fish,desc(raw_weight)),Species==t)[,c(1,2,3,4,6,7)]
+CurrentType = CurrentType[1:min(10,nrow(CurrentType)),]
+the_names = names(CurrentType)
+CurrentType = cbind(1:nrow(CurrentType),CurrentType)
+names(CurrentType) = c("Rank",the_names)
+kable(CurrentType,digits=2,caption=t)
+
+t = "Flounder"
+CurrentType = filter(arrange(Fish,desc(raw_weight)),Species==t)[,c(1,2,3,4,6,7)]
+CurrentType = CurrentType[1:min(10,nrow(CurrentType)),]
+the_names = names(CurrentType)
+CurrentType = cbind(1:nrow(CurrentType),CurrentType)
+names(CurrentType) = c("Rank",the_names)
+kable(CurrentType,digits=2,caption=t)
+
+t = "Golden Orfe"
+CurrentType = filter(arrange(Fish,desc(raw_weight)),Species==t)[,c(1,2,3,4,6,7)]
+CurrentType = CurrentType[1:min(10,nrow(CurrentType)),]
+the_names = names(CurrentType)
+CurrentType = cbind(1:nrow(CurrentType),CurrentType)
+names(CurrentType) = c("Rank",the_names)
+kable(CurrentType,digits=2,caption=t)
+
+t = "Goldfish"
+CurrentType = filter(arrange(Fish,desc(raw_weight)),Species==t)[,c(1,2,3,4,6,7)]
+CurrentType = CurrentType[1:min(10,nrow(CurrentType)),]
+the_names = names(CurrentType)
+CurrentType = cbind(1:nrow(CurrentType),CurrentType)
+names(CurrentType) = c("Rank",the_names)
+kable(CurrentType,digits=2,caption=t)
+
+t = "Gudgeon"
+CurrentType = filter(arrange(Fish,desc(raw_weight)),Species==t)[,c(1,2,3,4,6,7)]
+CurrentType = CurrentType[1:min(10,nrow(CurrentType)),]
+the_names = names(CurrentType)
+CurrentType = cbind(1:nrow(CurrentType),CurrentType)
+names(CurrentType) = c("Rank",the_names)
+kable(CurrentType,digits=2,caption=t)
+
+t = "Lamprey"
+CurrentType = filter(arrange(Fish,desc(raw_weight)),Species==t)[,c(1,2,3,4,6,7)]
+CurrentType = CurrentType[1:min(10,nrow(CurrentType)),]
+the_names = names(CurrentType)
+CurrentType = cbind(1:nrow(CurrentType),CurrentType)
+names(CurrentType) = c("Rank",the_names)
+kable(CurrentType,digits=2,caption=t)
+
+t = "Minnow"
+CurrentType = filter(arrange(Fish,desc(raw_weight)),Species==t)[,c(1,2,3,4,6,7)]
+CurrentType = CurrentType[1:min(10,nrow(CurrentType)),]
+the_names = names(CurrentType)
+CurrentType = cbind(1:nrow(CurrentType),CurrentType)
+names(CurrentType) = c("Rank",the_names)
+kable(CurrentType,digits=2,caption=t)
+
+t = "Perch"
+CurrentType = filter(arrange(Fish,desc(raw_weight)),Species==t)[,c(1,2,3,4,6,7)]
+CurrentType = CurrentType[1:min(10,nrow(CurrentType)),]
+the_names = names(CurrentType)
+CurrentType = cbind(1:nrow(CurrentType),CurrentType)
+names(CurrentType) = c("Rank",the_names)
+kable(CurrentType,digits=2,caption=t)
+
+t = "Pike"
+CurrentType = filter(arrange(Fish,desc(raw_weight)),Species==t)[,c(1,2,3,4,6,7)]
+CurrentType = CurrentType[1:min(10,nrow(CurrentType)),]
+the_names = names(CurrentType)
+CurrentType = cbind(1:nrow(CurrentType),CurrentType)
+names(CurrentType) = c("Rank",the_names)
+kable(CurrentType,digits=2,caption=t)
+
+t = "Roach"
+CurrentType = filter(arrange(Fish,desc(raw_weight)),Species==t)[,c(1,2,3,4,6,7)]
+CurrentType = CurrentType[1:min(10,nrow(CurrentType)),]
+the_names = names(CurrentType)
+CurrentType = cbind(1:nrow(CurrentType),CurrentType)
+names(CurrentType) = c("Rank",the_names)
+kable(CurrentType,digits=2,caption=t)
+
+t = "Roach/bream hybrid"
+CurrentType = filter(arrange(Fish,desc(raw_weight)),Species==t)[,c(1,2,3,4,6,7)]
+CurrentType = CurrentType[1:min(10,nrow(CurrentType)),]
+the_names = names(CurrentType)
+CurrentType = cbind(1:nrow(CurrentType),CurrentType)
+names(CurrentType) = c("Rank",the_names)
+kable(CurrentType,digits=2,caption=t)
+
+t = "Roach/rudd hybrid"
+CurrentType = filter(arrange(Fish,desc(raw_weight)),Species==t)[,c(1,2,3,4,6,7)]
+CurrentType = CurrentType[1:min(10,nrow(CurrentType)),]
+the_names = names(CurrentType)
+CurrentType = cbind(1:nrow(CurrentType),CurrentType)
+names(CurrentType) = c("Rank",the_names)
+kable(CurrentType,digits=2,caption=t)
+
+t = "Rudd"
+CurrentType = filter(arrange(Fish,desc(raw_weight)),Species==t)[,c(1,2,3,4,6,7)]
+CurrentType = CurrentType[1:min(10,nrow(CurrentType)),]
+the_names = names(CurrentType)
+CurrentType = cbind(1:nrow(CurrentType),CurrentType)
+names(CurrentType) = c("Rank",the_names)
+kable(CurrentType,digits=2,caption=t)
+
+t = "Ruffe"
+CurrentType = filter(arrange(Fish,desc(raw_weight)),Species==t)[,c(1,2,3,4,6,7)]
+CurrentType = CurrentType[1:min(10,nrow(CurrentType)),]
+the_names = names(CurrentType)
+CurrentType = cbind(1:nrow(CurrentType),CurrentType)
+names(CurrentType) = c("Rank",the_names)
+kable(CurrentType,digits=2,caption=t)
+
+t = "Salmon"
+CurrentType = filter(arrange(Fish,desc(raw_weight)),Species==t)[,c(1,2,3,4,6,7)]
+CurrentType = CurrentType[1:min(10,nrow(CurrentType)),]
+the_names = names(CurrentType)
+CurrentType = cbind(1:nrow(CurrentType),CurrentType)
+names(CurrentType) = c("Rank",the_names)
+kable(CurrentType,digits=2,caption=t)
+
+t = "Tench"
+CurrentType = filter(arrange(Fish,desc(raw_weight)),Species==t)[,c(1,2,3,4,6,7)]
+CurrentType = CurrentType[1:min(10,nrow(CurrentType)),]
+the_names = names(CurrentType)
+CurrentType = cbind(1:nrow(CurrentType),CurrentType)
+names(CurrentType) = c("Rank",the_names)
+kable(CurrentType,digits=2,caption=t)
+
+t = "Brown Trout"
+CurrentType = filter(arrange(Fish,desc(raw_weight)),Species==t)[,c(1,2,3,4,6,7)]
+CurrentType = CurrentType[1:min(10,nrow(CurrentType)),]
+the_names = names(CurrentType)
+CurrentType = cbind(1:nrow(CurrentType),CurrentType)
+names(CurrentType) = c("Rank",the_names)
+kable(CurrentType,digits=2,caption="Trout (Brown)")
+
+t = "Rainbow Trout"
+CurrentType = filter(arrange(Fish,desc(raw_weight)),Species==t)[,c(1,2,3,4,6,7)]
+CurrentType = CurrentType[1:min(10,nrow(CurrentType)),]
+the_names = names(CurrentType)
+CurrentType = cbind(1:nrow(CurrentType),CurrentType)
+names(CurrentType) = c("Rank",the_names)
+kable(CurrentType,digits=2,caption="Trout (Rainbow)")
+
+t = "Twaite Shad"
+CurrentType = filter(arrange(Fish,desc(raw_weight)),Species==t)[,c(1,2,3,4,6,7)]
+CurrentType = CurrentType[1:min(10,nrow(CurrentType)),]
+the_names = names(CurrentType)
+CurrentType = cbind(1:nrow(CurrentType),CurrentType)
+names(CurrentType) = c("Rank",the_names)
+kable(CurrentType,digits=2,caption=t)
+
+t = "Zander"
+CurrentType = filter(arrange(Fish,desc(raw_weight)),Species==t)[,c(1,2,3,4,6,7)]
+CurrentType = CurrentType[1:min(10,nrow(CurrentType)),]
+the_names = names(CurrentType)
+CurrentType = cbind(1:nrow(CurrentType),CurrentType)
+names(CurrentType) = c("Rank",the_names)
+kable(CurrentType,digits=2,caption=t)
+```

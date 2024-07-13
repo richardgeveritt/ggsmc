@@ -1,0 +1,63 @@
+theta_output = load_smc_output(results_directory="/Users/richard/Dropbox/code/ilike/experiments")
+
+for (i in 1:66)
+{
+  print(i)
+  sub_output = load_smc_output(results_directory=paste("/Users/richard/Dropbox/code/ilike/experiments/ilike_smc/iteration",i,sep=""),directory_prefix="factor1",external_log_weights = dplyr::filter(dplyr::filter(theta_output,Target==i),Dimension==1)$LogWeight)
+
+  sub_output$ExternalTarget = rep(i,nrow(sub_output))
+  sub_output$ExternalTargetParameters = rep(dplyr::filter(theta_output,Target==i)$TargetParameters[1],nrow(sub_output))
+
+  if (i==1)
+  {
+    lines_output = sub_output
+  }
+  else
+  {
+    lines_output = rbind(lines_output,sub_output)
+  }
+}
+
+# whichA1 = intersect( which(lines_output$ParameterName=="A") , which(lines_output$Dimension=="1") )
+# whichA2 = intersect( which(lines_output$ParameterName=="A") , which(lines_output$Dimension=="2") )
+# whichA3 = intersect( which(lines_output$ParameterName=="A") , which(lines_output$Dimension=="3") )
+# whichA4 = intersect( which(lines_output$ParameterName=="A") , which(lines_output$Dimension=="4") )
+# whichA5 = intersect( which(lines_output$ParameterName=="A") , which(lines_output$Dimension=="5") )
+#
+# whichB1 = intersect( which(lines_output$ParameterName=="B") , which(lines_output$Dimension=="1") )
+# whichB2 = intersect( which(lines_output$ParameterName=="B") , which(lines_output$Dimension=="2") )
+# whichB3 = intersect( which(lines_output$ParameterName=="B") , which(lines_output$Dimension=="3") )
+# whichB4 = intersect( which(lines_output$ParameterName=="B") , which(lines_output$Dimension=="4") )
+# whichB5 = intersect( which(lines_output$ParameterName=="B") , which(lines_output$Dimension=="5") )
+#
+# lines_output$ParameterName[whichA2] = "X"
+# lines_output$Dimension[whichA2] = 17
+#
+# lines_output$ParameterName[whichA3] = "X"
+# lines_output$Dimension[whichA3] = 18
+#
+# lines_output$ParameterName[whichA4] = "X"
+# lines_output$Dimension[whichA4] = 19
+#
+# lines_output$ParameterName[whichA5] = "X"
+# lines_output$Dimension[whichA5] = 20
+#
+# lines_output$ParameterName[whichB2] = "Y"
+# lines_output$Dimension[whichB2] = 17
+#
+# lines_output$ParameterName[whichB3] = "Y"
+# lines_output$Dimension[whichB3] = 18
+#
+# lines_output$ParameterName[whichB4] = "Y"
+# lines_output$Dimension[whichB4] = 19
+#
+# lines_output$ParameterName[whichB5] = "Y"
+# lines_output$Dimension[whichB5] = 20
+
+for (i in 1:89)
+{
+  p = line_graph(lines_output,c("X","Y"),external_target = i,pre_weighting = TRUE,ylimits=c(0,500),alpha=0.01)
+  p
+  ggplot2::ggsave(paste("line",i,".png",sep=""), device="png", path = "/Users/richard/Dropbox/projects/cefas/landscape_large/presentations")
+}
+

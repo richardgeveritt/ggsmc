@@ -1,0 +1,51 @@
+library(ilike)
+library(ggmcmc)
+
+experiment = "lv_XY"
+num_particles = 100
+base_method = "pf"
+method = "pf"
+model_pf = compile(paste("mcmc_",base_method,"_",experiment,".ilike",sep=""))
+
+# epsilon = 10
+# 
+# results_name = paste("mcmc",experiment,method,num_particles,epsilon,sep="_")
+# 
+# mcmc(model_pf,
+#      results_name = results_name,
+#      model_parameter_list = list(num_particles),
+#      fixed_parameter_list = list(ε=epsilon),
+#      initial_values = list(list(θ=c(1, 0.005, 0.6))),
+#      seed = 1)
+
+# output = load_mcmc_output(results_name)
+# 
+# ggmcmc::ggs_traceplot(output)
+
+
+
+# epsilon = 1
+# 
+# results_name = paste("mcmc",experiment,method,num_particles,epsilon,sep="_")
+# 
+# mcmc(model_pf,
+#      results_name = results_name,
+#      model_parameter_list = list(num_particles),
+#      fixed_parameter_list = list(ε=epsilon),
+#      initial_values = list(list(θ=c(1, 0.005, 0.6))),
+#      seed = 1)
+
+# output = load_mcmc_output(results_name)
+
+# ggmcmc::ggs_traceplot(output)
+
+epsilon = 0.1
+
+results_name = paste("mcmc",experiment,method,num_particles,epsilon,sep="_")
+
+mcmc(model_pf,
+     results_name = results_name,
+     model_parameter_list = list(num_particles),
+     fixed_parameter_list = list(ε=epsilon),
+     initial_values = list(list(θ=c(1, 0.005, 0.6))),
+     seed = 1)

@@ -1,0 +1,370 @@
+---
+title: "Cricket averages"
+author: "Richard Everitt"
+date: "20/07/2023"
+output: html_document
+---
+
+```{r setup, include=FALSE, echo=FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(readxl)
+library(knitr)
+library(lubridate)
+library(dplyr)
+```
+
+
+```{r summarise_batting, echo=FALSE, comment=FALSE}
+summarise_batting = function(CricketData)
+{
+  CricketData$Date = as.Date(CricketData$Date, format="%d/%m/%Y")
+  
+  MinYear = min(year(CricketData$Date))
+  MaxYear = max(year(CricketData$Date))
+  
+  #  Find number of years in which there are matches / innings batted.
+  Y = c()
+  for (i in MinYear:MaxYear)
+  {
+    IndexCurrentYear = which(year(CricketData$Date)==i)
+    if (length(IndexCurrentYear)!=0)
+      Y = c(Y,i)
+  }
+  
+  #Years = c(Y,paste(MinYear,MaxYear,sep="-"))
+  
+  Classes = unique(CricketData$`Class of opposition`)
+  NumClasses = length(Classes)
+  
+  NumYears = length(Y)
+  
+  Formats = unique(CricketData$`Format`)
+  NumFormats = length(Formats)
+  
+  Year = matrix(0,NumYears*NumClasses*NumFormats)
+  Class = matrix(0,NumYears*NumClasses*NumFormats)
+  Format = matrix(0,NumYears*NumClasses*NumFormats)
+  
+  Mat = matrix(0,NumYears*NumClasses*NumFormats)
+  Inns = matrix(0,NumYears*NumClasses*NumFormats)
+  NO = matrix(0,NumYears*NumClasses*NumFormats)
+  Runs = matrix(0,NumYears*NumClasses*NumFormats)
+  HighestScore = matrix(0,NumYears*NumClasses*NumFormats)
+  HS = matrix(0,NumYears*NumClasses*NumFormats)
+  max_is_not_out = matrix(0,NumYears*NumClasses*NumFormats)
+  num_times_out = matrix(0,NumYears*NumClasses*NumFormats)
+  Ave = matrix(0,NumYears*NumClasses*NumFormats)
+  BF = matrix(0,NumYears*NumClasses*NumFormats)
+  SR = matrix(0,NumYears*NumClasses*NumFormats)
+  Hundreds = matrix(0,NumYears*NumClasses*NumFormats)
+  Fifties = matrix(0,NumYears*NumClasses*NumFormats)
+  Fours = matrix(0,NumYears*NumClasses*NumFormats)
+  Sixes = matrix(0,NumYears*NumClasses*NumFormats)
+  Ct = matrix(0,NumYears*NumClasses*NumFormats)
+  St = matrix(0,NumYears*NumClasses*NumFormats)
+  RO = matrix(0,NumYears*NumClasses*NumFormats)
+  
+  index_each_class = vector(mode = "list", length = NumClasses)
+  
+  for (k in 1:NumFormats)
+  {
+    for (j in 1:NumClasses)
+    {
+      for (i in 1:NumYears)
+      {
+        index_each_class[[j]] = c(index_each_class[[j]],NumFormats*(NumClasses*(i-1)+j-1)+k)
+        
+        Year[NumFormats*(NumClasses*(i-1)+j-1)+k] = Y[i]
+        Class[NumFormats*(NumClasses*(i-1)+j-1)+k] = Classes[j]
+        Format[NumFormats*(NumClasses*(i-1)+j-1)+k] = Formats[k]
+        
+        CurrentClass = Classes[j]
+        CurrentFormat = Format[j]
+        
+        IndexCurrentYear = which(year(CricketData$Date)==Y[i])
+        IndexCurrentClass = which(CricketData$`Class of opposition`==CurrentClass)
+        IndexCurrentFormat = which(CricketData$Format==CurrentFormat)
+  
+        IndexCurrent = intersect(IndexCurrentYear,IndexCurrentClass,IndexCurrentFormat)
+        
+        Mat[NumFormats*(NumClasses*(i-1)+j-1)+k] = length(IndexCurrent)
+        
+        if (Mat[NumFormats*(NumClasses*(i-1)+j-1)+k]>0)
+        {
+          IndexInnings = intersect(which(CricketData$`Balls faced`!="-"),IndexCurrent)
+          Inns[NumFormats*(NumClasses*(i-1)+j-1)+k] = length(IndexInnings)
+          which_not_out = which(CricketData$`Times out`[IndexInnings]==0)
+          NO[NumFormats*(NumClasses*(i-1)+j-1)+k] = sum(length(which_not_out))
+          Runs[NumFormats*(NumClasses*(i-1)+j-1)+k] = sum(CricketData$`Runs scored`[IndexInnings])
+          HighestScore[NumFormats*(NumClasses*(i-1)+j-1)+k] = max(max(CricketData$`Runs scored`[IndexInnings]),0)
+          HS[NumFormats*(NumClasses*(i-1)+j-1)+k] = max(max(CricketData$`Runs scored`[IndexInnings]),0)
+          which_max = which(CricketData$`Runs scored`[IndexInnings]==HS[NumFormats*(NumClasses*(i-1)+j-1)+k])
+          max_is_not_out[NumFormats*(NumClasses*(i-1)+j-1)+k] = length(intersect(which_not_out,which_max))>0
+          if (max_is_not_out[NumFormats*(NumClasses*(i-1)+j-1)+k])
+            HS[NumFormats*(NumClasses*(i-1)+j-1)+k] = paste(HS[NumFormats*(NumClasses*(i-1)+j-1)+k],'*',sep="")
+          num_times_out[NumFormats*(NumClasses*(i-1)+j-1)+k] = sum(CricketData$`Times out`[IndexInnings])
+          Ave[NumFormats*(NumClasses*(i-1)+j-1)+k] = Runs[NumFormats*(NumClasses*(i-1)+j-1)+k]/num_times_out[NumFormats*(NumClasses*(i-1)+j-1)+k]
+          BF[NumFormats*(NumClasses*(i-1)+j-1)+k] = sum(strtoi(CricketData$`Balls faced`[IndexInnings]))
+          SR[NumFormats*(NumClasses*(i-1)+j-1)+k] = 100*Runs[NumFormats*(NumClasses*(i-1)+j-1)+k]/BF[NumFormats*(NumClasses*(i-1)+j-1)+k]
+          Hundreds[NumFormats*(NumClasses*(i-1)+j-1)+k] = length(which(CricketData$`Runs scored`[IndexInnings]>=100))
+          Fifties[NumFormats*(NumClasses*(i-1)+j-1)+k] = length(which(CricketData$`Runs scored`[IndexInnings]>=50)) - Hundreds[NumFormats*(NumClasses*(i-1)+j-1)+k]
+          Fours[NumFormats*(NumClasses*(i-1)+j-1)+k] = sum(CricketData$Fours[IndexInnings])
+          Sixes[NumFormats*(NumClasses*(i-1)+j-1)+k] = sum(CricketData$Sixes[IndexInnings])
+          Ct[NumFormats*(NumClasses*(i-1)+j-1)+k] = sum(CricketData$Catches[IndexCurrent])
+          St[NumFormats*(NumClasses*(i-1)+j-1)+k] = sum(CricketData$Stumpings[IndexCurrent])
+          RO[NumFormats*(NumClasses*(i-1)+j-1)+k] = sum(CricketData$`Run outs`[IndexCurrent])
+        }
+      }
+    }
+    
+    Class[NumFormats*(NumClasses*(i)+j)+k] = Classes[j]
+    which_years_played = which(Mat[index_each_class[[j]]]>0)
+    Year[NumFormats*(NumClasses*(i)+j)+k] = paste(min(Year[index_each_class[[j]]][which_years_played]),max(Year[index_each_class[[j]]][which_years_played]),sep="-")
+    
+    Mat[NumFormats*(NumClasses*(i)+j)+k] = sum(Mat[index_each_class[[j]]])
+    Inns[NumFormats*(NumClasses*(i)+j)+k] = sum(Inns[index_each_class[[j]]])
+    NO[NumFormats*(NumClasses*(i)+j)+k] = sum(NO[index_each_class[[j]]])
+    Runs[NumFormats*(NumClasses*(i)+j)+k] = sum(Runs[index_each_class[[j]]])
+    HS[NumFormats*(NumClasses*(i)+j)+k] = max(HighestScore[index_each_class[[j]]])
+    which_max_max = which(HighestScore[index_each_class[[j]]]==HS[NumFormats*(NumClasses*(i)+j)+k])
+    max_max_is_not_out = length(which(max_is_not_out[index_each_class[[j]]][which_max_max]==1))>0
+    if (max_max_is_not_out)
+      HS[NumFormats*(NumClasses*(i)+j)+k] = paste(HS[NumFormats*(NumClasses*(i)+j)+k],'*',sep="")
+    Ave[NumFormats*(NumClasses*(i)+j)+k] = Runs[NumFormats*(NumClasses*(i)+j)+k] / sum(num_times_out[index_each_class[[j]]])
+    BF[NumFormats*(NumClasses*(i)+j)+k] = sum(BF[index_each_class[[j]]])
+    SR[NumFormats*(NumClasses*(i)+j)+k] = 100*Runs[NumFormats*(NumClasses*(i)+j)+k]/BF[NumFormats*(NumClasses*(i)+j)+k]
+    Hundreds[NumFormats*(NumClasses*(i)+j)+k] = sum(Hundreds[index_each_class[[j]]])
+    Fifties[NumFormats*(NumClasses*(i)+j)+k] = sum(Fifties[index_each_class[[j]]])
+    Fours[NumFormats*(NumClasses*(i)+j)+k] = sum(Fours[index_each_class[[j]]])
+    Sixes[NumFormats*(NumClasses*(i)+j)+k] = sum(Sixes[index_each_class[[j]]])
+    Ct[NumFormats*(NumClasses*(i)+j)+k] = sum(Ct[index_each_class[[j]]])
+    St[NumFormats*(NumClasses*(i)+j)+k] = sum(St[index_each_class[[j]]])
+    RO[NumFormats*(NumClasses*(i)+j)+k] = sum(RO[index_each_class[[j]]])
+  }
+  
+  Class[NumClasses*(i)+NumClasses+1] = "All"
+  Year[NumClasses*(i)+NumClasses+1] = paste(MinYear,MaxYear,sep="-")
+  
+  Mat[NumClasses*(i)+NumClasses+1] = sum(Mat[1:(NumClasses*(i))])
+  Inns[NumClasses*(i)+NumClasses+1] = sum(Inns[1:(NumClasses*(i))])
+  NO[NumClasses*(i)+NumClasses+1] = sum(NO[1:(NumClasses*(i))])
+  Runs[NumClasses*(i)+NumClasses+1] = sum(Runs[1:(NumClasses*(i))])
+  HS[NumClasses*(i)+NumClasses+1] = max(HighestScore[1:(NumClasses*(i))])
+  which_max_max = which(HighestScore[1:(NumClasses*(i))]==HS[NumClasses*(i)+NumClasses+1])
+  max_max_is_not_out = length(which(max_is_not_out[1:(NumClasses*(i))][which_max_max]==1))>0
+  if (max_max_is_not_out)
+    HS[NumClasses*(i)+NumClasses+1] = paste(HS[NumClasses*(i)+NumClasses+1],'*',sep="")
+  Ave[NumClasses*(i)+NumClasses+1] = Runs[NumClasses*(i)+NumClasses+1] / sum(num_times_out[1:(NumClasses*(i))])
+  BF[NumClasses*(i)+NumClasses+1] = sum(BF[1:(NumClasses*(i))])
+  SR[NumClasses*(i)+NumClasses+1] = 100*Runs[NumClasses*(i)+NumClasses+1]/BF[NumClasses*(i)+NumClasses+1]
+  Hundreds[NumClasses*(i)+NumClasses+1] = sum(Hundreds[1:(NumClasses*(i))])
+  Fifties[NumClasses*(i)+NumClasses+1] = sum(Fifties[1:(NumClasses*(i))])
+  Fours[NumClasses*(i)+NumClasses+1] = sum(Fours[1:(NumClasses*(i))])
+  Sixes[NumClasses*(i)+NumClasses+1] = sum(Sixes[1:(NumClasses*(i))])
+  Ct[NumClasses*(i)+NumClasses+1] = sum(Ct[1:(NumClasses*(i))])
+  St[NumClasses*(i)+NumClasses+1] = sum(St[1:(NumClasses*(i))])
+  RO[NumClasses*(i)+NumClasses+1] = sum(RO[1:(NumClasses*(i))])
+  
+  BattingData = data.frame(Year,
+                           Class,
+                           Mat,
+                           Inns,
+                           NO,
+                           Runs,
+                           HS,
+                           Ave,
+                           BF,
+                           SR,
+                           Hundreds,
+                           Fifties,
+                           Fours,
+                           Sixes,
+                           Ct,
+                           St,
+                           RO)
+  
+  BattingData = filter(BattingData,Mat>0)
+  
+  return(BattingData)
+}
+```
+
+```{r summarise_bowling, echo=FALSE, comment=FALSE}
+summarise_bowling = function(CricketData)
+{
+  CricketData$Date = as.Date(CricketData$Date, format="%d/%m/%Y")
+  
+  MinYear = min(year(CricketData$Date))
+  MaxYear = max(year(CricketData$Date))
+  
+  #  Find number of years in which there are matches / innings batted.
+  Y = c()
+  for (i in MinYear:MaxYear)
+  {
+    IndexCurrentYear = which(year(CricketData$Date)==i)
+    if (length(IndexCurrentYear)!=0)
+      Y = c(Y,i)
+  }
+  #Years = c(Y,paste(MinYear,MaxYear,sep="-"))
+  
+  Classes = unique(CricketData$`Class of opposition`)
+  NumClasses = length(Classes)
+  
+  NumYears = length(Y)
+  
+  Year = matrix(0,NumYears*NumClasses*NumFormats)
+  Class = matrix(0,NumYears*NumClasses*NumFormats)
+  
+  Mat = matrix(0,NumYears*NumClasses*NumFormats)
+  Inns = matrix(0,NumYears*NumClasses*NumFormats)
+  Balls = matrix(0,NumYears*NumClasses*NumFormats)
+  Runs = matrix(0,NumYears*NumClasses*NumFormats)
+  Wkts = matrix(0,NumYears*NumClasses*NumFormats)
+  BestWkts = matrix(0,NumYears*NumClasses*NumFormats)
+  BestRunsForBestWkts = matrix(0,NumYears*NumClasses*NumFormats)
+  BBI = matrix(0,NumYears*NumClasses*NumFormats)
+  Ave = matrix(0,NumYears*NumClasses*NumFormats)
+  Econ = matrix(0,NumYears*NumClasses*NumFormats)
+  SR = matrix(0,NumYears*NumClasses*NumFormats)
+  FourW = matrix(0,NumYears*NumClasses*NumFormats)
+  FiveW = matrix(0,NumYears*NumClasses*NumFormats)
+  
+  index_each_class = vector(mode = "list", length = NumClasses)
+  
+  for (k in 1:NumFormats)
+  {
+    for (j in 1:NumClasses)
+    {
+      for (i in 1:NumYears)
+      {
+        index_each_class[[j]] = c(index_each_class[[j]],NumFormats*(NumClasses*(i-1)+j-1)+k)
+        
+        Year[NumFormats*(NumClasses*(i-1)+j-1)+k] = Y[i]
+        Class[NumFormats*(NumClasses*(i-1)+j-1)+k] = Classes[j]
+        
+        CurrentClass = Classes[j]
+        
+        IndexCurrentYear = which(year(CricketData$Date)==Y[i])
+        IndexCurrentClass = which(CricketData$`Class of opposition`==CurrentClass)
+  
+        IndexCurrent = intersect(IndexCurrentYear,IndexCurrentClass)
+        
+        Mat[NumFormats*(NumClasses*(i-1)+j-1)+k] = length(IndexCurrent)
+        
+        if (Mat[NumFormats*(NumClasses*(i-1)+j-1)+k]>0)
+        {
+          IndexInnings = intersect(which(CricketData$`Balls bowled`!=0),IndexCurrent)
+          Inns[NumFormats*(NumClasses*(i-1)+j-1)+k] = length(IndexInnings)
+          Balls[NumFormats*(NumClasses*(i-1)+j-1)+k] = sum(CricketData$`Balls bowled`[IndexInnings])
+          Runs[NumFormats*(NumClasses*(i-1)+j-1)+k] = sum(CricketData$`Total conceded`[IndexInnings])
+          Wkts[NumFormats*(NumClasses*(i-1)+j-1)+k] = sum(CricketData$Wickets[IndexInnings])
+          BestWkts[NumFormats*(NumClasses*(i-1)+j-1)+k] = max(max(CricketData$Wickets[IndexInnings]),0)
+          which_max = which(CricketData$Wickets[IndexInnings]==BestWkts[NumFormats*(NumClasses*(i-1)+j-1)+k])
+          BestRunsForBestWkts[NumFormats*(NumClasses*(i-1)+j-1)+k] = min(CricketData$`Total conceded`[IndexInnings][which_max])
+          if (is.infinite(BestRunsForBestWkts[NumFormats*(NumClasses*(i-1)+j-1)+k]))
+            BestRunsForBestWkts[NumFormats*(NumClasses*(i-1)+j-1)+k] = 0
+          BBI[NumFormats*(NumClasses*(i-1)+j-1)+k] = paste(BestWkts[NumFormats*(NumClasses*(i-1)+j-1)+k],BestRunsForBestWkts[NumFormats*(NumClasses*(i-1)+j-1)+k],sep="/")
+          Ave[NumFormats*(NumClasses*(i-1)+j-1)+k] = Runs[NumFormats*(NumClasses*(i-1)+j-1)+k]/Wkts[NumFormats*(NumClasses*(i-1)+j-1)+k]
+          Econ[NumFormats*(NumClasses*(i-1)+j-1)+k] = 6*Runs[NumFormats*(NumClasses*(i-1)+j-1)+k]/Balls[NumFormats*(NumClasses*(i-1)+j-1)+k]
+          SR[NumFormats*(NumClasses*(i-1)+j-1)+k] = Balls[NumFormats*(NumClasses*(i-1)+j-1)+k]/Wkts[NumFormats*(NumClasses*(i-1)+j-1)+k]
+          FiveW[NumFormats*(NumClasses*(i-1)+j-1)+k] = sum(which(CricketData$Wickets[IndexInnings]>=5))
+          FourW[NumFormats*(NumClasses*(i-1)+j-1)+k] = sum(which(CricketData$Wickets[IndexInnings]>=4)) - FiveW[NumFormats*(NumClasses*(i-1)+j-1)+k]
+        }
+      }
+      
+      Class[NumFormats*(NumClasses*(i)+j)+k] = Classes[j]
+      which_years_played = which(Mat[index_each_class[[j]]]>0)
+      Year[NumFormats*(NumClasses*(i)+j)+k] = paste(min(Year[index_each_class[[j]]][which_years_played]),max(Year[index_each_class[[j]]][which_years_played]),sep="-")
+      
+      Mat[NumFormats*(NumClasses*(i)+j)+k] = sum(Mat[index_each_class[[j]]])
+      Inns[NumFormats*(NumClasses*(i)+j)+k] = sum(Inns[index_each_class[[j]]])
+      Balls[NumFormats*(NumClasses*(i)+j)+k] = sum(Balls[index_each_class[[j]]])
+      Runs[NumFormats*(NumClasses*(i)+j)+k] = sum(Runs[index_each_class[[j]]])
+      Wkts[NumFormats*(NumClasses*(i)+j)+k] = sum(Wkts[index_each_class[[j]]])
+      which_max_max = which(BestWkts[index_each_class[[j]]]==max(BestWkts[index_each_class[[j]]]))
+      BestWkts[NumFormats*(NumClasses*(i)+j)+k] = max(BestWkts[index_each_class[[j]]])
+      BestRunsForBestWkts[NumFormats*(NumClasses*(i)+j)+k] = min(BestRunsForBestWkts[index_each_class[[j]]][which_max_max])
+      BBI[NumFormats*(NumClasses*(i)+j)+k] = paste(BestWkts[NumFormats*(NumClasses*(i)+j)+k],BestRunsForBestWkts[NumFormats*(NumClasses*(i)+j)+k],sep="/")
+      Ave[NumFormats*(NumClasses*(i)+j)+k] = Runs[NumFormats*(NumClasses*(i)+j)+k] / Wkts[NumFormats*(NumClasses*(i)+j)+k]
+      Econ[NumFormats*(NumClasses*(i)+j)+k] = 6*Runs[NumFormats*(NumClasses*(i)+j)+k]/Balls[NumFormats*(NumClasses*(i)+j)+k]
+      SR[NumFormats*(NumClasses*(i)+j)+k] = Balls[NumFormats*(NumClasses*(i)+j)+k]/Wkts[NumFormats*(NumClasses*(i)+j)+k]
+      FourW[NumFormats*(NumClasses*(i)+j)+k] = sum(FourW[index_each_class[[j]]])
+      FiveW[NumFormats*(NumClasses*(i)+j)+k] = sum(FiveW[index_each_class[[j]]])
+    }
+  }
+  
+  Class[NumClasses*(i)+NumClasses+1] = "All"
+  Year[NumClasses*(i)+NumClasses+1] = paste(MinYear,MaxYear,sep="-")
+  
+  Mat[NumClasses*(i)+NumClasses+1] = sum(Mat[1:(NumClasses*(i))])
+  Inns[NumClasses*(i)+NumClasses+1] = sum(Inns[1:(NumClasses*(i))])
+  Balls[NumClasses*(i)+NumClasses+1] = sum(Balls[1:(NumClasses*(i))])
+  Runs[NumClasses*(i)+NumClasses+1] = sum(Runs[1:(NumClasses*(i))])
+  Wkts[NumClasses*(i)+NumClasses+1] = sum(Wkts[1:(NumClasses*(i))])
+  which_max_max = which(BestWkts[1:(NumClasses*(i))]==max(BestWkts[1:(NumClasses*(i))]))
+  BestWkts[NumClasses*(i)+NumClasses+1] = max(BestWkts[1:(NumClasses*(i))])
+  BestRunsForBestWkts[NumClasses*(i)+NumClasses+1] = min(BestRunsForBestWkts[1:(NumClasses*(i))][which_max_max])
+  BBI[NumClasses*(i)+NumClasses+1] = paste(BestWkts[NumClasses*(i)+NumClasses+1],BestRunsForBestWkts[NumClasses*(i)+NumClasses+1],sep="/")
+  Ave[NumClasses*(i)+NumClasses+1] = Runs[NumClasses*(i)+NumClasses+1] / Wkts[NumClasses*(i)+NumClasses+1]
+  Econ[NumClasses*(i)+NumClasses+1] = 6*Runs[NumClasses*(i)+NumClasses+1]/Balls[NumClasses*(i)+NumClasses+1]
+  SR[NumClasses*(i)+NumClasses+1] = Balls[NumClasses*(i)+NumClasses+1]/Wkts[NumClasses*(i)+NumClasses+1]
+  FourW[NumClasses*(i)+NumClasses+1] = sum(FourW[1:(NumClasses*(i))])
+  FiveW[NumClasses*(i)+NumClasses+1] = sum(FiveW[1:(NumClasses*(i))])
+  
+  BowlingData = data.frame(Year,
+                           Class,
+                           Mat,
+                           Inns,
+                           Balls,
+                           Runs,
+                           Wkts,
+                           BBI,
+                           Ave,
+                           Econ,
+                           SR,
+                           FourW,
+                           FiveW)
+  
+  BowlingData = filter(BowlingData,Mat>0)
+  
+  return(BowlingData)
+}
+```
+
+## Jimmy
+```{r jimmy_data, echo=FALSE, message=FALSE}
+JimmyCricketData <- read_excel("jimmy_cricket.xlsx")
+```
+
+### Batting and fielding
+
+```{r jimmy_batting, echo=FALSE}
+JimmyBattingData = summarise_batting(JimmyCricketData)
+kable(JimmyBattingData,digits=2)
+```
+
+### Bowling
+
+```{r jimmy_bowling, echo=FALSE}
+JimmyBowlingData = summarise_bowling(JimmyCricketData)
+kable(JimmyBowlingData,digits=2)
+```
+
+## Lawrie
+```{r lawrie_data, echo=FALSE, message=FALSE}
+LawrieCricketData <- read_excel("lawrie_cricket.xlsx")
+```
+
+### Batting and fielding
+
+```{r lawrie_batting, echo=FALSE}
+LawrieBattingData = summarise_batting(LawrieCricketData)
+kable(LawrieBattingData,digits=2)
+```
+### Bowling
+
+```{r lawrie_bowling, echo=FALSE}
+LawrieBowlingData = summarise_bowling(LawrieCricketData)
+kable(LawrieBowlingData,digits=2)
+```
+

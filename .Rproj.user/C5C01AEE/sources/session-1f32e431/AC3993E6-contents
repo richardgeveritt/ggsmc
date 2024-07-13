@@ -1,0 +1,138 @@
+experiment = "lv_XY_scaled"
+#experiment = "gauss"
+llhd_results = data.frame()
+
+methods = c("abc","enkiabc")
+#methods = c("abc","sl","enkiabc")
+
+for (i in 1:length(methods))
+{
+  name = paste("llhd_results_",methods[i],"_",experiment,".RData",sep="")
+
+  load(name)
+
+  if (i==1)
+    all_llhd_results2 = llhd_results
+  else if (methods[i]=="enkiabc")
+    all_llhd_results2 = rbind(all_llhd_results2,all_llhd_results)
+  else
+    all_llhd_results2 = rbind(all_llhd_results2,llhd_results)
+}
+
+#truth = data.frame(ε=c(10,1,0.1,0,01),truth=c(-136.2307,-136.2307,-136.2307,-136.2307))
+
+root_mean_squared = function(x)
+{
+  return(sqrt(mean(x^2)))
+}
+
+# lv_XY
+#epsilon_vec = c(10,1,0.1,0.01)
+#truth = c(-136.19892974980041,-126.31131034739428,-80.341577637558032,-6.3278567864801563)
+
+#epsilon_vec = c(10,1,0.1,0.01)/100
+epsilon_vec = c(10,1)/100
+
+# lv_X
+#truth = c(-70.375452717988907,-65.821663939974002,-42.762419890376925,-5.921058402472207)
+
+# lv_XY_bad
+#truth = c(-170.55517830387515,-200.43518,-80.341577637558032,-6.3278567864801563)
+#truth = c(-172.10983536037818,-194.00309592600217,-190.21105071511229,-185.58164519113996)
+#truth = c(-172.10983536037818,-194.00309592600217)
+
+#num_particles_vec = c(10,50,100,200)
+
+#epsilon_vec = c(10,1)
+
+#epsilon_vec = c(0.1,0.01,0.001,0.0001)
+#truth = dnorm(0,0,sqrt(1+epsilon_vec^2),log=TRUE)
+
+for (i in 1:length(epsilon_vec))
+{
+  epsilon = epsilon_vec[i]
+
+  current_llhd_results = dplyr::filter(all_llhd_results2,ε==epsilon)
+
+  current_llhd_results = dplyr::group_by(current_llhd_results,Method,n)
+
+  statistics = dplyr::summarise_all(current_llhd_results,list(mean,sd))[,c(1,2,3,4,5,7)]
+
+  #current_llhd_results$Estimate = current_llhd_results$Estimate - truth[i]
+
+  statistics = cbind(statistics,statistics[,5]*(statistics[,6]^2))
+
+  names(statistics) = c("Method","n","ε","Mean","Time","SD","Scaled Var")
+
+  enki_statistics = statistics[grep("EnKI-ABC",statistics$Method),]
+
+  est_result = matrix(0,nrow(enki_statistics))
+  sig_result = matrix(0,nrow(enki_statistics))
+  target_result = matrix(0,nrow(enki_statistics))
+  shifter_result = matrix("",nrow(enki_statistics))
+
+  for (j in 1:nrow(enki_statistics))
+  {
+    estimator_vec = c(1,2,3,4)
+    significance_vec = c(0.05,0.1,0.5,1)
+    targets_vec = c(5,10,20)
+
+    #ess_vec = c(0.1,0.5,0.9)
+    #significance_vec = c(0.05,0.1,0.5,1)
+
+    for (k in 1:length(estimator_vec))
+    {
+      estimator = estimator_vec[k]
+      for (l in 1:length(significance_vec))
+      {
+        significance = significance_vec[l]
+
+        for (m in 1:length(targets_vec))
+        {
+          targets = targets_vec[m]
+
+          if (length(grep(paste(estimator,significance,targets,sep="_"),enki_statistics$Method[j]))>0)
+          {
+            est_result[j] = estimator
+            sig_result[j] = significance
+            target_result[j] = targets
+          }
+        }
+      }
+    }
+
+    if (length(grep("sEnKI",enki_statistics$Method[j]))>0)
+    {
+      shifter_result[j] = "Stochastic"
+    }
+
+    if (length(grep("aEnKI",enki_statistics$Method[j]))>0)
+    {
+      shifter_result[j] = "Adjustment"
+    }
+
+    if (length(grep("rEnKI",enki_statistics$Method[j]))>0)
+    {
+      shifter_result[j] = "Square root"
+    }
+
+  }
+
+  enki_statistics = cbind(enki_statistics,est_result)
+  enki_statistics = cbind(enki_statistics,sig_result)
+  enki_statistics = cbind(enki_statistics,target_result)
+  enki_statistics = cbind(enki_statistics,shifter_result)
+
+  names(enki_statistics) = c("Method","n","ε","Mean","Time","SD","Scaled Var","Estimator","Significance","Targets","Shifter")
+
+  if (i==1)
+  {
+    all_enki_statistics = enki_statistics
+    all_statistics = statistics
+  }
+  else
+  {
+    all_enki_statistics = rbind(all_enki_statistics,enki_statistics)
+    all_statistics = rbind(all_statistics,statistics)
+  }
+}

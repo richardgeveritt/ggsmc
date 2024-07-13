@@ -1,0 +1,512 @@
+output = load_smc_output("/Users/richard/Dropbox/code/ilike/experiments")
+scatter_plot(output,x_parameter="mu",x_dimension=1,y_parameter="mu",y_dimension=4,alpha = 0.5,xlimits = c(-10,10),ylimits = c(-10,10),use_weights = TRUE)
+scatter_plot(output,x_parameter="mu",x_dimension=1,y_parameter="mu",y_dimension=4,alpha = 0.5,xlimits = c(-10,10),ylimits = c(-10,10),use_weights = TRUE,target=17)
+output = load_smc_output("/Users/richard/Dropbox/code/ilike/experiments")
+scatter_plot(output,x_parameter="mu",x_dimension=1,y_parameter="mu",y_dimension=4,alpha = 0.5,xlimits = c(-10,10),ylimits = c(-10,10),use_weights = TRUE)
+scatter_plot(output,x_parameter="mu",x_dimension=1,y_parameter="mu",y_dimension=4,alpha = 0.5,xlimits = c(-10,10),ylimits = c(-10,10),use_weights = FALSE)
+output = load_smc_output("/Users/richard/Dropbox/code/ilike/experiments")
+scatter_plot(output,x_parameter="mu",x_dimension=1,y_parameter="mu",y_dimension=4,xlimits = c(-15,15),ylimits = c(-15,15),use_weights = TRUE,target=17)
+scatter_plot(output,x_parameter="mu",x_dimension=1,y_parameter="mu",y_dimension=4,xlimits = c(-15,15),ylimits = c(-15,15),use_weights = TRUE)
+scatter_plot(output,x_parameter="mu",x_dimension=1,y_parameter="mu",y_dimension=4,xlimits = c(-15,15),ylimits = c(-15,15),use_weights = FALSE)
+scatter_plot(output,x_parameter="mu",x_dimension=1,y_parameter="mu",y_dimension=2,xlimits = c(-15,15),ylimits = c(-15,15),use_weights = FALSE)
+scatter_plot(output,x_parameter="mu",x_dimension=1,y_parameter="mu",y_dimension=2,xlimits = c(-15,15),ylimits = c(-15,15),use_weights = TRUE)
+output = load_enk_output("/Users/richard/Dropbox/code/ilike/experiments")
+ggsmc::animated_histogram(output,parameter = "x",dimension = 1)
+ggsmc::animated_histogram(output,parameter = "x",dimension = 1,duration = 10)
+ggsmc::histogram(output,parameter = "x",dimension = 1,target = 1)
+ggsmc::histogram(output,parameter = "x",dimension = 1,target = 2)
+ggsmc::histogram(output,parameter = "x",dimension = 1,target = 3)
+ggsmc::histogram(output,parameter = "x",dimension = 2,target = 1)
+ggsmc::histogram(output,parameter = "x",dimension = 2,target = 2)
+ggsmc::histogram(output,parameter = "x",dimension = 2,target = 3)
+output = load_enk_output("/Users/richard/Dropbox/code/ilike/experiments")
+ggsmc::histogram(output,parameter = "x",dimension = 2,target = 1)
+ggsmc::histogram(output,parameter = "x",dimension = 2,target = 2)
+ggsmc::histogram(output,parameter = "x",dimension = 2,target = 3)
+ggsmc::histogram(output,parameter = "x",dimension = 1,target = 1)
+ggsmc::histogram(output,parameter = "x",dimension = 1,target = 2)
+ggsmc::histogram(output,parameter = "x",dimension = 1,target = 3)
+ggsmc::histogram(output,parameter = "x",dimension = 2,target = 3)
+output = load_enk_output("/Users/richard/Dropbox/code/ilike/experiments")
+ggsmc::histogram(output,parameter = "x",dimension = 1,target = 3)
+ggsmc::histogram(output,parameter = "x",dimension = 1,target = 2)
+output = load_enk_output("/Users/richard/Dropbox/code/ilike/experiments")
+ggsmc::histogram(output,parameter = "x",dimension = 1,target = 2)
+ggsmc::histogram(output,parameter = "x",dimension = 1,target = 1)
+ggsmc::histogram(output,parameter = "x",dimension = 1,target = 3)
+ggsmc::histogram(output,parameter = "x",dimension = 1,target = 2)
+output = load_enk_output("/Users/richard/Dropbox/code/ilike/experiments")
+ggsmc::histogram(output,parameter = "x",dimension = 1,target = 2)
+ggsmc::histogram(output,parameter = "x",dimension = 1,target = 4)
+output = load_enk_output("/Users/richard/Dropbox/code/ilike/experiments")
+ggsmc::histogram(output,parameter = "x",dimension = 1,target = 4)
+ggsmc::histogram(output,parameter = "x",dimension = 2,target = 4)
+ggsmc::histogram(output,parameter = "x",dimension = 1,target = 3)
+output = load_enk_output("/Users/richard/Dropbox/code/ilike/experiments")
+ggsmc::histogram(output,parameter = "x",dimension = 1,target = 3)
+ggsmc::histogram(output,parameter = "x",dimension = 2,target = 3)
+output = load_snc_output("/Users/richard/Dropbox/code/ilike/experiments")
+output = ilike::load_snc_output("/Users/richard/Dropbox/code/ilike/experiments")
+output = load_smc_output("/Users/richard/Dropbox/code/ilike/experiments")
+ggsmc::histogram(output,parameter = "x",dimension = 1,target = 3)
+ggsmc::histogram(output,parameter = "x",dimension = 1,target = 3,xlimits=c(-1,5))
+ggsmc::histogram(output,parameter = "x",dimension = 2,target = 3,xlimits=c(-4,6))
+output = load_mcmc_output("/Users/richard/Dropbox/code/ilike/experiments")
+ggmcmc::ggs_traceplot(output)
+ggmcmc::ggs_histogram(output)
+ilike.output::sd_each_chain(output = )
+ilike.output::sd_each_chain(output)
+ilike.output::mcmc_statistics(output)
+output = load_mcmc_output("/Users/richard/Dropbox/code/ilike/experiments",ilike.output = TRUE)
+ilike.output::mcmc_statistics(output)
+output = load_mcmc_output("/Users/richard/Dropbox/code/ilike/experiments",ilike.output = TRUE)
+ilike.output::mcmc_statistics(output)
+output = load_mcmc_output("/Users/richard/Dropbox/code/ilike/experiments",ilike.output = TRUE)
+ilike.output::mcmc_statistics(output)
+output = load_mcmc_output("/Users/richard/Dropbox/code/ilike/experiments")
+ggmcmc::ggs_histogram(output)
+output = load_mcmc_output("/Users/richard/Dropbox/code/ilike/experiments")
+ggmcmc::ggs_histogram(output)
+output = load_mcmc_output("/Users/richard/Dropbox/code/ilike/experiments",ilike.output = TRUE)
+ilike.output::mcmc_statistics(output)
+output = load_mcmc_output("/Users/richard/Dropbox/code/ilike/experiments",ilike.output = TRUE)
+ilike.output::mcmc_statistics(output)
+ilike.output::mcmc_statistics(output)
+output = load_mcmc_output("/Users/richard/Dropbox/code/ilike/experiments")
+ggmcmc::ggs_histogram(output)
+output = load_mcmc_output("/Users/richard/Dropbox/code/ilike/experiments")
+ggmcmc::ggs_histogram(output)
+output = load_mcmc_output("/Users/richard/Dropbox/code/ilike/experiments")
+ggmcmc::ggs_histogram(output)
+ilike.output::mcmc_statistics(output)
+output = load_mcmc_output("/Users/richard/Dropbox/code/ilike/experiments",ilike.output = TRUE)
+ilike.output::mcmc_statistics(output)
+output = load_mcmc_output("/Users/richard/Dropbox/code/ilike/experiments",ilike.output = TRUE)
+ilike.output::mcmc_statistics(output)
+ilike.output::mcmc_statistics(output)
+output = load_mcmc_output("/Users/richard/Dropbox/code/ilike/experiments")
+ggmcmc::ggs_histogram(output)
+output = load_mcmc_output("/Users/richard/Dropbox/code/ilike/experiments",ilike.output = TRUE)
+ilike.output::mcmc_statistics(output)
+output = load_mcmc_output("/Users/richard/Dropbox/code/ilike/experiments")
+ggmcmc::ggs_histogram(output)
+setwd("/Users/richard/Dropbox/teaching/4th_year/st923/models")
+output = load_mcmc_output("cv_model_rwm")
+ggmcmc::ggs_histogram(output)
+output = load_mcmc_output("cv_model_rwm",ilike.output = TRUE)
+ilike.output::mcmc_statistics(output)
+output = load_mcmc_output("cv_model_rwm",ilike.output = TRUE)
+ilike.output::mcmc_statistics(output)
+library(ggsmc)
+output = load_mcmc_output("cv_model_rwm",ilike.output = TRUE)
+ilike.output::mcmc_statistics(output)
+setwd("/Users/richard/Dropbox/teaching/4th_year/st923")
+output = load_mcmc_output(toy_model_rwm",ilike.output = TRUE)
+""
+output = load_mcmc_output("toy_model_rwm",ilike.output = TRUE)
+ilike.output::mcmc_statistics(output)
+ggsmc::scatter_plot(x_parameter = "x",1,"y_parameter",2)
+ggsmc::scatter_plot(output,x_parameter = "x",1,"y_parameter",2)
+output = load_mcmc_output("toy_model_rwm")
+ggmcmc::ggs_traceplot(output)
+ggmcmc::
+GGally::ggpairs(output)
+output
+output = load_mcmc_output("toy_model_rwm",ilike.output = TRUE)
+ggsmc::scatter_plot(output,x_parameter = "x",1,"y_parameter",2)
+output = load_smc_output("toy_model_rwm")
+output = load_mcmc_output("toy_model_rwm",ilike.output = TRUE)
+ggsmc::scatter_plot(output,x_parameter = "x",1,"y_parameter",2)
+source("~/Dropbox/projects/ggsmc/R/scatter_plots.R")
+scatter_plot(output,x_parameter = "x",1,"y_parameter",2)
+target
+library(ggsmc)
+ggsmc::scatter_plot(output,x_parameter = "x",1,"y_parameter",2)
+library(ggsmc)
+ggsmc::scatter_plot(output,x_parameter = "x",1,"y_parameter",2,use_initial_points = FALSE)
+ggsmc::scatter_plot(output,x_parameter = "x",1,y_parameter="y",2,use_initial_points = FALSE)
+output
+ggsmc::scatter_plot(output,x_parameter = "x",1,y_parameter="x",2,use_initial_points = FALSE)
+output
+output = load_mcmc_output("toy_model_rwm",ilike.output = TRUE)
+output = load_mcmc_output("toy_model_rwm",ilike.output = TRUE)
+ggsmc::scatter_plot(output,x_parameter = "x",1,y_parameter="x",2,use_initial_points = FALSE)
+ggmcmc::ggs_traceplot(output)
+output = load_mcmc_output("toy_model_rwm")
+ggmcmc::ggs_traceplot(output)
+ggmcmc::ggs_autocorrelation
+ggmcmc::ggs_autocorrelation(output)
+histogram(output,"x",1)
+output = load_mcmc_output("toy_model_rwm",ilike.output = TRUE)
+histogram(output,"x",1)
+histogram(output,"x",1,use_initial_points = FALSE)
+ggmcmc::ggs_histogram(output)
+output = load_mcmc_output("toy_model_rwm")
+ggmcmc::ggs_histogram(output)
+library(ggsmc)
+library(ggsmc)
+library(ggsmc)
+library(ggsmc)
+experiment = "lv_XY"
+llhd_results = data.frame()
+methods = c("pf","enkf","abc","sl","enkiabc")
+for (i in 1:length(methods))
+{
+name = paste("llhd_results_",methods[i],"_",experiment,".RData",sep="")
+load(name)
+if (i==1)
+all_llhd_results = llhd_results
+else
+all_llhd_results = rbind(all_llhd_results,llhd_results)
+}
+setwd("~/Dropbox/projects/enk_abc")
+experiment = "lv_XY"
+llhd_results = data.frame()
+methods = c("pf","enkf","abc","sl","enkiabc")
+for (i in 1:length(methods))
+{
+name = paste("llhd_results_",methods[i],"_",experiment,".RData",sep="")
+load(name)
+if (i==1)
+all_llhd_results = llhd_results
+else
+all_llhd_results = rbind(all_llhd_results,llhd_results)
+}
+truth = data.frame(ε=10,truth=-136.2307)
+num_particles_vec = c(100,200,300)
+i=1
+num_particles = num_particles_vec[i]
+current_llhd_results = dplyr::filter(all_llhd_results,n==num_particles)
+current_llhd_results = dplyr::group_by(current_llhd_results,Method,ε)
+statistics = dplyr::summarise_all(current_llhd_results,list(mean,sd))
+statistics
+statistics = dplyr::summarise_all(current_llhd_results,list(mean,sd))[,c(1,2,3,4,5,7)]
+statistics
+truth = data.frame(ε=c(10,1),truth=c(-136.2307,-136.2307))
+truth = c(-136.2307,-136.2307,-136.2307,-136.2307)
+epsilon_vec = c(10,1,0.1,0,01)
+epsilon = epsilon_vec[i]
+current_llhd_results = dplyr::filter(all_llhd_results,ε==epsilon)
+current_llhd_results = dplyr::group_by(current_llhd_results,Method,n)
+statistics = dplyr::summarise_all(current_llhd_results,list(mean,sd))[,c(1,2,3,4,5,7)]
+statistics
+View(statistics)
+root_mean_squared = function(x)
+{
+return(sqrt(mean(x^2)))
+}
+dplyr::summarise_all(current_llhd_results,list(root_mean_squared))
+current_llhd_results$Estimate = current_llhd_results$Estimate - truth[i]
+dplyr::summarise_all(current_llhd_results,list(root_mean_squared))
+statistics = rbind(statistics,dplyr::summarise_all(current_llhd_results,list(root_mean_squared))[,4])
+statistics
+dplyr::summarise_all(current_llhd_results,list(root_mean_squared))[,4]
+rbind(statistics,dplyr::summarise_all(current_llhd_results,list(root_mean_squared))[,4])
+cbind(statistics,dplyr::summarise_all(current_llhd_results,list(root_mean_squared))[,4])
+statistics = cbind(statistics,dplyr::summarise_all(current_llhd_results,list(root_mean_squared))[,4])
+statistics = rbind(statistics,dplyr::summarise_all(current_llhd_results,list(root_mean_squared))[,4])
+dplyr::summarise_all(current_llhd_results,list(root_mean_squared))
+dplyr::summarise_all(current_llhd_results,list(root_mean_squared))[,4]
+statistics = dplyr::summarise_all(current_llhd_results,list(mean,sd))[,c(1,2,3,4,5,7)]
+current_llhd_results$Estimate = current_llhd_results$Estimate - truth[i]
+statistics = cbind(statistics,dplyr::summarise_all(current_llhd_results,list(root_mean_squared))[,4])
+statistics
+statistics = dplyr::summarise_all(current_llhd_results,list(mean,sd))[,c(1,2,3,4,5,7)]
+current_llhd_results$Estimate = current_llhd_results$Estimate - truth[i]
+dplyr::summarise_all(current_llhd_results,list(root_mean_squared))[,4]
+current_llhd_results = dplyr::filter(all_llhd_results,ε==epsilon)
+current_llhd_results = dplyr::group_by(current_llhd_results,Method,n)
+statistics = dplyr::summarise_all(current_llhd_results,list(mean,sd))[,c(1,2,3,4,5,7)]
+current_llhd_results$Estimate = current_llhd_results$Estimate - truth[i]
+statistics = cbind(statistics,dplyr::summarise_all(current_llhd_results,list(root_mean_squared))[,4])
+statistics
+identity = function(x)
+{
+return(x)
+}
+epsilon = epsilon_vec[i]
+current_llhd_results = dplyr::filter(all_llhd_results,ε==epsilon)
+current_llhd_results = dplyr::group_by(current_llhd_results,Method,n)
+statistics = dplyr::summarise_all(current_llhd_results,list(mean,sd))[,c(1,2,3,4,5,7)]
+current_llhd_results$Estimate = current_llhd_results$Estimate - truth[i]
+statistics = cbind(statistics,dplyr::summarise_all(current_llhd_results,list(identity,root_mean_squared))[,4])
+dplyr::summarise_all(current_llhd_results,list(identity,root_mean_squared))
+current_llhd_results = dplyr::filter(all_llhd_results,ε==epsilon)
+current_llhd_results = dplyr::group_by(current_llhd_results,Method,n)
+statistics = dplyr::summarise_all(current_llhd_results,list(mean,sd))[,c(1,2,3,4,5,7)]
+current_llhd_results$Estimate = current_llhd_results$Estimate - truth[i]
+dplyr::summarise_all(current_llhd_results,list(identity,root_mean_squared))
+current_llhd_results = dplyr::filter(all_llhd_results,ε==epsilon)
+current_llhd_results = dplyr::group_by(current_llhd_results,Method,n)
+statistics = dplyr::summarise_all(current_llhd_results,list(mean,sd))[,c(1,2,3,4,5,7)]
+current_llhd_results$Estimate = current_llhd_results$Estimate - truth[i]
+dplyr::summarise_all(current_llhd_results,list(root_mean_squared))
+identity = function(x)
+{
+return(x)
+}
+current_llhd_results = dplyr::filter(all_llhd_results,ε==epsilon)
+current_llhd_results = dplyr::group_by(current_llhd_results,Method,n)
+statistics = dplyr::summarise_all(current_llhd_results,list(mean,sd))[,c(1,2,3,4,5,7)]
+current_llhd_results$Estimate = current_llhd_results$Estimate - truth[i]
+statistics = cbind(statistics,dplyr::summarise_all(current_llhd_results,list(identity))[,4])
+dplyr::summarise_all(current_llhd_results,list(identity))
+dplyr::summarise_all(current_llhd_results,list(identity))[,4]
+current_llhd_results = dplyr::filter(all_llhd_results,ε==epsilon)
+current_llhd_results = dplyr::group_by(current_llhd_results,Method,n)
+statistics = dplyr::summarise_all(current_llhd_results,list(mean,sd))[,c(1,2,3,4,5,7)]
+current_llhd_results$Estimate = current_llhd_results$Estimate - truth[i]
+dplyr::summarise_all(current_llhd_results,list(root_mean_squared))[,4]
+dplyr::summarise_all(current_llhd_results,list(identity))[,4]
+statistics = cbind(statistics,dplyr::summarise_all(current_llhd_results,list(mean))[,4])
+statistics = cbind(statistics,dplyr::summarise_all(current_llhd_results,list(root_mean_squared))[,4])
+statistics
+0.0987*1.54*1.54
+3*0.0987*0.642*
+0.642
+2*0.0989*0.844*0.844
+statistics = cbind(statistics,statistics[,5]*statistics[,6]^2,statistics[,5]*statistics[,8]^2)
+statistics
+View(statistics0
+)
+View(statistics)
+-146--135
+experiment = "lv_XY"
+llhd_results = data.frame()
+methods = c("pf","enkf","abc","sl","enkiabc")
+for (i in 1:length(methods))
+{
+name = paste("llhd_results_",methods[i],"_",experiment,".RData",sep="")
+load(name)
+if (i==1)
+all_llhd_results = llhd_results
+else
+all_llhd_results = rbind(all_llhd_results,llhd_results)
+}
+root_mean_squared = function(x)
+{
+return(sqrt(mean(x^2)))
+}
+truth = c(-136.19892974980041,-126.31131034739428,-80.34158,-6.658855)
+epsilon_vec = c(10,1,0.1,0,01)
+for (i in 1:length(epsilon_vec))
+{
+epsilon = epsilon_vec[i]
+current_llhd_results = dplyr::filter(all_llhd_results,ε==epsilon)
+current_llhd_results = dplyr::group_by(current_llhd_results,Method,n)
+statistics = dplyr::summarise_all(current_llhd_results,list(mean,sd))[,c(1,2,3,4,5,7)]
+current_llhd_results$Estimate = current_llhd_results$Estimate - truth[i]
+statistics = cbind(statistics,dplyr::summarise_all(current_llhd_results,list(mean))[,4])
+statistics = cbind(statistics,dplyr::summarise_all(current_llhd_results,list(root_mean_squared))[,4])
+statistics = cbind(statistics,statistics[,5]*statistics[,6]^2,statistics[,5]*statistics[,8]^2)
+}
+statistics
+i=1
+i=2
+name = paste("llhd_results_",methods[i],"_",experiment,".RData",sep="")
+load(name)
+View(llhd_results)
+experiment = "lv_XY"
+llhd_results = data.frame()
+methods = c("pf","enkf","abc","sl","enkiabc")
+for (i in 1:length(methods))
+{
+name = paste("llhd_results_",methods[i],"_",experiment,".RData",sep="")
+load(name)
+if (i==1)
+all_llhd_results = llhd_results
+else
+all_llhd_results = rbind(all_llhd_results,llhd_results)
+}
+root_mean_squared = function(x)
+{
+return(sqrt(mean(x^2)))
+}
+truth = c(-136.19892974980041,-126.31131034739428,-80.341577637558032,-6.3278567864801563)
+epsilon_vec = c(10,1,0.1,0,01)
+i=1
+epsilon = epsilon_vec[i]
+current_llhd_results = dplyr::filter(all_llhd_results,ε==epsilon)
+current_llhd_results = dplyr::group_by(current_llhd_results,Method,n)
+statistics = dplyr::summarise_all(current_llhd_results,list(mean,sd))[,c(1,2,3,4,5,7)]
+View(statiatics)
+View(statiasics)
+View(statisics)
+View(statistics)
+current_llhd_results$Estimate = current_llhd_results$Estimate - truth[i]
+current_llhd_results$Estimate
+statistics = cbind(statistics,dplyr::summarise_all(current_llhd_results,list(mean))[,4])
+View(statistics)
+statistics = cbind(statistics,dplyr::summarise_all(current_llhd_results,list(root_mean_squared))[,4])
+View(statistics)
+statistics = cbind(statistics,statistics[,5]*statistics[,6]^2,statistics[,5]*statistics[,8]^2)
+View(statistics)
+i=2
+epsilon = epsilon_vec[i]
+current_llhd_results = dplyr::filter(all_llhd_results,ε==epsilon)
+current_llhd_results = dplyr::group_by(current_llhd_results,Method,n)
+statistics = dplyr::summarise_all(current_llhd_results,list(mean,sd))[,c(1,2,3,4,5,7)]
+current_llhd_results$Estimate = current_llhd_results$Estimate - truth[i]
+statistics = cbind(statistics,dplyr::summarise_all(current_llhd_results,list(mean))[,4])
+statistics = cbind(statistics,dplyr::summarise_all(current_llhd_results,list(root_mean_squared))[,4])
+statistics = cbind(statistics,statistics[,5]*statistics[,6]^2,statistics[,5]*statistics[,8]^2)
+View(statistics)
+View(statistics)
+i=3
+epsilon = epsilon_vec[i]
+current_llhd_results = dplyr::filter(all_llhd_results,ε==epsilon)
+current_llhd_results = dplyr::group_by(current_llhd_results,Method,n)
+statistics = dplyr::summarise_all(current_llhd_results,list(mean,sd))[,c(1,2,3,4,5,7)]
+current_llhd_results$Estimate = current_llhd_results$Estimate - truth[i]
+statistics = cbind(statistics,dplyr::summarise_all(current_llhd_results,list(mean))[,4])
+statistics = cbind(statistics,dplyr::summarise_all(current_llhd_results,list(root_mean_squared))[,4])
+statistics = cbind(statistics,statistics[,5]*statistics[,6]^2,statistics[,5]*statistics[,8]^2)
+View(statistics)
+i=4
+epsilon = epsilon_vec[i]
+current_llhd_results = dplyr::filter(all_llhd_results,ε==epsilon)
+current_llhd_results = dplyr::group_by(current_llhd_results,Method,n)
+statistics = dplyr::summarise_all(current_llhd_results,list(mean,sd))[,c(1,2,3,4,5,7)]
+current_llhd_results$Estimate = current_llhd_results$Estimate - truth[i]
+statistics = cbind(statistics,dplyr::summarise_all(current_llhd_results,list(mean))[,4])
+statistics = cbind(statistics,dplyr::summarise_all(current_llhd_results,list(root_mean_squared))[,4])
+statistics = cbind(statistics,statistics[,5]*statistics[,6]^2,statistics[,5]*statistics[,8]^2)
+View(statistics)
+epsilon_vec = c(10,1,0.1,0.01)
+epsilon = epsilon_vec[i]
+current_llhd_results = dplyr::filter(all_llhd_results,ε==epsilon)
+current_llhd_results = dplyr::group_by(current_llhd_results,Method,n)
+statistics = dplyr::summarise_all(current_llhd_results,list(mean,sd))[,c(1,2,3,4,5,7)]
+current_llhd_results$Estimate = current_llhd_results$Estimate - truth[i]
+statistics = cbind(statistics,dplyr::summarise_all(current_llhd_results,list(mean))[,4])
+statistics = cbind(statistics,dplyr::summarise_all(current_llhd_results,list(root_mean_squared))[,4])
+statistics = cbind(statistics,statistics[,5]*statistics[,6]^2,statistics[,5]*statistics[,8]^2)
+View(statistics)
+statistics
+View(statistics)
+grep("EnKI-ABC",statistics$Method)
+names(statistics)
+names(statistics) = c("Method","n","ε","Mean","Time","SD","Bias","RMSE","Scaled Var","Scaled RMSE")
+enki_statistics = statistics[grep("EnKI-ABC",statistics$Method),]
+ess = matrix(0,nrow(enki_statistics))
+sig = matrix(0,nrow(enki_statistics))
+enki_statistics$Method[1]
+enki_statistics$Method[2]
+enki_statistics = statistics[grep("EnKI-ABC",statistics$Method),]
+ess = matrix(0,nrow(enki_statistics))
+sig = matrix(0,nrow(enki_statistics))
+for (j in 1:nrow(enki_statistics))
+{
+ess_vec = c(0.1,0.5,0.9)
+significance_vec = c(0.05,0.1,0.5,1)
+for (k in 1:length(ess_vec))
+{
+ess = ess_vec[k]
+for (l in 1:length(significance_vec))
+{
+significance = significance_vec[l]
+if (length(grep(paste(ess,significance,sep="_"),enki_statistics$Method[j]))>0)
+{
+ess[j] = ess
+sig[j] = significance
+}
+}
+}
+}
+warnings()
+ess
+sig
+for (j in 1:nrow(enki_statistics))
+{
+ess_vec = c(0.1,0.5,0.9)
+significance_vec = c(0.05,0.1,0.5,1)
+for (k in 1:length(ess_vec))
+{
+ess = ess_vec[k]
+for (l in 1:length(significance_vec))
+{
+significance = significance_vec[l]
+if (length(grep(paste(ess,significance,sep="_"),enki_statistics$Method[j]))>0)
+{
+ess_result[j] = ess
+sig_result[j] = significance
+}
+}
+}
+}
+ess_result = matrix(0,nrow(enki_statistics))
+sig_result = matrix(0,nrow(enki_statistics))
+for (j in 1:nrow(enki_statistics))
+{
+ess_vec = c(0.1,0.5,0.9)
+significance_vec = c(0.05,0.1,0.5,1)
+for (k in 1:length(ess_vec))
+{
+ess = ess_vec[k]
+for (l in 1:length(significance_vec))
+{
+significance = significance_vec[l]
+if (length(grep(paste(ess,significance,sep="_"),enki_statistics$Method[j]))>0)
+{
+ess_result[j] = ess
+sig_result[j] = significance
+}
+}
+}
+}
+ess_result
+enki_statistics = cbind(enki_statistics,ess_result)
+enki_statistics = cbind(enki_statistics,sig_result)
+names(statistics) = c("Method","n","ε","Mean","Time","SD","Bias","RMSE","Scaled Var","Scaled RMSE","ESS","Significance")
+names(enki_statistics) = c("Method","n","ε","Mean","Time","SD","Bias","RMSE","Scaled Var","Scaled RMSE","ESS","Significance")
+View(enki_statistics)
+shifter_result = matrix("",nrow(enki_statistics))
+for (j in 1:nrow(enki_statistics))
+{
+ess_vec = c(0.1,0.5,0.9)
+significance_vec = c(0.05,0.1,0.5,1)
+for (k in 1:length(ess_vec))
+{
+ess = ess_vec[k]
+for (l in 1:length(significance_vec))
+{
+significance = significance_vec[l]
+if (length(grep(paste(ess,significance,sep="_"),enki_statistics$Method[j]))>0)
+{
+ess_result[j] = ess
+sig_result[j] = significance
+}
+}
+}
+if (length(grep("sEnKI",enki_statistics$Method[j]))>0)
+{
+shifter_result[j] = "Stochastic"
+}
+if (length(grep("aEnKI",enki_statistics$Method[j]))>0)
+{
+shifter_result[j] = "Adjustment"
+}
+if (length(grep("rEnKI",enki_statistics$Method[j]))>0)
+{
+shifter_result[j] = "Square root"
+}
+}
+enki_statistics = cbind(enki_statistics,shifter_result)
+names(enki_statistics) = c("Method","n","ε","Mean","Time","SD","Bias","RMSE","Scaled Var","Scaled RMSE","ESS","Significance","Shifter")
+exp(-40)
+source("~/Dropbox/projects/enk_abc/pf_llhd_experiments.R")
+setwd("~/Dropbox/projects/enk_abc")
+source("~/Dropbox/projects/enk_abc/pf_llhd_experiments.R")
+source("~/Dropbox/projects/enk_abc/pf_llhd_experiments.R")
+experiment = "lv_XY"
+methods = c("pf","enkf","abc","sl","enkiabc")
+i-1
+i=1
+name = paste("llhd_results_",methods[i],"_",experiment,".RData",sep="")
+load(name)
+View(llhd_results)
+source("~/Dropbox/projects/enk_abc/enkf_llhd_experiments.R")
+source("~/Dropbox/projects/enk_abc/enkf_llhd_experiments.R")
+source("~/Dropbox/projects/enk_abc/abc_llhd_experiments.R")
+source("~/Dropbox/projects/enk_abc/sl_llhd_experiments.R")
+θ=1

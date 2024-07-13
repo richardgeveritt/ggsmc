@@ -1,0 +1,36 @@
+library(ilike.output)
+
+models = list(ABC="/Users/richard/Dropbox/projects/ilike.models/enki_abc_experiments/lv_abc/lv_model.ilike",
+              'EnKI-ABC'="/Users/richard/Dropbox/projects/ilike.models/enki_abc_experiments/lv_enki_abc/lv_model.ilike")
+
+prop_cov = matrix(0,3,3)
+prop_cov[1,1] = 0.2^2
+prop_cov[2,2] = 0.001^2
+prop_cov[3,3] = 0.2^2
+
+model_parameter_lists = list(
+  list('Number of simulations'=200,epsilon=10,'Adaptive proportion'=0.5))
+  #list('Number of simulations'=100,epsilon=0.001,'Adaptive proportion'=0.5),
+  #list('Number of simulations'=100,epsilon=0.01,'Adaptive proportion'=0.5))
+
+truth1 = data.frame(ParameterName="theta",Dimension=1,Mean=0.9793,SD=0.033276519,Var=0.033276519*0.033276519)
+truth2 = data.frame(ParameterName="theta",Dimension=1,Mean=0.004906,SD=0.000146718,Var=0.000146718*0.000146718)
+truth3 = data.frame(ParameterName="theta",Dimension=1,Mean=0.5848,SD=0.019543563,Var=0.019543563*0.019543563)
+
+truth = cbind(truth1,truth2,truth3)
+
+initial_values = list(theta=c(1, 0.005, 0.6))
+
+number_of_reps = 1
+
+results_directory="/Users/richard/Dropbox/code/ilike/experiments/lv_test"
+
+seed=1
+
+stats1 = mcmc_across_models(models=models,
+                            model_parameter_lists=model_parameter_lists,
+                            truth=truth,
+                            initial_values=initial_values,
+                            number_of_reps=number_of_reps,
+                            results_directory=results_directory,
+                            seed=seed)

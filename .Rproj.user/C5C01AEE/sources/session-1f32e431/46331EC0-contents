@@ -1,0 +1,68 @@
+months = 1:48
+
+kia.cost = matrix(0,length(months))
+kia.cost[1] = 3500
+kia.cost[2] = 200
+kia.cost[10] = 500
+kia.cost[22] = 300
+kia.cost[36] = 500
+kia.total_cost = cumsum(kia.cost)
+kia.fuel_cost = matrix(180,length(months))
+
+kia.monthly_cost = kia.total_cost/months
+
+kia.total_monthly_cost = kia.monthly_cost + kia.fuel_cost
+
+plot(months,kia.total_monthly_cost)
+
+
+volvo1.cost = matrix(0,length(months))
+volvo1.cost[1] = 3500
+volvo1.cost[8] = 600
+volvo1.cost[15] = 300
+volvo1.total_cost = cumsum(volvo1.cost)
+volvo1.fuel_cost = matrix(200,length(months))
+
+volvo1.monthly_cost = volvo1.total_cost/months
+
+volvo1.total_monthly_cost = volvo1.monthly_cost + volvo1.fuel_cost
+
+plot(months,volvo1.total_monthly_cost)
+
+
+volvo2.cost = matrix(0,length(months))
+volvo2.cost[1] = 7900
+volvo2.cost[8] = 3200
+volvo2.cost[12] = 300
+volvo2.cost[24] = 1047
+volvo2.cost[25] = 0
+#volvo2.cost[36] = 1500
+volvo2.total_cost = cumsum(volvo2.cost)
+volvo2.fuel_cost = matrix(200,length(months))
+
+volvo2.monthly_cost = volvo2.total_cost/months
+
+volvo2.total_monthly_cost = volvo2.monthly_cost + volvo2.fuel_cost
+
+plot(months,volvo2.total_monthly_cost)
+
+
+suzuki.cost = matrix(0,length(months))
+suzuki.cost[1] = 7000
+suzuki.total_cost = cumsum(suzuki.cost)
+suzuki.fuel_cost = matrix(90,length(months))
+
+suzuki.monthly_cost = suzuki.total_cost/months
+
+suzuki.total_monthly_cost = suzuki.monthly_cost + suzuki.fuel_cost
+
+plot(months,suzuki.total_monthly_cost)
+
+print(c(kia.monthly_cost[47],volvo1.monthly_cost[18],volvo2.monthly_cost[27],suzuki.monthly_cost[18]))
+
+print(c(kia.total_monthly_cost[47],volvo1.total_monthly_cost[18],volvo2.total_monthly_cost[27],suzuki.total_monthly_cost[18]))
+
+
+print(c(kia.monthly_cost[47],volvo1.monthly_cost[18],volvo2.monthly_cost[36],suzuki.monthly_cost[27]))
+
+print(c(kia.total_monthly_cost[47],volvo1.total_monthly_cost[18],volvo2.total_monthly_cost[36],suzuki.total_monthly_cost[27]))

@@ -1,0 +1,27 @@
+{
+    "id": "0490EF42",
+    "path": "~/Dropbox/projects/ggsmc/R/utils.R",
+    "project_path": "R/utils.R",
+    "type": "r_source",
+    "hash": "932596958",
+    "contents": "",
+    "dirty": true,
+    "created": 1705186855830.0,
+    "source_on_save": false,
+    "relative_order": 6,
+    "properties": {
+        "tempName": "Untitled1",
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "61,38",
+        "scrollLine": "54"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1705187124,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1705187743844,
+    "read_only": false,
+    "read_only_alternatives": []
+}

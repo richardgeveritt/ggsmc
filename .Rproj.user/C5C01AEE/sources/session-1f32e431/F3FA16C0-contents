@@ -1,0 +1,722 @@
+library(ggplot2)
+library(dplyr)
+
+# M
+# eps
+
+# EnK
+
+# Estimator
+# Significance
+# Targets
+# Shifter
+
+# Look at for different epsilons...
+# Plot bias, sd, RMSEscaled, RMSE v M for ABC, SL and 3 different EnKI and estimator with sig 1 and each #targets
+# For fixed M...
+# Plot bias, sd, RMSEscaled, RMSE v targets (line for ABC/SL)
+# For fixed M, maybe different targets
+# Plot bias, sd, RMSEscaled, RMSE v sig (line for ABC/SL)
+
+# Plot RMSE against number of points with different line for each conditions.
+
+epsilon = 10
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter((Method=="ABC") | (Method=="SL") | (Method=="PF") | (Method=="sEnKF") | (Method=="rEnKF") | (Method=="aEnKF")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=Bias, group=interaction(Method), color=Method)) +
+  geom_line()
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter((Method=="ABC") | (Method=="SL") | (Method=="PF") | (Method=="sEnKF") | (Method=="rEnKF") | (Method=="aEnKF")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=SD, group=interaction(Method), color=Method)) +
+  geom_line()
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter((Method=="ABC") | (Method=="SL") | (Method=="PF") | (Method=="sEnKF") | (Method=="rEnKF") | (Method=="aEnKF")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=RMSE, group=interaction(Method), color=Method)) +
+  geom_line()
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter((Method=="ABC") | (Method=="SL") | (Method=="PF") | (Method=="sEnKF") | (Method=="rEnKF") | (Method=="aEnKF")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=`Scaled MSE`, group=interaction(Method), color=Method)) +
+  geom_line()
+
+# For large epsilon, PF is working best, then ABC, the EnKF, then SL.
+
+epsilon = 1
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter((Method=="ABC") | (Method=="SL") | (Method=="PF") | (Method=="sEnKF") | (Method=="rEnKF") | (Method=="aEnKF")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=Bias, group=interaction(Method), color=Method)) +
+  geom_line()
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter((Method=="ABC") | (Method=="SL") | (Method=="PF") | (Method=="sEnKF") | (Method=="rEnKF") | (Method=="aEnKF")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=SD, group=interaction(Method), color=Method)) +
+  geom_line()
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter((Method=="ABC") | (Method=="SL") | (Method=="PF") | (Method=="sEnKF") | (Method=="rEnKF") | (Method=="aEnKF")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=RMSE, group=interaction(Method), color=Method)) +
+  geom_line()
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter((Method=="ABC") | (Method=="SL") | (Method=="PF") | (Method=="sEnKF") | (Method=="rEnKF") | (Method=="aEnKF")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=`Scaled MSE`, group=interaction(Method), color=Method)) +
+  geom_line()
+
+# As epsilon gets smaller, ABC is by far the worst approach, SL second worst, then EnKF, then PF best.
+
+epsilon = 0.1
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter((Method=="ABC") | (Method=="SL") | (Method=="PF") | (Method=="sEnKF") | (Method=="rEnKF") | (Method=="aEnKF")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=Bias, group=interaction(Method), color=Method)) +
+  geom_line()
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter((Method=="ABC") | (Method=="SL") | (Method=="PF") | (Method=="sEnKF") | (Method=="rEnKF") | (Method=="aEnKF")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=SD, group=interaction(Method), color=Method)) +
+  geom_line()
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter((Method=="ABC") | (Method=="SL") | (Method=="PF") | (Method=="sEnKF") | (Method=="rEnKF") | (Method=="aEnKF")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=RMSE, group=interaction(Method), color=Method)) +
+  geom_line()
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter((Method=="ABC") | (Method=="SL") | (Method=="PF") | (Method=="sEnKF") | (Method=="rEnKF") | (Method=="aEnKF")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=`Scaled MSE`, group=interaction(Method), color=Method)) +
+  geom_line()
+
+
+epsilon = 0.01
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter((Method=="ABC") | (Method=="SL") | (Method=="PF") | (Method=="sEnKF") | (Method=="rEnKF") | (Method=="aEnKF")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=Bias, group=interaction(Method), color=Method)) +
+  geom_line()
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter((Method=="ABC") | (Method=="SL") | (Method=="PF") | (Method=="sEnKF") | (Method=="rEnKF") | (Method=="aEnKF")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=SD, group=interaction(Method), color=Method)) +
+  geom_line()
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter((Method=="ABC") | (Method=="SL") | (Method=="PF") | (Method=="sEnKF") | (Method=="rEnKF") | (Method=="aEnKF")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=RMSE, group=interaction(Method), color=Method)) +
+  geom_line()
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter((Method=="ABC") | (Method=="SL") | (Method=="PF") | (Method=="sEnKF") | (Method=="rEnKF") | (Method=="aEnKF")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=`Scaled MSE`, group=interaction(Method), color=Method)) +
+  geom_line()
+
+
+# Now remove ABC and SL to see the others.
+
+epsilon = 0.01
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter( (Method=="PF") | (Method=="sEnKF") | (Method=="rEnKF") | (Method=="aEnKF")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=Bias, group=interaction(Method), color=Method)) +
+  geom_line()
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter( (Method=="PF") | (Method=="sEnKF") | (Method=="rEnKF") | (Method=="aEnKF")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=SD, group=interaction(Method), color=Method)) +
+  geom_line()
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter( (Method=="PF") | (Method=="sEnKF") | (Method=="rEnKF") | (Method=="aEnKF")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=RMSE, group=interaction(Method), color=Method)) +
+  geom_line()
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter( (Method=="PF") | (Method=="sEnKF") | (Method=="rEnKF") | (Method=="aEnKF")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=`Scaled MSE`, group=interaction(Method), color=Method)) +
+  geom_line()
+
+# We see that the performance of the PF has degenerated. Get rid of PF...
+
+epsilon = 0.01
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter( (Method=="sEnKF") | (Method=="rEnKF") | (Method=="aEnKF")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=Bias, group=interaction(Method), color=Method)) +
+  geom_line()
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter( (Method=="sEnKF") | (Method=="rEnKF") | (Method=="aEnKF")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=SD, group=interaction(Method), color=Method)) +
+  geom_line()
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter( (Method=="sEnKF") | (Method=="rEnKF") | (Method=="aEnKF")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=RMSE, group=interaction(Method), color=Method)) +
+  geom_line()
+
+all_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter( (Method=="sEnKF") | (Method=="rEnKF") | (Method=="aEnKF")) %>%
+  #dplyr::filter(n==300) %>%
+  ggplot( aes(x=n, y=`Scaled MSE`, group=interaction(Method), color=Method)) +
+  geom_line()
+
+# Sqrt best, then stochastic, then adjustment.
+
+
+
+
+epsilon = 10
+estimator = 1
+significance = 1
+targets = 5
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=Bias, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="PF"),aes(x=n, y=Bias, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=SD, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="PF"),aes(x=n, y=SD, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=RMSE, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="PF"),aes(x=n, y=RMSE, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=`Scaled MSE`, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="PF"),aes(x=n, y=`Scaled MSE`, group=interaction(Method), color=Method))
+
+# Stochastic best then adj then sqrt.
+# Increasing n doesn't have expected effect. Not sure why?
+
+epsilon = 1
+estimator = 1
+significance = 1
+targets = 5
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=Bias, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="PF"),aes(x=n, y=Bias, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=SD, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="PF"),aes(x=n, y=SD, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=RMSE, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="PF"),aes(x=n, y=RMSE, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=`Scaled MSE`, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="PF"),aes(x=n, y=`Scaled MSE`, group=interaction(Method), color=Method))
+
+# PF now overtaken as epsilon decreases.
+
+
+epsilon = 0.1
+estimator = 1
+significance = 1
+targets = 5
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=Bias, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="sEnKF"),aes(x=n, y=Bias, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=SD, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="sEnKF"),aes(x=n, y=SD, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=RMSE, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="sEnKF"),aes(x=n, y=RMSE, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=`Scaled MSE`, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="sEnKF"),aes(x=n, y=`Scaled MSE`, group=interaction(Method), color=Method))
+
+# Adjustment has now also messed up (conditioning?)
+
+epsilon = 0.01
+estimator = 1
+significance = 1
+targets = 5
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  dplyr::filter( (Shifter=="Stochastic") ) %>%
+  ggplot( aes(x=n, y=Bias, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="sEnKF"),aes(x=n, y=Bias, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  dplyr::filter( (Shifter=="Stochastic") ) %>%
+  ggplot( aes(x=n, y=SD, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="sEnKF"),aes(x=n, y=SD, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  dplyr::filter( (Shifter=="Stochastic") ) %>%
+  ggplot( aes(x=n, y=RMSE, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="sEnKF"),aes(x=n, y=RMSE, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  dplyr::filter( (Shifter=="Stochastic") ) %>%
+  ggplot( aes(x=n, y=`Scaled MSE`, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="sEnKF"),aes(x=n, y=`Scaled MSE`, group=interaction(Method), color=Method))
+
+# EnKI working extremely well!
+
+
+epsilon = 0.1
+estimator = 2
+significance = 1
+targets = 5
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=Bias, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="sEnKF"),aes(x=n, y=Bias, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=SD, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="sEnKF"),aes(x=n, y=SD, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=RMSE, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="sEnKF"),aes(x=n, y=RMSE, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  ggplot( aes(x=n, y=`Scaled MSE`, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="sEnKF"),aes(x=n, y=`Scaled MSE`, group=interaction(Method), color=Method))
+
+# Adjustment has now also messed up (conditioning?)
+
+epsilon = 0.01
+estimator = 2
+significance = 1
+targets = 5
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  dplyr::filter( (Shifter=="Stochastic") ) %>%
+  ggplot( aes(x=n, y=Bias, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="sEnKF"),aes(x=n, y=Bias, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  dplyr::filter( (Shifter=="Stochastic") ) %>%
+  ggplot( aes(x=n, y=SD, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="sEnKF"),aes(x=n, y=SD, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  dplyr::filter( (Shifter=="Stochastic") ) %>%
+  ggplot( aes(x=n, y=RMSE, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="sEnKF"),aes(x=n, y=RMSE, group=interaction(Method), color=Method))
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(Targets==targets) %>%
+  dplyr::filter( (Shifter=="Stochastic") ) %>%
+  ggplot( aes(x=n, y=`Scaled MSE`, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_line(data=dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),Method=="sEnKF"),aes(x=n, y=`Scaled MSE`, group=interaction(Method), color=Method))
+
+# EnKI working extremely well!
+# Same result with estimator 2.
+
+
+
+epsilon = 10
+estimator = 1
+the_n = 100
+significance = 1
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(n==the_n) %>%
+  dplyr::filter( (Shifter=="Stochastic") | (Shifter=="Square root") ) %>%
+  ggplot( aes(x=Targets, y=Bias, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_hline(yintercept=dplyr::filter(dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),n==the_n),Method=="PF")$Bias)
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(n==the_n) %>%
+  dplyr::filter( (Shifter=="Stochastic") | (Shifter=="Square root") ) %>%
+  ggplot( aes(x=Targets, y=SD, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_hline(yintercept=dplyr::filter(dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),n==the_n),Method=="PF")$SD)
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(n==the_n) %>%
+  dplyr::filter( (Shifter=="Stochastic") | (Shifter=="Square root") ) %>%
+  ggplot( aes(x=Targets, y=RMSE, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_hline(yintercept=dplyr::filter(dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),n==the_n),Method=="PF")$RMSE)
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(n==the_n) %>%
+  dplyr::filter( (Shifter=="Stochastic") | (Shifter=="Square root") ) %>%
+  ggplot( aes(x=Targets, y=`Scaled MSE`, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_hline(yintercept=dplyr::filter(dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),n==the_n),Method=="PF")$`Scaled MSE`)
+
+# Adjustment and square root have died with more targets. Conditioning problems?
+# SD of stochastic is stable. Additional SD at each iteration does not seem to be a big factor.
+
+
+epsilon = 1
+estimator = 1
+the_n = 100
+significance = 1
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(n==the_n) %>%
+  dplyr::filter( (Shifter=="Stochastic") | (Shifter=="Square root") ) %>%
+  ggplot( aes(x=Targets, y=Bias, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_hline(yintercept=dplyr::filter(dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),n==the_n),Method=="PF")$Bias)
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(n==the_n) %>%
+  dplyr::filter( (Shifter=="Stochastic") | (Shifter=="Square root") ) %>%
+  ggplot( aes(x=Targets, y=SD, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_hline(yintercept=dplyr::filter(dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),n==the_n),Method=="PF")$SD)
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(n==the_n) %>%
+  dplyr::filter( (Shifter=="Stochastic") | (Shifter=="Square root") ) %>%
+  ggplot( aes(x=Targets, y=RMSE, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_hline(yintercept=dplyr::filter(dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),n==the_n),Method=="PF")$RMSE)
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(n==the_n) %>%
+  dplyr::filter( (Shifter=="Stochastic") | (Shifter=="Square root") ) %>%
+  ggplot( aes(x=Targets, y=`Scaled MSE`, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_hline(yintercept=dplyr::filter(dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),n==the_n),Method=="PF")$`Scaled MSE`)
+
+# Adjustment and square root have died with more targets. Conditioning problems?
+# SD of stochastic is stable. Additional SD at each iteration is there, but does not seem to be a big factor.
+
+
+epsilon = 0.1
+estimator = 1
+the_n = 100
+significance = 1
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(n==the_n) %>%
+  dplyr::filter( (Shifter=="Stochastic") | (Shifter=="Square root") ) %>%
+  ggplot( aes(x=Targets, y=Bias, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_hline(yintercept=dplyr::filter(dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),n==the_n),Method=="sEnKF")$Bias)
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(n==the_n) %>%
+  dplyr::filter( (Shifter=="Stochastic") | (Shifter=="Square root") ) %>%
+  ggplot( aes(x=Targets, y=SD, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_hline(yintercept=dplyr::filter(dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),n==the_n),Method=="sEnKF")$SD)
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(n==the_n) %>%
+  dplyr::filter( (Shifter=="Stochastic") | (Shifter=="Square root") ) %>%
+  ggplot( aes(x=Targets, y=RMSE, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_hline(yintercept=dplyr::filter(dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),n==the_n),Method=="sEnKF")$RMSE)
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(n==the_n) %>%
+  dplyr::filter( (Shifter=="Stochastic") | (Shifter=="Square root") ) %>%
+  ggplot( aes(x=Targets, y=`Scaled MSE`, group=interaction(Shifter), color=Shifter)) +
+  geom_line() +
+  geom_hline(yintercept=dplyr::filter(dplyr::filter(dplyr::filter(all_statistics,ε==epsilon),n==the_n),Method=="sEnKF")$`Scaled MSE`)
+
+
+epsilon = 0.01
+estimator = 1
+the_n = 100
+significance = 1
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(n==the_n) %>%
+  dplyr::filter(Shifter=="Stochastic") %>%
+  ggplot( aes(x=Targets, y=Bias, group=interaction(Shifter), color=Shifter)) +
+  geom_line()
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(n==the_n) %>%
+  dplyr::filter(Shifter=="Stochastic") %>%
+  ggplot( aes(x=Targets, y=SD, group=interaction(Shifter), color=Shifter)) +
+  geom_line()
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(n==the_n) %>%
+  dplyr::filter(Shifter=="Stochastic") %>%
+  ggplot( aes(x=Targets, y=RMSE, group=interaction(Shifter), color=Shifter)) +
+  geom_line()
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(Significance==significance) %>%
+  dplyr::filter(n==the_n) %>%
+  dplyr::filter(Shifter=="Stochastic") %>%
+  ggplot( aes(x=Targets, y=`Scaled MSE`, group=interaction(Shifter), color=Shifter)) +
+  geom_line()
+
+# By this point sEnKI is the only game in town.
+# We can see that more targets increases the SD but reduces the bias.
+# Overall has worked better with more targets.
+
+
+
+epsilon = 0.1
+estimator = 1
+the_n = 200
+targets = 20
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(n==the_n) %>%
+  dplyr::filter(Targets==targets) %>%
+  dplyr::filter(Shifter=="Stochastic") %>%
+  ggplot( aes(x=Significance, y=Bias, group=interaction(Shifter), color=Shifter)) +
+  geom_line()
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(n==the_n) %>%
+  dplyr::filter(Targets==targets) %>%
+  dplyr::filter(Shifter=="Stochastic") %>%
+  ggplot( aes(x=Significance, y=SD, group=interaction(Shifter), color=Shifter)) +
+  geom_line()
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(n==the_n) %>%
+  dplyr::filter(Targets==targets) %>%
+  dplyr::filter(Shifter=="Stochastic") %>%
+  ggplot( aes(x=Significance, y=RMSE, group=interaction(Shifter), color=Shifter)) +
+  geom_line()
+
+all_enki_statistics %>%
+  dplyr::filter(ε==epsilon) %>%
+  dplyr::filter(Estimator==estimator) %>%
+  dplyr::filter(n==the_n) %>%
+  dplyr::filter(Targets==targets) %>%
+  dplyr::filter(Shifter=="Stochastic") %>%
+  ggplot( aes(x=Significance, y=`Scaled MSE`, group=interaction(Shifter), color=Shifter)) +
+  geom_line()
+
+# Significance cutoff is not really helping here, since going all of the way through the sequence of targets to reduce the bias is the best thing to do.

@@ -1,0 +1,341 @@
+add_to_results <- function(llhd_results,number_of_reps,method,epsilon,num_particles,est_llhds,time)
+{
+  new_llhd_results = as.data.frame(cbind(rep(method,number_of_reps),rep(epsilon,number_of_reps),rep(num_particles,number_of_reps),est_llhds,time))
+  names(new_llhd_results) = c("Method","ε","n","Estimate","Time")
+  new_llhd_results$ε = as.numeric(new_llhd_results$ε)
+  new_llhd_results$n = as.numeric(new_llhd_results$n)
+  new_llhd_results$Estimate = as.numeric(new_llhd_results$Estimate)
+  new_llhd_results$Time = as.numeric(new_llhd_results$Time)
+  if (nrow(llhd_results)==0)
+  {
+    llhd_results = new_llhd_results
+  }
+  else
+  {
+    llhd_results = rbind(llhd_results,new_llhd_results)
+  }
+
+  return(llhd_results)
+}
+
+# LV experiments
+
+# Run PF to give truth - need several choices of epsilon.
+library(ilike.output)
+library(ilike)
+
+# Observing all of X and Y.
+
+# pf_lv_XY = compile("filter_lv_XY.ilike")
+#
+# particle_filter(model = pf_lv_XY,
+#                 results_name = "expensive_10_pf_lv_XY",
+#                 number_of_particles = 10000000,
+#                 seed = 1,
+#                 write_to_file_at_each_iteration = FALSE,
+#                 fixed_parameter_list = list(ε=10,
+#                                             θ=c(1, 0.005, 0.6)))
+#
+# truth_output = load_smc_output("expensive_pf_lv_XY")
+
+
+# Estimate llhd 100 times at truth and at point in tail.
+number_of_reps = 100
+
+# pf_reps("pf_lv_XY.ilike",
+#         number_of_reps = number_of_reps,
+#         results_name = "test_pf_lv_XY",
+#         number_of_particles = 100,
+#         write_to_file_at_each_iteration = FALSE,
+#         fixed_parameter_list = list(ε=10,
+#                                     theta=c(1, 0.005, 0.6)),
+#         seed = 1)
+
+# Do this by running an IS with this llhd.
+
+llhd_results = data.frame()
+
+num_particles_vec = c(100,200,300)
+epsilon_vec = c(10,1,0.1,0.01)
+#epsilon_vec = c(10,1)
+
+experiment = "lv_XY"
+#experiment = "lv_XY_bad"
+#experiment = "lv_X"
+base_method = "pf"
+
+model_pf = compile(paste("is_",base_method,"_",experiment,".ilike",sep=""))
+#model_enkf = compile("is_enkf_lv_XY.ilike")
+#model_abc = compile("is_abc_lv_XY.ilike")
+#model_sl = compile("is_sl_lv_XY.ilike")
+#model_enkiabc = compile("is_enkiabc_lv_XY.ilike")
+
+llhd_results_name = paste("llhd_results_",base_method,"_",experiment,".RData",sep="")
+
+for (i in 1:length(num_particles_vec))
+{
+  num_particles = num_particles_vec[i]
+
+  for (j in 1:length(epsilon_vec))
+  {
+    epsilon = epsilon_vec[j]
+
+    method = "PF"
+
+    results_name = paste(experiment,method,num_particles,epsilon,sep="_")
+
+    importance_sample(model_pf,
+                      results_name = results_name,
+                      number_of_importance_points = number_of_reps,
+                      model_parameter_list = list(num_particles),
+                      fixed_parameter_list = list(ε=epsilon),
+                      seed = 1)
+
+    output = load_smc_output(results_name)
+    est_llhds = unique(unique(output$LogWeight + output$NormalisingConstant + log(number_of_reps)))
+
+    time_filename = paste(results_name,"/ilike_smc/iteration1/factor1_smc/time.txt",sep="")
+    time = max(utils::read.table(file=time_filename,header=FALSE,sep=","))/number_of_reps
+
+    llhd_results = add_to_results(llhd_results,number_of_reps,method,epsilon,num_particles,est_llhds,time)
+    save(llhd_results,file=llhd_results_name)
+
+    # Stochastic EnKF
+
+    # method = "sEnKF"
+    #
+    # results_name = paste(experiment,method,num_particles,epsilon,sep="_")
+    #
+    #
+    #
+    # importance_sample(model_enkf,
+    #                   results_name = results_name,
+    #                   number_of_importance_points = number_of_reps,
+    #                   model_parameter_list = list(num_particles,"stochastic"),
+    #                   fixed_parameter_list = list(ε=epsilon),
+    #                   seed = 1)
+    #
+    # output = load_smc_output(results_name)
+    # est_llhds = unique(unique(output$LogWeight + output$NormalisingConstant + log(number_of_reps)))
+    #
+    # time_filename = paste(results_name,"/ilike_smc/iteration1/factor1_enk/time.txt",sep="")
+    # time = max(utils::read.table(file=time_filename,header=FALSE,sep=","))/number_of_reps
+    #
+    # llhd_results = add_to_results(llhd_results,number_of_reps,method,epsilon,num_particles,est_llhds,time)
+    #
+    # save(llhd_results,file="llhd_results_enkf_lv_XY.RData")
+    #
+    # # Sqrt EnKF
+    #
+    # method = "rEnKF"
+    #
+    # results_name = paste(experiment,method,num_particles,epsilon,sep="_")
+    #
+    # an.error.occured <-- FALSE
+    #
+    # tryCatch( { importance_sample(model_enkf,
+    #                               results_name = results_name,
+    #                               number_of_importance_points = number_of_reps,
+    #                               model_parameter_list = list(num_particles,"sqrt"),
+    #                               fixed_parameter_list = list(ε=epsilon),
+    #                               seed = 1) }
+    #           , error = function(e) {an.error.occured <<- TRUE})
+    # if (an.error.occured)
+    # {
+    #   est_llhds = rep(NA,number_of_reps)
+    #   time = NA
+    # }
+    # else
+    # {
+    #   output = load_smc_output(results_name)
+    #   est_llhds = unique(unique(output$LogWeight + output$NormalisingConstant + log(number_of_reps)))
+    #
+    #   time_filename = paste(results_name,"/ilike_smc/iteration1/factor1_enk/time.txt",sep="")
+    #   time = max(utils::read.table(file=time_filename,header=FALSE,sep=","))/number_of_reps
+    # }
+    #
+    # llhd_results = add_to_results(llhd_results,number_of_reps,method,epsilon,num_particles,est_llhds,time)
+    #
+    # save(llhd_results,file="llhd_results_enkf_lv_XY.RData")
+    #
+    # # Adjustment EnKF
+    #
+    # method = "aEnKF"
+    #
+    # results_name = paste(experiment,method,num_particles,epsilon,sep="_")
+    #
+    # importance_sample(model_enkf,
+    #                   results_name = results_name,
+    #                   number_of_importance_points = number_of_reps,
+    #                   model_parameter_list = list(num_particles,"adjustment"),
+    #                   fixed_parameter_list = list(ε=epsilon),
+    #                   seed = 1)
+    #
+    # output = load_smc_output(results_name)
+    # est_llhds = unique(unique(output$LogWeight + output$NormalisingConstant + log(number_of_reps)))
+    #
+    # time_filename = paste(results_name,"/ilike_smc/iteration1/factor1_enk/time.txt",sep="")
+    # time = max(utils::read.table(file=time_filename,header=FALSE,sep=","))/number_of_reps
+    #
+    # llhd_results = add_to_results(llhd_results,number_of_reps,method,epsilon,num_particles,est_llhds,time)
+    #
+    # save(llhd_results,file="llhd_results_enkf_lv_XY.RData")
+
+    # ABC
+
+    # method = "ABC"
+    #
+    # results_name = paste(experiment,method,num_particles,epsilon,sep="_")
+    #
+    # importance_sample(model_abc,
+    #                   results_name = results_name,
+    #                   number_of_importance_points = number_of_reps,
+    #                   model_parameter_list = list(num_particles,epsilon),
+    #                   fixed_parameter_list = list(dt=2),
+    #                   seed = 1)
+    #
+    # output = load_smc_output(results_name)
+    # est_llhds = unique(unique(output$LogWeight + output$NormalisingConstant + log(number_of_reps)))
+    #
+    # time_filename = paste(results_name,"/ilike_smc/iteration1/factor2_smc/time.txt",sep="")
+    # time = max(utils::read.table(file=time_filename,header=FALSE,sep=","))/number_of_reps
+    #
+    # llhd_results = add_to_results(llhd_results,number_of_reps,method,epsilon,num_particles,est_llhds,time)
+    #
+    # save(llhd_results,file="llhd_results_abc_lv_XY.RData")
+
+    # SL
+
+    # method = "SL"
+    #
+    # results_name = paste(experiment,method,num_particles,epsilon,sep="_")
+    #
+    # importance_sample(model_sl,
+    #                   results_name = results_name,
+    #                   number_of_importance_points = number_of_reps,
+    #                   model_parameter_list = list(num_particles),
+    #                   fixed_parameter_list = list(dt=2,ε=epsilon),
+    #                   seed = 1)
+    #
+    # output = load_smc_output(results_name)
+    # est_llhds = unique(unique(output$LogWeight + output$NormalisingConstant + log(number_of_reps)))
+    #
+    # time_filename = paste(results_name,"/ilike_smc/iteration1/factor2_density/time.txt",sep="")
+    # time = max(utils::read.table(file=time_filename,header=FALSE,sep=","))/number_of_reps
+    #
+    # llhd_results = add_to_results(llhd_results,number_of_reps,method,epsilon,num_particles,est_llhds,time)
+    #
+    # save(llhd_results,file="llhd_results_sl_lv_XY.RData")
+
+    # EnK-ABC (3 updates, with a selection of truncation values)
+
+    # ess_vec = c(0.1,0.5,0.9)
+    # significance_vec = c(0.05,0.1,0.5,1)
+    #
+    # for (k in 1:length(ess_vec))
+    # {
+    #   ess = ess_vec[k]
+    #   for (l in 1:length(significance_vec))
+    #   {
+    #     significance = significance_vec[l]
+    #
+    #     method = paste("sEnKI-ABC",ess,significance,sep="_")
+    #
+    #     results_name = paste(experiment,method,num_particles,epsilon,ess,significance,sep="_")
+    #
+    #     importance_sample(model_enkiabc,
+    #                       results_name = results_name,
+    #                       number_of_importance_points = number_of_reps,
+    #                       model_parameter_list = list(num_particles,epsilon,"stochastic",ess,significance),
+    #                       fixed_parameter_list = list(dt=2),
+    #                       seed = 1)
+    #
+    #     output = load_smc_output(results_name)
+    #     est_llhds = unique(unique(output$LogWeight + output$NormalisingConstant + log(number_of_reps)))
+    #
+    #     time_filename = paste(results_name,"/ilike_smc/iteration1/factor2_enk/time.txt",sep="")
+    #     time = max(utils::read.table(file=time_filename,header=FALSE,sep=","))/number_of_reps
+    #
+    #     llhd_results = add_to_results(llhd_results,number_of_reps,method,epsilon,num_particles,est_llhds,time)
+    #
+    #     save(llhd_results,file="llhd_results_enkiabc_lv_XY.RData")
+    #
+    #
+    #     method = paste("rEnKI-ABC",ess,significance,sep="_")
+    #
+    #     results_name = paste(experiment,method,num_particles,epsilon,ess,significance,sep="_")
+    #
+    #     an.error.occured <-- FALSE
+    #
+    #     tryCatch( { importance_sample(model_enkiabc,
+    #                                   results_name = results_name,
+    #                                   number_of_importance_points = number_of_reps,
+    #                                   model_parameter_list = list(num_particles,epsilon,"sqrt",ess,significance),
+    #                                   fixed_parameter_list = list(dt=2),
+    #                                   seed = 1) }
+    #               , error = function(e) {an.error.occured <<- TRUE})
+    #     if (an.error.occured)
+    #     {
+    #       est_llhds = rep(NA,number_of_reps)
+    #       time = NA
+    #     }
+    #     else
+    #     {
+    #       output = load_smc_output(results_name)
+    #       est_llhds = unique(unique(output$LogWeight + output$NormalisingConstant + log(number_of_reps)))
+    #
+    #       time_filename = paste(results_name,"/ilike_smc/iteration1/factor2_enk/time.txt",sep="")
+    #       time = max(utils::read.table(file=time_filename,header=FALSE,sep=","))/number_of_reps
+    #     }
+    #
+    #     llhd_results = add_to_results(llhd_results,number_of_reps,method,epsilon,num_particles,est_llhds,time)
+    #
+    #     save(llhd_results,file="llhd_results_enkiabc_lv_XY.RData")
+    #
+    #
+    #     method = paste("aEnKI-ABC",ess,significance,sep="_")
+    #
+    #     results_name = paste(experiment,method,num_particles,epsilon,ess,significance,sep="_")
+    #
+    #     importance_sample(model_enkiabc,
+    #                       results_name = results_name,
+    #                       number_of_importance_points = number_of_reps,
+    #                       model_parameter_list = list(num_particles,epsilon,"adjustment",ess,significance),
+    #                       fixed_parameter_list = list(dt=2),
+    #                       seed = 1)
+    #
+    #     output = load_smc_output(results_name)
+    #     est_llhds = unique(unique(output$LogWeight + output$NormalisingConstant + log(number_of_reps)))
+    #
+    #     time_filename = paste(results_name,"/ilike_smc/iteration1/factor2_enk/time.txt",sep="")
+    #     time = max(utils::read.table(file=time_filename,header=FALSE,sep=","))/number_of_reps
+    #
+    #     llhd_results = add_to_results(llhd_results,number_of_reps,method,epsilon,num_particles,est_llhds,time)
+    #
+    #     save(llhd_results,file="llhd_results_enkiabc_lv_XY.RData")
+    #   }
+    # }
+  }
+}
+
+
+# output = load_smc_output(results_name,nesting_level = 1,factor=1,external_log_weights=rep(0,number_of_reps))
+#
+# est_llhds = unique(dplyr::filter(output,Target==16)$NormalisingConstant)
+#
+# time = mean(diff(unique(dplyr::filter(output,Target==16)$Time)))
+
+
+# For different numbers of sims from llhd
+
+# PF
+
+# SL
+
+# Gaussian ABC
+
+# EnKI-ABC, 3 different adjustments, different termination criteria
+
+# Run IS with fixed parameter, with one point.
+
+# Calculate statistics of llhd over runs.
