@@ -1,6 +1,6 @@
 Package: ggsmc
 Type: Package
-Title: Visualising output from SMC samplers and EnK methods, innit.
+Title: Visualising output from SMC samplers and EnK methods.
 Version: 0.1.1.0
 Author: Richard Everitt
 Maintainer: The package maintainer <richard.g.everitt@gmail.com>

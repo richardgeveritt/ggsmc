@@ -1,2 +1,2 @@
 # ggsmc
-Visualising output from SMC samplers and EnK methods innit!
+Visualising output from SMC samplers and EnK methods.
