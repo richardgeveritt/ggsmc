@@ -2,7 +2,7 @@
 % Please edit documentation in R/scatter_plots.R
 \name{scatter_plot}
 \alias{scatter_plot}
-\title{A histogram of a single variable from a single target.}
+\title{A histogram of a single variable from a single target}
 \usage{
 scatter_plot(
   output,
@@ -54,5 +54,5 @@ scatter_plot(
 A scatter plot in a ggplot figure.
 }
 \description{
-A histogram of a single variable from a single target.
+A histogram of a single variable from a single target
 }

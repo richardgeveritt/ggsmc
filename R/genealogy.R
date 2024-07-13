@@ -120,14 +120,16 @@ genealogy = function(output,
           plot = ggplot2::ggplot(output_to_use, ggplot2::aes(y=Target,
                                                              x=Value,
                                                              group=interaction(Iteration, Particle, ExternalIndex, ExternalTarget, Target, ParameterName),
-                                                             size=exp(LogWeight)))
+                                                             size=exp(LogWeight),
+                                                             stroke=0))
         }
         else
         {
           plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Target,
                                                              y=Value,
                                                              group=interaction(Iteration, Particle, ExternalIndex, ExternalTarget, Target, ParameterName),
-                                                             size=exp(LogWeight)))
+                                                             size=exp(LogWeight),
+                                                             stroke=0))
         }
       }
       else
@@ -137,14 +139,16 @@ genealogy = function(output,
           plot = ggplot2::ggplot(output_to_use, ggplot2::aes(y=Target,
                                                              x=Value,
                                                              group=interaction(Iteration, Particle, ExternalIndex, Target, ParameterName),
-                                                             size=exp(LogWeight)))
+                                                             size=exp(LogWeight),
+                                                             stroke=0))
         }
         else
         {
           plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Target,
                                                              y=Value,
                                                              group=interaction(Iteration, Particle, ExternalIndex, Target, ParameterName),
-                                                             size=exp(LogWeight)))
+                                                             size=exp(LogWeight),
+                                                             stroke=0))
         }
       }
     }
@@ -157,14 +161,16 @@ genealogy = function(output,
           plot = ggplot2::ggplot(output_to_use, ggplot2::aes(y=Target,
                                                              x=Value,
                                                              group=interaction(Iteration, Particle, ExternalTarget, Target, ParameterName),
-                                                             size=exp(LogWeight)))
+                                                             size=exp(LogWeight),
+                                                             stroke=0))
         }
         else
         {
           plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Target,
                                                              y=Value,
                                                              group=interaction(Iteration, Particle, ExternalTarget, Target, ParameterName),
-                                                             size=exp(LogWeight)))
+                                                             size=exp(LogWeight),
+                                                             stroke=0))
         }
       }
       else
@@ -174,14 +180,16 @@ genealogy = function(output,
           plot = ggplot2::ggplot(output_to_use, ggplot2::aes(y=Target,
                                                              x=Value,
                                                              group=interaction(Iteration, Particle, Target, ParameterName),
-                                                             size=exp(LogWeight)))
+                                                             size=exp(LogWeight),
+                                                             stroke=0))
         }
         else
         {
           plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Target,
                                                              y=Value,
                                                              group=interaction(Iteration, Particle, Target, ParameterName),
-                                                             size=exp(LogWeight)))
+                                                             size=exp(LogWeight),
+                                                             stroke=0))
         }
       }
     }
@@ -395,7 +403,7 @@ genealogy = function(output,
     else
     {
       plot = plot + ggplot2::ylim(axis_limits[1],axis_limits[2])
-      plot = plot + scale_x_continuous(breaks = integer_breaks())
+      plot = plot + ggplot2::scale_x_continuous(breaks = integer_breaks())
     }
   }
 

@@ -1,4 +1,4 @@
-#' A histogram of a single variable from a single target.
+#' A histogram of a single variable from a single target
 #'
 #' @param output Output from the SMC or EnK algorithm.
 #' @param x_parameter The parameter indexed by the x-axis.

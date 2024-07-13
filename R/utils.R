@@ -59,7 +59,10 @@ extract_target_data = function(output,
   {
     if (use_initial_points)
     {
-      output_to_use = add_proposed_points(output_to_use)
+      if ("Target" %in% names(output))
+        output_to_use = add_proposed_points(output_to_use)
+      else
+        stop("extract_target_data - Target column must be in the data in order to add proposed points to the plot.")
     }
   }
 
