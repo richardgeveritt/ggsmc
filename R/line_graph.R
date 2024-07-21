@@ -13,7 +13,7 @@
 #' @param default_title (optional) If TRUE, will provide a default title for the figure. If FALSE, no title is used. (defaults to FALSE)
 #' @return A line graph in a ggplot figure.
 #' @export
-time_series_line_graph = function(output,
+plot_time_series = function(output,
                                   parameters,
                                   target=NULL,
                                   external_target=NULL,
@@ -223,7 +223,7 @@ time_series_line_graph = function(output,
 #' @param save_path (optional) If specified along with save_filename, will save the gif to save_path/save_filename. (defaults to working directory)
 #' @return An animated line graph, which successively adds points along the time axis.
 #' @export
-animated_reveal_time_series_line_graph = function(output,
+animate_reveal_time_series = function(output,
                                                   parameters,
                                                   target=NULL,
                                                   external_target=NULL,
@@ -239,7 +239,7 @@ animated_reveal_time_series_line_graph = function(output,
                                                   save_filename=NULL,
                                                   save_path=NULL)
 {
-  p = time_series_line_graph(output = output,
+  p = plot_time_series(output = output,
                              parameters = parameters,
                              target = target,
                              external_target = external_target,
@@ -312,7 +312,7 @@ animated_reveal_time_series_line_graph = function(output,
 #' @param save_path (optional) If specified along with save_filename, will save the gif to save_path/save_filename. (defaults to working directory)
 #' @return An animated line graph, showing how the lines evolve through the sequence of targets.
 #' @export
-animated_time_series_line_graph = function(output,
+animate_time_series = function(output,
                                            parameters,
                                            target=NULL,
                                            external_target=NULL,
@@ -328,7 +328,7 @@ animated_time_series_line_graph = function(output,
                                            save_filename=NULL,
                                            save_path=NULL)
 {
-  p = time_series_line_graph(output = output,
+  p = plot_time_series(output = output,
                              parameters = parameters,
                              target = target,
                              external_target = external_target,

@@ -13,17 +13,17 @@
 #' @param default_title (optional) If TRUE, will provide a default title for the figure. If FALSE, no title is used. (defaults to FALSE)
 #' @return A histogram in a ggplot figure.
 #' @export
-histogram = function(output,
-                     parameter,
-                     dimension=1,
-                     target=NULL,
-                     external_target=NULL,
-                     use_initial_points=TRUE,
-                     use_weights=TRUE,
-                     bins=30,
-                     xlimits=NULL,
-                     ylimits=NULL,
-                     default_title=FALSE)
+plot_histogram = function(output,
+                          parameter,
+                          dimension=1,
+                          target=NULL,
+                          external_target=NULL,
+                          use_initial_points=TRUE,
+                          use_weights=TRUE,
+                          bins=30,
+                          xlimits=NULL,
+                          ylimits=NULL,
+                          default_title=FALSE)
 {
 
   if (!("Value" %in% names(output)))
@@ -127,7 +127,7 @@ histogram = function(output,
 #' @param save_path (optional) If specified along with save_filename, will save the gif to save_path/save_filename. (defaults to working directory)
 #' @return An animated histogram
 #' @export
-animated_histogram = function(output,
+animate_histogram = function(output,
                               parameter,
                               dimension=1,
                               target=NULL,
@@ -144,7 +144,7 @@ animated_histogram = function(output,
                               save_path=NULL)
 {
 
-  p = histogram(output = output,
+  p = plot_histogram(output = output,
                 parameter = parameter,
                 dimension = dimension,
                 target = target,

@@ -16,7 +16,7 @@
 #' @param default_title (optional) If TRUE, will provide a default title for the figure. If FALSE, no title is used. (defaults to FALSE)
 #' @return A scatter plot in a ggplot figure.
 #' @export
-scatter_plot = function(output,
+plot_scatter = function(output,
                         x_parameter,
                         x_dimension=1,
                         y_parameter,
@@ -190,7 +190,7 @@ scatter_plot = function(output,
 #' @param save_path (optional) If specified along with save_filename, will save the gif to save_path/save_filename. (defaults to working directory)
 #' @return A scatter plot in a ggplot figure.
 #' @export
-animated_scatter_plot = function(output,
+animate_scatter = function(output,
                                  x_parameter,
                                  x_dimension,
                                  y_parameter,
@@ -227,7 +227,7 @@ animated_scatter_plot = function(output,
     output_to_use = output
   }
 
-  p = scatter_plot(output = output_to_use,
+  p = plot_scatter(output = output_to_use,
                    x_parameter = x_parameter,
                    x_dimension = x_dimension,
                    y_parameter = y_parameter,

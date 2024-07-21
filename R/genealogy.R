@@ -15,7 +15,7 @@
 #' @param default_title (optional) If TRUE, will provide a default title for the figure. If FALSE, no title is used. (defaults to FALSE)
 #' @return A particle genealogy in a ggplot figure.
 #' @export
-genealogy = function(output,
+plot_genealogy = function(output,
                      parameter,
                      dimension=1,
                      target=NULL,
@@ -109,94 +109,250 @@ genealogy = function(output,
 
   }
 
-  if ( ("LogWeight" %in% names(output)) && (use_weights==TRUE) )
+  if ("Iteration" %in% names(output_to_use))
   {
-    if ("ExternalIndex" %in% names(output_to_use))
+    if ( ("LogWeight" %in% names(output)) && (use_weights==TRUE) )
     {
-      if ("ExternalTarget" %in% names(output_to_use))
+      if ("ExternalIndex" %in% names(output_to_use))
       {
-        if (vertical)
+        if ("ExternalTarget" %in% names(output_to_use))
         {
-          plot = ggplot2::ggplot(output_to_use, ggplot2::aes(y=Target,
-                                                             x=Value,
-                                                             group=interaction(Iteration, Particle, ExternalIndex, ExternalTarget, Target, ParameterName),
-                                                             size=exp(LogWeight),
-                                                             stroke=0))
+          if (vertical)
+          {
+            plot = ggplot2::ggplot(output_to_use, ggplot2::aes(y=Target,
+                                                               x=Value,
+                                                               group=interaction(Iteration, Particle, ExternalIndex, ExternalTarget, Target, ParameterName),
+                                                               size=exp(LogWeight),
+                                                               stroke=0))
+          }
+          else
+          {
+            plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Target,
+                                                               y=Value,
+                                                               group=interaction(Iteration, Particle, ExternalIndex, ExternalTarget, Target, ParameterName),
+                                                               size=exp(LogWeight),
+                                                               stroke=0))
+          }
         }
         else
         {
-          plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Target,
-                                                             y=Value,
-                                                             group=interaction(Iteration, Particle, ExternalIndex, ExternalTarget, Target, ParameterName),
-                                                             size=exp(LogWeight),
-                                                             stroke=0))
+          if (vertical)
+          {
+            plot = ggplot2::ggplot(output_to_use, ggplot2::aes(y=Target,
+                                                               x=Value,
+                                                               group=interaction(Iteration, Particle, ExternalIndex, Target, ParameterName),
+                                                               size=exp(LogWeight),
+                                                               stroke=0))
+          }
+          else
+          {
+            plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Target,
+                                                               y=Value,
+                                                               group=interaction(Iteration, Particle, ExternalIndex, Target, ParameterName),
+                                                               size=exp(LogWeight),
+                                                               stroke=0))
+          }
         }
       }
       else
       {
-        if (vertical)
+        if ("ExternalTarget" %in% names(output_to_use))
         {
-          plot = ggplot2::ggplot(output_to_use, ggplot2::aes(y=Target,
-                                                             x=Value,
-                                                             group=interaction(Iteration, Particle, ExternalIndex, Target, ParameterName),
-                                                             size=exp(LogWeight),
-                                                             stroke=0))
+          if (vertical)
+          {
+            plot = ggplot2::ggplot(output_to_use, ggplot2::aes(y=Target,
+                                                               x=Value,
+                                                               group=interaction(Iteration, Particle, ExternalTarget, Target, ParameterName),
+                                                               size=exp(LogWeight),
+                                                               stroke=0))
+          }
+          else
+          {
+            plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Target,
+                                                               y=Value,
+                                                               group=interaction(Iteration, Particle, ExternalTarget, Target, ParameterName),
+                                                               size=exp(LogWeight),
+                                                               stroke=0))
+          }
         }
         else
         {
-          plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Target,
-                                                             y=Value,
-                                                             group=interaction(Iteration, Particle, ExternalIndex, Target, ParameterName),
-                                                             size=exp(LogWeight),
-                                                             stroke=0))
+          if (vertical)
+          {
+            plot = ggplot2::ggplot(output_to_use, ggplot2::aes(y=Target,
+                                                               x=Value,
+                                                               group=interaction(Iteration, Particle, Target, ParameterName),
+                                                               size=exp(LogWeight),
+                                                               stroke=0))
+          }
+          else
+          {
+            plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Target,
+                                                               y=Value,
+                                                               group=interaction(Iteration, Particle, Target, ParameterName),
+                                                               size=exp(LogWeight),
+                                                               stroke=0))
+          }
         }
       }
     }
     else
     {
-      if ("ExternalTarget" %in% names(output_to_use))
+      if ("Particle" %in% names(output_to_use))
       {
-        if (vertical)
+        if ("ExternalIndex" %in% names(output_to_use))
         {
-          plot = ggplot2::ggplot(output_to_use, ggplot2::aes(y=Target,
-                                                             x=Value,
-                                                             group=interaction(Iteration, Particle, ExternalTarget, Target, ParameterName),
-                                                             size=exp(LogWeight),
-                                                             stroke=0))
+          if ("ExternalTarget" %in% names(output_to_use))
+          {
+            if (vertical)
+            {
+              plot = ggplot2::ggplot(output_to_use, ggplot2::aes(y=Target,
+                                                                 x=Value,
+                                                                 group=interaction(Iteration, Particle, ExternalIndex, Target, ExternalTarget, ParameterName)))
+            }
+            else
+            {
+              plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Target,
+                                                                 y=Value,
+                                                                 group=interaction(Iteration, Particle, ExternalIndex, Target, ExternalTarget, ParameterName)))
+            }
+          }
+          else
+          {
+            if (vertical)
+            {
+              plot = ggplot2::ggplot(output_to_use, ggplot2::aes(y=Target,
+                                                                 x=Value,
+                                                                 group=interaction(Iteration, Particle, ExternalIndex, Target, ParameterName)))
+            }
+            else
+            {
+              plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Target,
+                                                                 y=Value,
+                                                                 group=interaction(Iteration, Particle, ExternalIndex, Target, ParameterName)))
+            }
+
+            #plot + ggplot2::geom_point() + ggplot2::geom_segment(data=dplyr::filter(output_to_use,Target!=min(Target)),ggplot2::aes(x = Target-1, y = AncestorValue, xend = Target, yend = Value))
+          }
         }
         else
         {
-          plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Target,
-                                                             y=Value,
-                                                             group=interaction(Iteration, Particle, ExternalTarget, Target, ParameterName),
-                                                             size=exp(LogWeight),
-                                                             stroke=0))
+          if ("ExternalTarget" %in% names(output_to_use))
+          {
+            if (vertical)
+            {
+              plot = ggplot2::ggplot(output_to_use, ggplot2::aes(y=Target,
+                                                                 x=Value,
+                                                                 group=interaction(Iteration, Particle, Target, ExternalTarget, ParameterName)))
+            }
+            else
+            {
+              plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Target,
+                                                                 y=Value,
+                                                                 group=interaction(Iteration, Particle, Target, ExternalTarget, ParameterName)))
+            }
+          }
+          else
+          {
+            if (vertical)
+            {
+              plot = ggplot2::ggplot(output_to_use, ggplot2::aes(y=Target,
+                                                                 x=Value,
+                                                                 group=interaction(Iteration, Particle, Target, ParameterName)))
+            }
+            else
+            {
+              plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Target,
+                                                                 y=Value,
+                                                                 group=interaction(Iteration, Particle, Target, ParameterName)))
+            }
+
+            #plot + ggplot2::geom_point() + ggplot2::geom_segment(data=dplyr::filter(output_to_use,Target!=min(Target)),ggplot2::aes(x = Target-1, y = AncestorValue, xend = Target, yend = Value))
+          }
+        }
+      }
+      else if ("Chain" %in% names(output_to_use))
+      {
+        if ("ExternalIndex" %in% names(output_to_use))
+        {
+          if ("ExternalTarget" %in% names(output_to_use))
+          {
+            if (vertical)
+            {
+              plot = ggplot2::ggplot(output_to_use, ggplot2::aes(y=Target,
+                                                                 x=Value,
+                                                                 group=interaction(Iteration, Chain, ExternalIndex, Target, ExternalTarget, ParameterName)))
+            }
+            else
+            {
+              plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Target,
+                                                                 y=Value,
+                                                                 group=interaction(Iteration, Chain, ExternalIndex, Target, ExternalTarget, ParameterName)))
+            }
+          }
+          else
+          {
+            if (vertical)
+            {
+              plot = ggplot2::ggplot(output_to_use, ggplot2::aes(y=Target,
+                                                                 x=Value,
+                                                                 group=interaction(Iteration, Chain, ExternalIndex, Target, ParameterName)))
+            }
+            else
+            {
+              plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Target,
+                                                                 y=Value,
+                                                                 group=interaction(Iteration, Chain, ExternalIndex, Target, ParameterName)))
+            }
+
+            #plot + ggplot2::geom_point() + ggplot2::geom_segment(data=dplyr::filter(output_to_use,Target!=min(Target)),ggplot2::aes(x = Target-1, y = AncestorValue, xend = Target, yend = Value))
+          }
+        }
+        else
+        {
+          if ("ExternalTarget" %in% names(output_to_use))
+          {
+            if (vertical)
+            {
+              plot = ggplot2::ggplot(output_to_use, ggplot2::aes(y=Target,
+                                                                 x=Value,
+                                                                 group=interaction(Iteration, Chain, Target, ExternalTarget, ParameterName)))
+            }
+            else
+            {
+              plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Target,
+                                                                 y=Value,
+                                                                 group=interaction(Iteration, Chain, Target, ExternalTarget, ParameterName)))
+            }
+          }
+          else
+          {
+            if (vertical)
+            {
+              plot = ggplot2::ggplot(output_to_use, ggplot2::aes(y=Target,
+                                                                 x=Value,
+                                                                 group=interaction(Iteration, Chain, Target, ParameterName)))
+            }
+            else
+            {
+              plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Target,
+                                                                 y=Value,
+                                                                 group=interaction(Iteration, Chain, Target, ParameterName)))
+            }
+
+            #plot + ggplot2::geom_point() + ggplot2::geom_segment(data=dplyr::filter(output_to_use,Target!=min(Target)),ggplot2::aes(x = Target-1, y = AncestorValue, xend = Target, yend = Value))
+          }
         }
       }
       else
       {
-        if (vertical)
-        {
-          plot = ggplot2::ggplot(output_to_use, ggplot2::aes(y=Target,
-                                                             x=Value,
-                                                             group=interaction(Iteration, Particle, Target, ParameterName),
-                                                             size=exp(LogWeight),
-                                                             stroke=0))
-        }
-        else
-        {
-          plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Target,
-                                                             y=Value,
-                                                             group=interaction(Iteration, Particle, Target, ParameterName),
-                                                             size=exp(LogWeight),
-                                                             stroke=0))
-        }
+        stop('output must contain a column named either "Particle" or "Chain".')
       }
     }
   }
   else
   {
-    if ("Particle" %in% names(output_to_use))
+    if ( ("LogWeight" %in% names(output)) && (use_weights==TRUE) )
     {
       if ("ExternalIndex" %in% names(output_to_use))
       {
@@ -206,13 +362,17 @@ genealogy = function(output,
           {
             plot = ggplot2::ggplot(output_to_use, ggplot2::aes(y=Target,
                                                                x=Value,
-                                                               group=interaction(Iteration, Particle, ExternalIndex, Target, ExternalTarget, ParameterName)))
+                                                               group=interaction(Particle, ExternalIndex, ExternalTarget, Target, ParameterName),
+                                                               size=exp(LogWeight),
+                                                               stroke=0))
           }
           else
           {
             plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Target,
                                                                y=Value,
-                                                               group=interaction(Iteration, Particle, ExternalIndex, Target, ExternalTarget, ParameterName)))
+                                                               group=interaction(Particle, ExternalIndex, ExternalTarget, Target, ParameterName),
+                                                               size=exp(LogWeight),
+                                                               stroke=0))
           }
         }
         else
@@ -221,16 +381,18 @@ genealogy = function(output,
           {
             plot = ggplot2::ggplot(output_to_use, ggplot2::aes(y=Target,
                                                                x=Value,
-                                                               group=interaction(Iteration, Particle, ExternalIndex, Target, ParameterName)))
+                                                               group=interaction(Particle, ExternalIndex, Target, ParameterName),
+                                                               size=exp(LogWeight),
+                                                               stroke=0))
           }
           else
           {
             plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Target,
                                                                y=Value,
-                                                               group=interaction(Iteration, Particle, ExternalIndex, Target, ParameterName)))
+                                                               group=interaction(Particle, ExternalIndex, Target, ParameterName),
+                                                               size=exp(LogWeight),
+                                                               stroke=0))
           }
-
-          #plot + ggplot2::geom_point() + ggplot2::geom_segment(data=dplyr::filter(output_to_use,Target!=min(Target)),ggplot2::aes(x = Target-1, y = AncestorValue, xend = Target, yend = Value))
         }
       }
       else
@@ -241,13 +403,17 @@ genealogy = function(output,
           {
             plot = ggplot2::ggplot(output_to_use, ggplot2::aes(y=Target,
                                                                x=Value,
-                                                               group=interaction(Iteration, Particle, Target, ExternalTarget, ParameterName)))
+                                                               group=interaction(Particle, ExternalTarget, Target, ParameterName),
+                                                               size=exp(LogWeight),
+                                                               stroke=0))
           }
           else
           {
             plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Target,
                                                                y=Value,
-                                                               group=interaction(Iteration, Particle, Target, ExternalTarget, ParameterName)))
+                                                               group=interaction(Particle, ExternalTarget, Target, ParameterName),
+                                                               size=exp(LogWeight),
+                                                               stroke=0))
           }
         }
         else
@@ -256,95 +422,173 @@ genealogy = function(output,
           {
             plot = ggplot2::ggplot(output_to_use, ggplot2::aes(y=Target,
                                                                x=Value,
-                                                               group=interaction(Iteration, Particle, Target, ParameterName)))
+                                                               group=interaction(Particle, Target, ParameterName),
+                                                               size=exp(LogWeight),
+                                                               stroke=0))
           }
           else
           {
             plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Target,
                                                                y=Value,
-                                                               group=interaction(Iteration, Particle, Target, ParameterName)))
+                                                               group=interaction(Particle, Target, ParameterName),
+                                                               size=exp(LogWeight),
+                                                               stroke=0))
           }
-
-          #plot + ggplot2::geom_point() + ggplot2::geom_segment(data=dplyr::filter(output_to_use,Target!=min(Target)),ggplot2::aes(x = Target-1, y = AncestorValue, xend = Target, yend = Value))
-        }
-      }
-    }
-    else if ("Chain" %in% names(output_to_use))
-    {
-      if ("ExternalIndex" %in% names(output_to_use))
-      {
-        if ("ExternalTarget" %in% names(output_to_use))
-        {
-          if (vertical)
-          {
-            plot = ggplot2::ggplot(output_to_use, ggplot2::aes(y=Target,
-                                                               x=Value,
-                                                               group=interaction(Iteration, Chain, ExternalIndex, Target, ExternalTarget, ParameterName)))
-          }
-          else
-          {
-            plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Target,
-                                                               y=Value,
-                                                               group=interaction(Iteration, Chain, ExternalIndex, Target, ExternalTarget, ParameterName)))
-          }
-        }
-        else
-        {
-          if (vertical)
-          {
-            plot = ggplot2::ggplot(output_to_use, ggplot2::aes(y=Target,
-                                                               x=Value,
-                                                               group=interaction(Iteration, Chain, ExternalIndex, Target, ParameterName)))
-          }
-          else
-          {
-            plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Target,
-                                                               y=Value,
-                                                               group=interaction(Iteration, Chain, ExternalIndex, Target, ParameterName)))
-          }
-
-          #plot + ggplot2::geom_point() + ggplot2::geom_segment(data=dplyr::filter(output_to_use,Target!=min(Target)),ggplot2::aes(x = Target-1, y = AncestorValue, xend = Target, yend = Value))
-        }
-      }
-      else
-      {
-        if ("ExternalTarget" %in% names(output_to_use))
-        {
-          if (vertical)
-          {
-            plot = ggplot2::ggplot(output_to_use, ggplot2::aes(y=Target,
-                                                               x=Value,
-                                                               group=interaction(Iteration, Chain, Target, ExternalTarget, ParameterName)))
-          }
-          else
-          {
-            plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Target,
-                                                               y=Value,
-                                                               group=interaction(Iteration, Chain, Target, ExternalTarget, ParameterName)))
-          }
-        }
-        else
-        {
-          if (vertical)
-          {
-            plot = ggplot2::ggplot(output_to_use, ggplot2::aes(y=Target,
-                                                               x=Value,
-                                                               group=interaction(Iteration, Chain, Target, ParameterName)))
-          }
-          else
-          {
-            plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Target,
-                                                               y=Value,
-                                                               group=interaction(Iteration, Chain, Target, ParameterName)))
-          }
-
-          #plot + ggplot2::geom_point() + ggplot2::geom_segment(data=dplyr::filter(output_to_use,Target!=min(Target)),ggplot2::aes(x = Target-1, y = AncestorValue, xend = Target, yend = Value))
         }
       }
     }
     else
     {
-      stop('output must contain a column named either "Particle" or "Chain".')
+      if ("Particle" %in% names(output_to_use))
+      {
+        if ("ExternalIndex" %in% names(output_to_use))
+        {
+          if ("ExternalTarget" %in% names(output_to_use))
+          {
+            if (vertical)
+            {
+              plot = ggplot2::ggplot(output_to_use, ggplot2::aes(y=Target,
+                                                                 x=Value,
+                                                                 group=interaction(Particle, ExternalIndex, Target, ExternalTarget, ParameterName)))
+            }
+            else
+            {
+              plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Target,
+                                                                 y=Value,
+                                                                 group=interaction(Particle, ExternalIndex, Target, ExternalTarget, ParameterName)))
+            }
+          }
+          else
+          {
+            if (vertical)
+            {
+              plot = ggplot2::ggplot(output_to_use, ggplot2::aes(y=Target,
+                                                                 x=Value,
+                                                                 group=interaction(Particle, ExternalIndex, Target, ParameterName)))
+            }
+            else
+            {
+              plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Target,
+                                                                 y=Value,
+                                                                 group=interaction(Particle, ExternalIndex, Target, ParameterName)))
+            }
+
+            #plot + ggplot2::geom_point() + ggplot2::geom_segment(data=dplyr::filter(output_to_use,Target!=min(Target)),ggplot2::aes(x = Target-1, y = AncestorValue, xend = Target, yend = Value))
+          }
+        }
+        else
+        {
+          if ("ExternalTarget" %in% names(output_to_use))
+          {
+            if (vertical)
+            {
+              plot = ggplot2::ggplot(output_to_use, ggplot2::aes(y=Target,
+                                                                 x=Value,
+                                                                 group=interaction(Particle, Target, ExternalTarget, ParameterName)))
+            }
+            else
+            {
+              plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Target,
+                                                                 y=Value,
+                                                                 group=interaction(Particle, Target, ExternalTarget, ParameterName)))
+            }
+          }
+          else
+          {
+            if (vertical)
+            {
+              plot = ggplot2::ggplot(output_to_use, ggplot2::aes(y=Target,
+                                                                 x=Value,
+                                                                 group=interaction(Particle, Target, ParameterName)))
+            }
+            else
+            {
+              plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Target,
+                                                                 y=Value,
+                                                                 group=interaction(Particle, Target, ParameterName)))
+            }
+
+            #plot + ggplot2::geom_point() + ggplot2::geom_segment(data=dplyr::filter(output_to_use,Target!=min(Target)),ggplot2::aes(x = Target-1, y = AncestorValue, xend = Target, yend = Value))
+          }
+        }
+      }
+      else if ("Chain" %in% names(output_to_use))
+      {
+        if ("ExternalIndex" %in% names(output_to_use))
+        {
+          if ("ExternalTarget" %in% names(output_to_use))
+          {
+            if (vertical)
+            {
+              plot = ggplot2::ggplot(output_to_use, ggplot2::aes(y=Target,
+                                                                 x=Value,
+                                                                 group=interaction(Chain, ExternalIndex, Target, ExternalTarget, ParameterName)))
+            }
+            else
+            {
+              plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Target,
+                                                                 y=Value,
+                                                                 group=interaction(Chain, ExternalIndex, Target, ExternalTarget, ParameterName)))
+            }
+          }
+          else
+          {
+            if (vertical)
+            {
+              plot = ggplot2::ggplot(output_to_use, ggplot2::aes(y=Target,
+                                                                 x=Value,
+                                                                 group=interaction(Chain, ExternalIndex, Target, ParameterName)))
+            }
+            else
+            {
+              plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Target,
+                                                                 y=Value,
+                                                                 group=interaction(Chain, ExternalIndex, Target, ParameterName)))
+            }
+
+            #plot + ggplot2::geom_point() + ggplot2::geom_segment(data=dplyr::filter(output_to_use,Target!=min(Target)),ggplot2::aes(x = Target-1, y = AncestorValue, xend = Target, yend = Value))
+          }
+        }
+        else
+        {
+          if ("ExternalTarget" %in% names(output_to_use))
+          {
+            if (vertical)
+            {
+              plot = ggplot2::ggplot(output_to_use, ggplot2::aes(y=Target,
+                                                                 x=Value,
+                                                                 group=interaction(Chain, Target, ExternalTarget, ParameterName)))
+            }
+            else
+            {
+              plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Target,
+                                                                 y=Value,
+                                                                 group=interaction(Chain, Target, ExternalTarget, ParameterName)))
+            }
+          }
+          else
+          {
+            if (vertical)
+            {
+              plot = ggplot2::ggplot(output_to_use, ggplot2::aes(y=Target,
+                                                                 x=Value,
+                                                                 group=interaction(Chain, Target, ParameterName)))
+            }
+            else
+            {
+              plot = ggplot2::ggplot(output_to_use, ggplot2::aes(x=Target,
+                                                                 y=Value,
+                                                                 group=interaction(Chain, Target, ParameterName)))
+            }
+
+            #plot + ggplot2::geom_point() + ggplot2::geom_segment(data=dplyr::filter(output_to_use,Target!=min(Target)),ggplot2::aes(x = Target-1, y = AncestorValue, xend = Target, yend = Value))
+          }
+        }
+      }
+      else
+      {
+        stop('output must contain a column named either "Particle" or "Chain".')
+      }
     }
   }
 
