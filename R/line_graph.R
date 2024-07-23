@@ -1,3 +1,5 @@
+Target = ExternalTarget = ParameterName = Parameter = Dimension = Value = Target = LogWeight = Iteration = ExternalIndex = Particle = Chain = NULL
+
 #' Plot line graph showing parameter value vs dimension from algorithm output.
 #'
 #' @param output Output from the SMC or EnK algorithm.
@@ -204,7 +206,7 @@ plot_time_series = function(output,
   return(plot)
 }
 
-#' Plot animated line graph showing parameter value vs dimension (revealed in tthe animation) from algorithm output.
+#' Plot animated line graph showing parameter value vs dimension (revealed in the animation) from algorithm output.
 #'
 #' @param output Output from the SMC or EnK algorithm.
 #' @param parameters The parameters we wish to be on the y-axis of the line graph.

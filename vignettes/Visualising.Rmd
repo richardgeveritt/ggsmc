@@ -24,7 +24,7 @@ To use this package the algorithm output must be in [tidy format](https://r4ds.h
 
 ```{r sir_data}
 library(ggsmc)
-data("sir_cwna_model")
+data(sir_cwna_model)
 head(sir_cwna_model)
 ```
 
@@ -87,7 +87,7 @@ plot_scatter(sir_cwna_model,
              max_size = 3)
 ```
 
-Note that in this plot we have used two additional arguments, `alpha` and `max_size`, to adjust the look of the plot. In this example we have very few importnace points, I found the default value of `alpha = 0.1` (the transparency of the points from 0 to 1) to be too low, and the default `max_size = 1` (governing the size of the points) to be too small.
+Note that in this plot we have used two additional arguments, `alpha` and `max_size`, to adjust the look of the plot. In this example we have very few importance points, I found the default value of `alpha = 0.1` (the transparency of the points from 0 to 1) to be too low, and the default `max_size = 1` (governing the size of the points) to be too small.
 
 ## Genealogies
 
@@ -119,7 +119,7 @@ The first few arguments are the same as those used for the `plot_density` functi
 To illustrate an alternative configuration of a genealogy plot, we use output from a different algorithm: an [SMC sampler](stats.ox.ac.uk/~doucet/delmoral_doucet_jasra_sequentialmontecarlosamplersJRSSB.pdf) applied to a sequence of targets on parameter $\theta$ that begins with a Gaussian distribution, and ends with a two-component mixture of Gaussians.
 
 ```{r genealogy2, fig.dim = c(6.666666, 5)}
-data(`mixture_25_particles`)
+data(mixture_25_particles)
 plot_genealogy(mixture_25_particles,
                parameter = "θ",
                dimension = 1,
@@ -134,7 +134,7 @@ For an SMC algorithm, due to the [resampling step](https://en.wikipedia.org/wiki
 For some algorithms each Monte Carlo point represents a time series, where the index that thus far has been represented by the column `Dimension` can be thought of as indexing time. To illustrate this we plot simulations from a stochastic [Lotka-Volterra model](https://en.wikipedia.org/wiki/Lotka%E2%80%93Volterra_equations) produced during a run of an [approximate Bayesian computation (ABC)](https://en.wikipedia.org/wiki/Approximate_Bayesian_computation) algorithm. These are contained in the data `lv_output`.
 
 ```{r time_series, fig.dim = c(6.666666, 5)}
-data(`lv_output`)
+data(lv_output)
 plot_time_series(lv_output,
                  parameters = c("X","Y"),
                  alpha = 0.5,
@@ -165,9 +165,9 @@ ggplot2::theme(legend.position="none")
 
 ## Animating plots
 
-The histogram, density, scatter and time series plots can all be animated, to show how the output changes over a sequence of target distributions. Below we show (looping) 10 second animations (set by the `duration` argument) showing how the `sir_cwna_model` data changes over the sequence of 20 targets.
+The histogram, density, scatter and time series plots can all be animated, to show how the output changes over a sequence of target distributions. Below we show the code for generating (looping) 10 second animations (set by the `duration` argument) showing how the `sir_cwna_model` data changes over the sequence of 20 targets.
 
-```{r animated_histogram, fig.dim = c(6.666666, 5)}
+```{r animated_histogram, fig.dim = c(6.666666, 5), results='hide'}
 animate_histogram(sir_cwna_model,
                   parameter = "x",
                   dimension = 1,
@@ -176,14 +176,14 @@ animate_histogram(sir_cwna_model,
 ```
 
 
-```{r animated_density, fig.dim = c(6.666666, 5)}
+```{r animated_density, fig.dim = c(6.666666, 5), results='hide'}
 animate_density(sir_cwna_model,
                 parameter = "x",
                 dimension = 1,
                 duration = 10)
 ```
 
-```{r animated_scatter, fig.dim = c(6.666666, 5)}
+```{r animated_scatter, fig.dim = c(6.666666, 5), results='hide'}
 animate_scatter(sir_cwna_model,
                 x_parameter = "x",
                 x_dimension = 1,
@@ -196,7 +196,7 @@ animate_scatter(sir_cwna_model,
 
 For time series, there are two possible animations. One, `animate_time_series`, shows how the time series particles evolve over a sequence of (non-time ordered) targets. The other, `animate_reveal_time_series`, illustrated below on `lv_output`, animates the time series to show how the population of particles evolves over time.
 
-```{r animated_time_series, fig.dim = c(6.666666, 5)}
+```{r animated_time_series, fig.dim = c(6.666666, 5), results='hide'}
 data(`lv_output`)
 animate_reveal_time_series(lv_output,
                            parameters = c("X","Y"),

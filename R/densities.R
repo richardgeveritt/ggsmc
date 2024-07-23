@@ -1,3 +1,5 @@
+Target = ExternalTarget = ParameterName = Parameter = Dimension = Value = Target = LogWeight = Iteration = ExternalIndex = Particle = Chain = NULL
+
 #' A density of a single variable.
 #'
 #' @param output Output from the SMC or EnK algorithm.
@@ -111,15 +113,15 @@ plot_density = function(output,
 #' @param output Output from the SMC or EnK algorithm.
 #' @param parameter The parameter for which we wish to view the density.
 #' @param dimension (optional) The dimension of the parameter for which we wish to view the density. (default is 1)
-#' @param target (optionaL) If specified, will fix to this target, and animate over ExternalTarget (if present in output).
-#' @param external_target (optionaL) If specified, will fix to this external_target, and animate over Target.
+#' @param target (optiona) If specified, will fix to this target, and animate over ExternalTarget (if present in output).
+#' @param external_target (optional) If specified, will fix to this external_target, and animate over Target.
 #' @param use_initial_points (optional) If target is not specified and this argument is TRUE, will add the initial unweighted proposed points to the output to be plotted. (default is TRUE)
 #' @param use_weights (optional) If FALSE, will ignore particle weights in the density. If TRUE, will use the particle weights. (defaults to TRUE)
 #' @param xlimits (optional) Input of the form c(start,end), which specifies the ends of the x-axis.
 #' @param ylimits (optional) Input of the form c(start,end), which specifies the ends of the y-axis.
 #' @param default_title (optional) If TRUE, will provide a default title for the figure. If FALSE, no title is used. (defaults to FALSE)
 #' @param duration (optional) The duration of the animation. (defaults to producing an animation that uses 10 frames per second)
-#' @param animate_plot (optiional) If TRUE, will return an animation. If FALSE, returns a gganim object that can be furher modified before animating. (defaults to FALSE)
+#' @param animate_plot (optional) If TRUE, will return an animation. If FALSE, returns a gganim object that can be further modified before animating. (defaults to FALSE)
 #' @param save_filename (optional) If specified, the animation will be saved to a gif with this filename. (default is not to save)
 #' @param save_path (optional) If specified along with save_filename, will save the gif to save_path/save_filename. (defaults to working directory)
 #' @return An animated density

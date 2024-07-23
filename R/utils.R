@@ -1,3 +1,5 @@
+Target = ExternalTarget = ParameterName = Parameter = Dimension = Value = Target = LogWeight = Iteration = ExternalIndex = Particle = Chain = NULL
+
 add_proposed_points <- function(output)
 {
   min_target = min(output$Target)

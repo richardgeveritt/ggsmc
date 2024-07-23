@@ -1,3 +1,5 @@
+Target = ExternalTarget = ParameterName = Parameter = Dimension = Value = Target = LogWeight = Iteration = ExternalIndex = Particle = Chain = NULL
+
 #' Convert IS, SMC or EnK output stored as a matrix to tidy format.
 #'
 #' @param output Matrix output (one point per row) from an IS algorithm, or one target from a SMC or EnK algorithm.

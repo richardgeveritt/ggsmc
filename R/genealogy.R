@@ -1,3 +1,5 @@
+Target = ExternalTarget = ParameterName = Parameter = Dimension = Value = Target = LogWeight = Iteration = ExternalIndex = Particle = Chain = NULL
+
 #' Plot an SMC or EnK genealogy from algorithm output.
 #'
 #' @param output Output from the SMC or EnK algorithm.

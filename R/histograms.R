@@ -1,3 +1,5 @@
+Target = ExternalTarget = ParameterName = Parameter = Dimension = Value = Target = LogWeight = Iteration = ExternalIndex = Particle = Chain = NULL
+
 #' A histogram of a single variable.
 #'
 #' @param output Output from the SMC or EnK algorithm.
