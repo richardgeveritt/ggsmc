@@ -50,8 +50,8 @@ plot_scatter = function(output,
 
     output = poorman::distinct(output)
 
-    #output = tidyr::pivot_wider(output, names_from = "Parameter", values_from = "Value")
-    output_to_use = tidyr::pivot_wider(output,names_from=Parameter,values_from=Value)
+    #output = poorman::pivot_wider(output, names_from = "Parameter", values_from = "Value")
+    output_to_use = poorman::pivot_wider(output,names_from=Parameter,values_from=Value)
   }
   else
   {
