@@ -14,8 +14,7 @@ plot_time_series(
   max_line_width = 1,
   alpha = 0.1,
   xlimits = NULL,
-  ylimits = NULL,
-  default_title = FALSE
+  ylimits = NULL
 )
 }
 \arguments{
@@ -38,8 +37,6 @@ plot_time_series(
 \item{xlimits}{(optional) Input of the form c(start,end), which specifies the ends of the x-axis.}
 
 \item{ylimits}{(optional) Input of the form c(start,end), which specifies the ends of the y-axis.}
-
-\item{default_title}{(optional) If TRUE, will provide a default title for the figure. If FALSE, no title is used. (defaults to FALSE)}
 }
 \value{
 A line graph in a ggplot figure.

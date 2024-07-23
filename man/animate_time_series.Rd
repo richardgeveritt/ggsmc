@@ -15,7 +15,6 @@ animate_time_series(
   alpha = 0.1,
   xlimits = NULL,
   ylimits = NULL,
-  default_title = FALSE,
   duration = NULL,
   animate_plot = TRUE,
   save_filename = NULL,
@@ -42,8 +41,6 @@ animate_time_series(
 \item{xlimits}{(optional) Input of the form c(start,end), which specifies the ends of the x-axis.}
 
 \item{ylimits}{(optional) Input of the form c(start,end), which specifies the ends of the y-axis.}
-
-\item{default_title}{(optional) If TRUE, will provide a default title for the figure. If FALSE, no title is used. (defaults to FALSE)}
 
 \item{duration}{(optional) The duration of the animation. (defaults to producing an animation that uses 10 frames per second)}
 
