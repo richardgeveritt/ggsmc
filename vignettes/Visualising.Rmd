@@ -116,7 +116,7 @@ The first few arguments are the same as those used for the `plot_density` functi
 
 - `arrows` (default TRUE) determines if arrows are included on the lines in the plot (omitted in this plot).
 
-To illustrate an alternative configuration of a genealogy plot, we use output from a different algorithm: an [SMC sampler](stats.ox.ac.uk/~doucet/delmoral_doucet_jasra_sequentialmontecarlosamplersJRSSB.pdf) applied to a sequence of targets on parameter $\theta$ that begins with a Gaussian distribution, and ends with a two-component mixture of Gaussians.
+To illustrate an alternative configuration of a genealogy plot, we use output from a different algorithm: an [SMC sampler](https://www.stats.ox.ac.uk/~doucet/delmoral_doucet_jasra_sequentialmontecarlosamplersJRSSB.pdf) applied to a sequence of targets on parameter $\theta$ that begins with a Gaussian distribution, and ends with a two-component mixture of Gaussians.
 
 ```{r genealogy2, fig.dim = c(6.666666, 5)}
 data(mixture_25_particles)
