@@ -1,4 +1,4 @@
-Target = ExternalTarget = ParameterName = Parameter = Dimension = Value = Target = LogWeight = Iteration = ExternalIndex = Particle = Chain = NULL
+AncestorValue = Target = ExternalTarget = ParameterName = Parameter = Dimension = Value = Target = LogWeight = Iteration = ExternalIndex = Particle = Chain = NULL
 
 #' Plot an SMC or EnK genealogy from algorithm output.
 #'
@@ -644,7 +644,7 @@ plot_genealogy = function(output,
     if (vertical)
     {
       plot = plot + ggplot2::xlim(axis_limits[1],axis_limits[2])
-      plot = plot + scale_y_continuous(breaks = integer_breaks())
+      plot = plot + ggplot2::scale_y_continuous(breaks = integer_breaks())
     }
     else
     {

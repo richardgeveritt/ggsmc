@@ -28,9 +28,9 @@ animate_density(
 
 \item{dimension}{(optional) The dimension of the parameter for which we wish to view the density. (default is 1)}
 
-\item{target}{(optionaL) If specified, will fix to this target, and animate over ExternalTarget (if present in output).}
+\item{target}{(optiona) If specified, will fix to this target, and animate over ExternalTarget (if present in output).}
 
-\item{external_target}{(optionaL) If specified, will fix to this external_target, and animate over Target.}
+\item{external_target}{(optional) If specified, will fix to this external_target, and animate over Target.}
 
 \item{use_initial_points}{(optional) If target is not specified and this argument is TRUE, will add the initial unweighted proposed points to the output to be plotted. (default is TRUE)}
 
@@ -44,7 +44,7 @@ animate_density(
 
 \item{duration}{(optional) The duration of the animation. (defaults to producing an animation that uses 10 frames per second)}
 
-\item{animate_plot}{(optiional) If TRUE, will return an animation. If FALSE, returns a gganim object that can be furher modified before animating. (defaults to FALSE)}
+\item{animate_plot}{(optional) If TRUE, will return an animation. If FALSE, returns a gganim object that can be further modified before animating. (defaults to FALSE)}
 
 \item{save_filename}{(optional) If specified, the animation will be saved to a gif with this filename. (default is not to save)}
 

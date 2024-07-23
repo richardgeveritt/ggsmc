@@ -2,7 +2,7 @@
 % Please edit documentation in R/line_graph.R
 \name{animate_reveal_time_series}
 \alias{animate_reveal_time_series}
-\title{Plot animated line graph showing parameter value vs dimension (revealed in tthe animation) from algorithm output.}
+\title{Plot animated line graph showing parameter value vs dimension (revealed in the animation) from algorithm output.}
 \usage{
 animate_reveal_time_series(
   output,
@@ -57,5 +57,5 @@ animate_reveal_time_series(
 An animated line graph, which successively adds points along the time axis.
 }
 \description{
-Plot animated line graph showing parameter value vs dimension (revealed in tthe animation) from algorithm output.
+Plot animated line graph showing parameter value vs dimension (revealed in the animation) from algorithm output.
 }

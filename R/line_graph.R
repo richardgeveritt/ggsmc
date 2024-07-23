@@ -1,4 +1,4 @@
-Target = ExternalTarget = ParameterName = Parameter = Dimension = Value = Target = LogWeight = Iteration = ExternalIndex = Particle = Chain = NULL
+AncestorValue = Target = ExternalTarget = ParameterName = Parameter = Dimension = Value = Target = LogWeight = Iteration = ExternalIndex = Particle = Chain = NULL
 
 #' Plot line graph showing parameter value vs dimension from algorithm output.
 #'
@@ -183,10 +183,10 @@ plot_time_series = function(output,
     ggplot2::xlab("Index") #+
     #ggplot2::ylab(parameter_for_plot)
 
-  if (default_title)
-  {
-    plot = plot + ggplot2::labs(title=default_title_for_plot)
-  }
+  # if (default_title)
+  # {
+  #   plot = plot + ggplot2::labs(title=default_title_for_plot)
+  # }
 
   if ( (!is.null(xlimits)) && (is.numeric(xlimits)) && (is.vector(xlimits)) )
   {
@@ -218,7 +218,6 @@ plot_time_series = function(output,
 #' @param alpha (optional) The transparency of the lines in the plot. (default=0.1)
 #' @param xlimits (optional) Input of the form c(start,end), which specifies the ends of the x-axis.
 #' @param ylimits (optional) Input of the form c(start,end), which specifies the ends of the y-axis.
-#' @param default_title (optional) If TRUE, will provide a default title for the figure. If FALSE, no title is used. (defaults to FALSE)
 #' @param duration (optional) The duration of the animation. (defaults to producing an animation that uses 10 frames per second)
 #' @param animate_plot (optiional) If TRUE, will return an animation. If FALSE, returns a gganim object that can be furher modified before animating. (defaults to FALSE)
 #' @param save_filename (optional) If specified, the animation will be saved to a gif with this filename. (default is not to save)
@@ -235,7 +234,6 @@ animate_reveal_time_series = function(output,
                                                   alpha=0.1,
                                                   xlimits=NULL,
                                                   ylimits=NULL,
-                                                  default_title=FALSE,
                                                   duration=NULL,
                                                   animate_plot=TRUE,
                                                   save_filename=NULL,
@@ -250,8 +248,7 @@ animate_reveal_time_series = function(output,
                              max_line_width = max_line_width,
                              alpha = alpha,
                              xlimits = xlimits,
-                             ylimits = ylimits,
-                             default_title = default_title)
+                             ylimits = ylimits)
   to_animate = p + gganimate::transition_reveal(Dimension)
 
   nframes = length(unique(output$Dimension))
