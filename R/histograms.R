@@ -50,7 +50,7 @@ plot_histogram = function(output,
   output_to_use = target_data[[1]]
   target_parameters = target_data[[2]]
 
-  output_to_use = dplyr::filter(dplyr::filter(output_to_use,ParameterName==parameter),Dimension==dimension)
+  output_to_use = poorman::filter(poorman::filter(output_to_use,ParameterName==parameter),Dimension==dimension)
 
   if ( ("LogWeight" %in% names(output)) && (use_weights==TRUE) )
   {

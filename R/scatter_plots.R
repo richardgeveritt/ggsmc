@@ -48,7 +48,7 @@ plot_scatter = function(output,
     output = subset(output,select = -c(ParameterName,Dimension))
     output$Parameter = new_variable_names
 
-    output = dplyr::distinct(output)
+    output = poorman::distinct(output)
 
     #output = tidyr::pivot_wider(output, names_from = "Parameter", values_from = "Value")
     output_to_use = tidyr::pivot_wider(output,names_from=Parameter,values_from=Value)
@@ -217,7 +217,7 @@ animate_scatter = function(output,
     new_variable_names = mapply(FUN = function(a,b) { paste(a,"_",b,sep="") },output$ParameterName,output$Dimension)
     output = subset(output,select = -c(ParameterName,Dimension))
     output$Parameter = new_variable_names
-    output = dplyr::distinct(output)
+    output = poorman::distinct(output)
 
     #output = tidyr::pivot_wider(output, names_from = "Parameter", values_from = "Value")
     output_to_use = tidyr::pivot_wider(output,names_from=Parameter,values_from=Value)

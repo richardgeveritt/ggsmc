@@ -95,7 +95,7 @@ plot_genealogy = function(output,
     parameter_for_plot = bquote(.(parameter)[.(dimension)])
   }
 
-  output_to_use = dplyr::filter(dplyr::filter(output_to_use,ParameterName==parameter),Dimension==dimension)
+  output_to_use = poorman::filter(poorman::filter(output_to_use,ParameterName==parameter),Dimension==dimension)
 
   if (!("AncestorIndex" %in% names(output_to_use)))
   {
@@ -105,7 +105,7 @@ plot_genealogy = function(output,
   if (is.null(target))
   {
     # Iterating over target.
-    output_to_use$AncestorValue = unlist(lapply(unique(output_to_use$Target),FUN = function(i) { if (i==min(output_to_use$Target)) { return(dplyr::filter(output_to_use,Target==i)$Value) } else { previous_target = dplyr::filter(output_to_use,Target==(i-1)); current_target = dplyr::filter(output_to_use,Target==i); return(previous_target$Value[current_target$AncestorIndex]) } } ))
+    output_to_use$AncestorValue = unlist(lapply(unique(output_to_use$Target),FUN = function(i) { if (i==min(output_to_use$Target)) { return(poorman::filter(output_to_use,Target==i)$Value) } else { previous_target = poorman::filter(output_to_use,Target==(i-1)); current_target = poorman::filter(output_to_use,Target==i); return(previous_target$Value[current_target$AncestorIndex]) } } ))
 
   }
 
@@ -232,7 +232,7 @@ plot_genealogy = function(output,
                                                                  group=interaction(Iteration, Particle, ExternalIndex, Target, ParameterName)))
             }
 
-            #plot + ggplot2::geom_point() + ggplot2::geom_segment(data=dplyr::filter(output_to_use,Target!=min(Target)),ggplot2::aes(x = Target-1, y = AncestorValue, xend = Target, yend = Value))
+            #plot + ggplot2::geom_point() + ggplot2::geom_segment(data=poorman::filter(output_to_use,Target!=min(Target)),ggplot2::aes(x = Target-1, y = AncestorValue, xend = Target, yend = Value))
           }
         }
         else
@@ -267,7 +267,7 @@ plot_genealogy = function(output,
                                                                  group=interaction(Iteration, Particle, Target, ParameterName)))
             }
 
-            #plot + ggplot2::geom_point() + ggplot2::geom_segment(data=dplyr::filter(output_to_use,Target!=min(Target)),ggplot2::aes(x = Target-1, y = AncestorValue, xend = Target, yend = Value))
+            #plot + ggplot2::geom_point() + ggplot2::geom_segment(data=poorman::filter(output_to_use,Target!=min(Target)),ggplot2::aes(x = Target-1, y = AncestorValue, xend = Target, yend = Value))
           }
         }
       }
@@ -305,7 +305,7 @@ plot_genealogy = function(output,
                                                                  group=interaction(Iteration, Chain, ExternalIndex, Target, ParameterName)))
             }
 
-            #plot + ggplot2::geom_point() + ggplot2::geom_segment(data=dplyr::filter(output_to_use,Target!=min(Target)),ggplot2::aes(x = Target-1, y = AncestorValue, xend = Target, yend = Value))
+            #plot + ggplot2::geom_point() + ggplot2::geom_segment(data=poorman::filter(output_to_use,Target!=min(Target)),ggplot2::aes(x = Target-1, y = AncestorValue, xend = Target, yend = Value))
           }
         }
         else
@@ -340,7 +340,7 @@ plot_genealogy = function(output,
                                                                  group=interaction(Iteration, Chain, Target, ParameterName)))
             }
 
-            #plot + ggplot2::geom_point() + ggplot2::geom_segment(data=dplyr::filter(output_to_use,Target!=min(Target)),ggplot2::aes(x = Target-1, y = AncestorValue, xend = Target, yend = Value))
+            #plot + ggplot2::geom_point() + ggplot2::geom_segment(data=poorman::filter(output_to_use,Target!=min(Target)),ggplot2::aes(x = Target-1, y = AncestorValue, xend = Target, yend = Value))
           }
         }
       }
@@ -473,7 +473,7 @@ plot_genealogy = function(output,
                                                                  group=interaction(Particle, ExternalIndex, Target, ParameterName)))
             }
 
-            #plot + ggplot2::geom_point() + ggplot2::geom_segment(data=dplyr::filter(output_to_use,Target!=min(Target)),ggplot2::aes(x = Target-1, y = AncestorValue, xend = Target, yend = Value))
+            #plot + ggplot2::geom_point() + ggplot2::geom_segment(data=poorman::filter(output_to_use,Target!=min(Target)),ggplot2::aes(x = Target-1, y = AncestorValue, xend = Target, yend = Value))
           }
         }
         else
@@ -508,7 +508,7 @@ plot_genealogy = function(output,
                                                                  group=interaction(Particle, Target, ParameterName)))
             }
 
-            #plot + ggplot2::geom_point() + ggplot2::geom_segment(data=dplyr::filter(output_to_use,Target!=min(Target)),ggplot2::aes(x = Target-1, y = AncestorValue, xend = Target, yend = Value))
+            #plot + ggplot2::geom_point() + ggplot2::geom_segment(data=poorman::filter(output_to_use,Target!=min(Target)),ggplot2::aes(x = Target-1, y = AncestorValue, xend = Target, yend = Value))
           }
         }
       }
@@ -546,7 +546,7 @@ plot_genealogy = function(output,
                                                                  group=interaction(Chain, ExternalIndex, Target, ParameterName)))
             }
 
-            #plot + ggplot2::geom_point() + ggplot2::geom_segment(data=dplyr::filter(output_to_use,Target!=min(Target)),ggplot2::aes(x = Target-1, y = AncestorValue, xend = Target, yend = Value))
+            #plot + ggplot2::geom_point() + ggplot2::geom_segment(data=poorman::filter(output_to_use,Target!=min(Target)),ggplot2::aes(x = Target-1, y = AncestorValue, xend = Target, yend = Value))
           }
         }
         else
@@ -581,7 +581,7 @@ plot_genealogy = function(output,
                                                                  group=interaction(Chain, Target, ParameterName)))
             }
 
-            #plot + ggplot2::geom_point() + ggplot2::geom_segment(data=dplyr::filter(output_to_use,Target!=min(Target)),ggplot2::aes(x = Target-1, y = AncestorValue, xend = Target, yend = Value))
+            #plot + ggplot2::geom_point() + ggplot2::geom_segment(data=poorman::filter(output_to_use,Target!=min(Target)),ggplot2::aes(x = Target-1, y = AncestorValue, xend = Target, yend = Value))
           }
         }
       }
@@ -606,13 +606,13 @@ plot_genealogy = function(output,
     if (vertical)
     {
       plot = plot +
-        ggplot2::geom_point(alpha=alpha_points) + ggplot2::geom_segment(data=dplyr::filter(output_to_use,Target!=min(Target)),inherit.aes=FALSE,ggplot2::aes(y = Target-1, x = AncestorValue, yend = Target, xend = Value),alpha=alpha_lines,arrow=grid::arrow(type="closed",length = grid::unit(.1, "inches"))) +
+        ggplot2::geom_point(alpha=alpha_points) + ggplot2::geom_segment(data=poorman::filter(output_to_use,Target!=min(Target)),inherit.aes=FALSE,ggplot2::aes(y = Target-1, x = AncestorValue, yend = Target, xend = Value),alpha=alpha_lines,arrow=grid::arrow(type="closed",length = grid::unit(.1, "inches"))) +
         ggplot2::xlab(parameter_for_plot)
     }
     else
     {
       plot = plot +
-        ggplot2::geom_point(alpha=alpha_points) + ggplot2::geom_segment(data=dplyr::filter(output_to_use,Target!=min(Target)),inherit.aes=FALSE,ggplot2::aes(x = Target-1, y = AncestorValue, xend = Target, yend = Value),alpha=alpha_lines,arrow=grid::arrow(type="closed",length = grid::unit(.1, "inches"))) +
+        ggplot2::geom_point(alpha=alpha_points) + ggplot2::geom_segment(data=poorman::filter(output_to_use,Target!=min(Target)),inherit.aes=FALSE,ggplot2::aes(x = Target-1, y = AncestorValue, xend = Target, yend = Value),alpha=alpha_lines,arrow=grid::arrow(type="closed",length = grid::unit(.1, "inches"))) +
         ggplot2::ylab(parameter_for_plot)
     }
   }
@@ -621,13 +621,13 @@ plot_genealogy = function(output,
     if (vertical)
     {
       plot = plot +
-        ggplot2::geom_point(alpha=alpha_points) + ggplot2::geom_segment(data=dplyr::filter(output_to_use,Target!=min(Target)),inherit.aes=FALSE,ggplot2::aes(y = Target-1, x = AncestorValue, yend = Target, xend = Value),alpha=alpha_lines) +
+        ggplot2::geom_point(alpha=alpha_points) + ggplot2::geom_segment(data=poorman::filter(output_to_use,Target!=min(Target)),inherit.aes=FALSE,ggplot2::aes(y = Target-1, x = AncestorValue, yend = Target, xend = Value),alpha=alpha_lines) +
         ggplot2::xlab(parameter_for_plot)
     }
     else
     {
       plot = plot +
-        ggplot2::geom_point(alpha=alpha_points) + ggplot2::geom_segment(data=dplyr::filter(output_to_use,Target!=min(Target)),inherit.aes=FALSE,ggplot2::aes(x = Target-1, y = AncestorValue, xend = Target, yend = Value),alpha=alpha_lines) +
+        ggplot2::geom_point(alpha=alpha_points) + ggplot2::geom_segment(data=poorman::filter(output_to_use,Target!=min(Target)),inherit.aes=FALSE,ggplot2::aes(x = Target-1, y = AncestorValue, xend = Target, yend = Value),alpha=alpha_lines) +
         ggplot2::ylab(parameter_for_plot)
     }
   }

@@ -39,7 +39,7 @@ plot_time_series = function(output,
   output_to_use = target_data[[1]]
   target_parameters = target_data[[2]]
 
-  output_to_use = dplyr::filter(output_to_use,(ParameterName %in% parameters))
+  output_to_use = poorman::filter(output_to_use,(ParameterName %in% parameters))
 
   #browser()
 
