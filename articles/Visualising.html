@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ggsmc</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -78,7 +78,7 @@ a data frame. The data <code>sir_cwna_model</code> provides an example
 of valid input to the plotting functions.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/richardgeveritt/ggsmc" class="external-link">ggsmc</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"sir_cwna_model"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">sir_cwna_model</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sir_cwna_model</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   ExternalIndex Target      Time NormalisingConstant   ISESS TargetParameters</span></span>
 <span><span class="co">#&gt; 1             1      1 0.0025475            -3.07181 16.2299        i=0;dt=1;</span></span>
@@ -206,7 +206,7 @@ weights.</p>
 <p><img src="Visualising_files/figure-html/scatter-1.png" width="639.999936"></p>
 <p>Note that in this plot we have used two additional arguments,
 <code>alpha</code> and <code>max_size</code>, to adjust the look of the
-plot. In this example we have very few importnace points, I found the
+plot. In this example we have very few importance points, I found the
 default value of <code>alpha = 0.1</code> (the transparency of the
 points from 0 to 1) to be too low, and the default
 <code>max_size = 1</code> (governing the size of the points) to be too
@@ -259,7 +259,7 @@ sampler</a> applied to a sequence of targets on parameter
 that begins with a Gaussian distribution, and ends with a two-component
 mixture of Gaussians.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">`mixture_25_particles`</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">mixture_25_particles</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plot_genealogy.html">plot_genealogy</a></span><span class="op">(</span><span class="va">mixture_25_particles</span>,</span>
 <span>               parameter <span class="op">=</span> <span class="st">"θ"</span>,</span>
 <span>               dimension <span class="op">=</span> <span class="fl">1</span>,</span>
@@ -286,7 +286,7 @@ model</a> produced during a run of an <a href="https://en.wikipedia.org/wiki/App
 Bayesian computation (ABC)</a> algorithm. These are contained in the
 data <code>lv_output</code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">`lv_output`</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">lv_output</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plot_time_series.html">plot_time_series</a></span><span class="op">(</span><span class="va">lv_output</span>,</span>
 <span>                 parameters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"X"</span>,<span class="st">"Y"</span><span class="op">)</span>,</span>
 <span>                 alpha <span class="op">=</span> <span class="fl">0.5</span>,</span>
@@ -331,8 +331,8 @@ figure.</p>
 </h2>
 <p>The histogram, density, scatter and time series plots can all be
 animated, to show how the output changes over a sequence of target
-distributions. Below we show (looping) 10 second animations (set by the
-<code>duration</code> argument) showing how the
+distributions. Below we show the code for generating (looping) 10 second
+animations (set by the <code>duration</code> argument) showing how the
 <code>sir_cwna_model</code> data changes over the sequence of 20
 targets.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
@@ -340,14 +340,12 @@ targets.</p>
 <span>                  parameter <span class="op">=</span> <span class="st">"x"</span>,</span>
 <span>                  dimension <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>                  bins <span class="op">=</span> <span class="fl">20</span>,</span>
-<span>                  duration <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
-<span><span class="co">#&gt; NULL</span></span></code></pre></div>
+<span>                  duration <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/animate_density.html">animate_density</a></span><span class="op">(</span><span class="va">sir_cwna_model</span>,</span>
 <span>                parameter <span class="op">=</span> <span class="st">"x"</span>,</span>
 <span>                dimension <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>                duration <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
-<span><span class="co">#&gt; NULL</span></span></code></pre></div>
+<span>                duration <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/animate_scatter.html">animate_scatter</a></span><span class="op">(</span><span class="va">sir_cwna_model</span>,</span>
 <span>                x_parameter <span class="op">=</span> <span class="st">"x"</span>,</span>
@@ -356,8 +354,7 @@ targets.</p>
 <span>                y_dimension <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>                alpha <span class="op">=</span> <span class="fl">0.5</span>,</span>
 <span>                max_size <span class="op">=</span> <span class="fl">3</span>,</span>
-<span>                duration <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
-<span><span class="co">#&gt; NULL</span></span></code></pre></div>
+<span>                duration <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 <p>For time series, there are two possible animations. One,
 <code>animate_time_series</code>, shows how the time series particles
 evolve over a sequence of (non-time ordered) targets. The other,
@@ -370,8 +367,7 @@ population of particles evolves over time.</p>
 <span>                           parameters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"X"</span>,<span class="st">"Y"</span><span class="op">)</span>,</span>
 <span>                           alpha <span class="op">=</span> <span class="fl">0.5</span>,</span>
 <span>                           ylimits<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">600</span><span class="op">)</span>,</span>
-<span>                           duration <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
-<span><span class="co">#&gt; NULL</span></span></code></pre></div>
+<span>                           duration <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
@@ -380,7 +376,7 @@ population of particles evolves over time.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by The package maintainer.</p>
+  <p>Developed by Richard Everitt.</p>
 </div>
 
 <div class="pkgdown-footer-right">

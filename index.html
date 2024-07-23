@@ -5,14 +5,14 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Visualising output from SMC samplers and EnK methods • ggsmc</title>
+<title>Visualising output from SMC samplers and ensemble-based methods • ggsmc</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Visualising output from SMC samplers and EnK methods">
-<meta name="description" content="Visualising output from SMC samplers and EnK methods">
-<meta property="og:description" content="Visualising output from SMC samplers and EnK methods">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Visualising output from SMC samplers and ensemble-based methods">
+<meta name="description" content="This package contains functions for plotting, and animating, the output of importance samplers, SMC samplers and ensemble-based methods. Functions for plotting and animating histograms, densities, scatter plots, time series are provided, along with a function for plotting the genealogy of an SMC or ensemble-based algorithms. These functions all rely on algorithm output to be supplied in tidy format. A function is provided to transform algorithm output from matrix format (one Monte Carlo point per row) to the tidy format required by the plotting and animating functions.">
+<meta property="og:description" content="This package contains functions for plotting, and animating, the output of importance samplers, SMC samplers and ensemble-based methods. Functions for plotting and animating histograms, densities, scatter plots, time series are provided, along with a function for plotting the genealogy of an SMC or ensemble-based algorithms. These functions all rely on algorithm output to be supplied in tidy format. A function is provided to transform algorithm output from matrix format (one Monte Carlo point per row) to the tidy format required by the plotting and animating functions.">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">ggsmc</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,7 +54,10 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="ggsmc">ggsmc<a class="anchor" aria-label="anchor" href="#ggsmc"></a>
 </h1></div>
-<p>Visualising output from SMC samplers and EnK methods.</p>
+<p>This R package contains functions for plotting, and animating, the output of importance samplers, SMC samplers and ensemble-based methods. Functions for plotting and animating histograms, densities, scatter plots, time series are provided, along with a function for plotting the genealogy of an SMC or ensemble-based algorithms. These functions all rely on algorithm output to be supplied in tidy format. A function is provided to transform algorithm output from matrix format (one Monte Carlo point per row) to the tidy format required by the plotting and animating functions.</p>
+<p>The package can be installed using:</p>
+<pre><code><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"richardgeveritt/ggsmc"</span><span class="op">)</span></span></code></pre>
+<p>Examples of how to use the package can be found in <a href="https://richardgeveritt.github.io/ggsmc/articles/Visualising.html">this vignette</a>.</p>
 <p><!-- badges: start --> <a href="https://github.com/richardgeveritt/ggsmc/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/richardgeveritt/ggsmc/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a> <!-- badges: end --></p>
 </div>
   </main><aside class="col-md-3"><div class="links">
@@ -68,8 +71,8 @@
 <div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li>
-<a href="https://opensource.org/licenses/BSD-3-Clause" class="external-link">BSD</a> 2-Clause License</li>
+<li><a href="LICENSE.html">Full license</a></li>
+<li><small><a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
 
@@ -84,7 +87,7 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>The package maintainer <br><small class="roles"> Maintainer </small>  </li>
+<li>Richard Everitt <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-0822-5648" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 </ul>
 </div>
 
@@ -95,7 +98,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by The package maintainer.</p>
+  <p>Developed by Richard Everitt.</p>
 </div>
 
 <div class="pkgdown-footer-right">
