@@ -12,7 +12,6 @@ animate_density(
   external_target = NULL,
   use_initial_points = TRUE,
   use_weights = TRUE,
-  bins = 30,
   xlimits = NULL,
   ylimits = NULL,
   default_title = FALSE,
