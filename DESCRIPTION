@@ -3,7 +3,7 @@ Type: Package
 Title: Visualising output from SMC samplers and ensemble-based methods
 Version: 0.1.2.0
 Authors@R: 
-    person(given = "Richard",
+    person(given = c("Richard","G"),
            family = "Everitt",
            role = c("aut", "cre"),
            email = "richard.g.everitt@gmail.com",
