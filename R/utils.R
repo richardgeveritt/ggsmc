@@ -1,7 +1,7 @@
 add_proposed_points <- function(output)
 {
   min_target = min(output$Target)
-  proposed_points = dplyr::filter(output,Target==min_target)
+  proposed_points = poorman::filter(output,Target==min_target)
   if ("LogWeight" %in% names(output))
   {
     proposed_points$LogWeight = matrix(-log(nrow(proposed_points)),nrow(proposed_points))
@@ -25,13 +25,13 @@ extract_target_data = function(output,
   {
     if ("ExternalTargetParameters" %in% names(output))
     {
-      target_parameters = dplyr::filter(output,ExternalTarget==external_target)$ExternalTargetParameters[1]
+      target_parameters = poorman::filter(output,ExternalTarget==external_target)$ExternalTargetParameters[1]
     }
     else
     {
       target_parameters = ""
     }
-    output_to_use = dplyr::filter(output,ExternalTarget==external_target)
+    output_to_use = poorman::filter(output,ExternalTarget==external_target)
   }
   else
   {
@@ -47,13 +47,13 @@ extract_target_data = function(output,
         target_parameters = paste(target_parameters,",",sep="")
       }
 
-      target_parameters = paste(target_parameters,dplyr::filter(output_to_use,Target==target)$TargetParameters[1],sep="")
+      target_parameters = paste(target_parameters,poorman::filter(output_to_use,Target==target)$TargetParameters[1],sep="")
     }
     else
     {
       target_parameters = paste(target_parameters,"",sep="")
     }
-    output_to_use = dplyr::filter(output_to_use,Target==target)
+    output_to_use = poorman::filter(output_to_use,Target==target)
   }
   else
   {
