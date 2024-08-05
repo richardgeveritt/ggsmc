@@ -5,7 +5,7 @@ Functions for plotting, and animating, the output of importance samplers, sequen
 The package is available on CRAN and can be installed using:
 
 ```
-install.packages("richardgeveritt/ggsmc")
+install.packages("ggsmc")
 ```
 
 Examples of how to use the package can be found in [this vignette](https://richardgeveritt.github.io/ggsmc/articles/Visualising.html).
