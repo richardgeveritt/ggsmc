@@ -12,4 +12,5 @@ Examples of how to use the package can be found in [this vignette](https://richa
 
  <!-- badges: start -->
   [![R-CMD-check](https://github.com/richardgeveritt/ggsmc/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/richardgeveritt/ggsmc/actions/workflows/R-CMD-check.yaml)
+  [![](https://cranlogs.r-pkg.org/badges/ggsmc)](https://cran.rstudio.com/web/packages/ggsmc/index.html)
   <!-- badges: end -->
