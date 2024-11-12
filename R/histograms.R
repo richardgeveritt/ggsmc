@@ -9,6 +9,7 @@ AncestorValue = Target = ExternalTarget = ParameterName = Parameter = Dimension 
 #' @param external_target (optional) The index of the external target to plot. (default is to use all external targets, or to ignore if the column is not present)
 #' @param use_initial_points (optional) If target is not specified and this argument is TRUE, will add the initial unweighted proposed points to the output to be plotted. (default is TRUE)
 #' @param use_weights (optional) If FALSE, will ignore particle weights in the histogram. If TRUE, will use the particle weights. (defaults to TRUE)
+#' @param mcmc (optional) If TRUE, the user is indicating that the output is from an MCMC algorithm. This will set use_initial_points=FALSE and use_weights=FALSE no matter what the user sets these arguments to. (default is FALSE)
 #' @param bins (optional) Number of bins for the histogram. (default 30)
 #' @param xlimits (optional) Input of the form c(start,end), which specifies the ends of the x-axis.
 #' @param ylimits (optional) Input of the form c(start,end), which specifies the ends of the y-axis.
@@ -22,6 +23,7 @@ plot_histogram = function(output,
                           external_target=NULL,
                           use_initial_points=TRUE,
                           use_weights=TRUE,
+                          mcmc=FALSE,
                           bins=30,
                           xlimits=NULL,
                           ylimits=NULL,
@@ -41,6 +43,12 @@ plot_histogram = function(output,
   if (!is.null(external_target) && !("ExternalTarget" %in% names(output)))
   {
     stop("ExternalTarget column not found in output.")
+  }
+
+  if (mcmc==TRUE)
+  {
+    use_initial_points = FALSE
+    use_weights = FALSE
   }
 
   # if (is.null(target))
@@ -119,6 +127,7 @@ plot_histogram = function(output,
 #' @param external_target (optionaL) If specified, will fix to this external_target, and animate over Target.
 #' @param use_initial_points (optional) If target is not specified and this argument is TRUE, will add the initial unweighted proposed points to the output to be plotted. (default is TRUE)
 #' @param use_weights (optional) If FALSE, will ignore particle weights in the histogram. If TRUE, will use the particle weights. (defaults to TRUE)
+#' @param mcmc (optional) If TRUE, the user is indicating that the output is from an MCMC algorithm. This will set use_initial_points=FALSE and use_weights=FALSE no matter what the user sets these arguments to. (default is FALSE)
 #' @param bins (optional) Number of bins for the histogram. (default 30)
 #' @param xlimits (optional) Input of the form c(start,end), which specifies the ends of the x-axis.
 #' @param ylimits (optional) Input of the form c(start,end), which specifies the ends of the y-axis.
@@ -136,6 +145,7 @@ animate_histogram = function(output,
                               external_target=NULL,
                               use_initial_points=TRUE,
                               use_weights=TRUE,
+                             mcmc=FALSE,
                               bins=30,
                               xlimits=NULL,
                               ylimits=NULL,
@@ -153,6 +163,7 @@ animate_histogram = function(output,
                 external_target = external_target,
                 use_initial_points = use_initial_points,
                 use_weights = use_weights,
+                mcmc = mcmc,
                 bins = bins,
                 xlimits = xlimits,
                 ylimits = ylimits,

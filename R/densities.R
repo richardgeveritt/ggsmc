@@ -9,6 +9,7 @@ AncestorValue = Target = ExternalTarget = ParameterName = Parameter = Dimension 
 #' @param external_target (optional) The index of the external target to plot. (default is to use all external targets, or to ignore if the column is not present)
 #' @param use_initial_points (optional) If target is not specified and this argument is TRUE, will add the initial unweighted proposed points to the output to be plotted. (default is TRUE)
 #' @param use_weights (optional) If FALSE, will ignore particle weights in the density. If TRUE, will use the particle weights. (defaults to TRUE)
+#' @param mcmc (optional) If TRUE, the user is indicating that the output is from an MCMC algorithm. This will set use_initial_points=FALSE and use_weights=FALSE no matter what the user sets these arguments to. (default is FALSE)
 #' @param xlimits (optional) Input of the form c(start,end), which specifies the ends of the x-axis.
 #' @param ylimits (optional) Input of the form c(start,end), which specifies the ends of the y-axis.
 #' @param default_title (optional) If TRUE, will provide a default title for the figure. If FALSE, no title is used. (defaults to FALSE)
@@ -21,6 +22,7 @@ plot_density = function(output,
                      external_target=NULL,
                      use_initial_points=TRUE,
                      use_weights=TRUE,
+                     mcmc=FALSE,
                      xlimits=NULL,
                      ylimits=NULL,
                      default_title=FALSE)
@@ -39,6 +41,12 @@ plot_density = function(output,
   if (!is.null(external_target) && !("ExternalTarget" %in% names(output)))
   {
     stop("ExternalTarget column not found in output.")
+  }
+
+  if (mcmc==TRUE)
+  {
+    use_initial_points = FALSE
+    use_weights = FALSE
   }
 
   # if (is.null(target))
@@ -117,6 +125,7 @@ plot_density = function(output,
 #' @param external_target (optional) If specified, will fix to this external_target, and animate over Target.
 #' @param use_initial_points (optional) If target is not specified and this argument is TRUE, will add the initial unweighted proposed points to the output to be plotted. (default is TRUE)
 #' @param use_weights (optional) If FALSE, will ignore particle weights in the density. If TRUE, will use the particle weights. (defaults to TRUE)
+#' @param mcmc (optional) If TRUE, the user is indicating that the output is from an MCMC algorithm. This will set use_initial_points=FALSE and use_weights=FALSE no matter what the user sets these arguments to. (default is FALSE)
 #' @param xlimits (optional) Input of the form c(start,end), which specifies the ends of the x-axis.
 #' @param ylimits (optional) Input of the form c(start,end), which specifies the ends of the y-axis.
 #' @param default_title (optional) If TRUE, will provide a default title for the figure. If FALSE, no title is used. (defaults to FALSE)
@@ -133,6 +142,7 @@ animate_density = function(output,
                               external_target=NULL,
                               use_initial_points=TRUE,
                               use_weights=TRUE,
+                           mcmc=FALSE,
                               xlimits=NULL,
                               ylimits=NULL,
                               default_title=FALSE,
@@ -149,6 +159,7 @@ animate_density = function(output,
                 external_target = external_target,
                 use_initial_points = use_initial_points,
                 use_weights = use_weights,
+                mcmc = mcmc,
                 xlimits = xlimits,
                 ylimits = ylimits,
                 default_title = default_title)

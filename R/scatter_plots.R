@@ -13,6 +13,7 @@ AncestorValue = Target = ExternalTarget = ParameterName = Parameter = Dimension 
 #' @param external_target (optional) The index of the external target to plot. (default is to use all external targets, or to ignore if the column is not present)
 #' @param use_initial_points (optional) If target is not specified and this argument is TRUE, will add the initial unweighted proposed points to the output to be plotted. (default is TRUE)
 #' @param use_weights (optional) If FALSE, will ignore particle weights in the scatter plot. If TRUE, will use the particle weights. (defaults to TRUE)
+#' @param mcmc (optional) If TRUE, the user is indicating that the output is from an MCMC algorithm. This will set use_initial_points=FALSE and use_weights=FALSE no matter what the user sets these arguments to. (default is FALSE)
 #' @param max_size (optional) The maximum size of the points in the plot. (default=1)
 #' @param alpha (optional) The transparency of the points in the plot. (default=0.1)
 #' @param xlimits (optional) Input of the form c(start,end), which specifies the ends of the x-axis.
@@ -29,6 +30,7 @@ plot_scatter = function(output,
                         external_target=NULL,
                         use_initial_points=TRUE,
                         use_weights=TRUE,
+                        mcmc=FALSE,
                         max_size=1,
                         alpha=0.1,
                         xlimits=NULL,
@@ -44,6 +46,12 @@ plot_scatter = function(output,
   if (!is.null(external_target) && !("ExternalTarget" %in% names(output)))
   {
     stop("ExternalTarget column not found in output.")
+  }
+
+  if (mcmc==TRUE)
+  {
+    use_initial_points = FALSE
+    use_weights = FALSE
   }
 
   if ("Value" %in% names(output))
@@ -180,6 +188,7 @@ plot_scatter = function(output,
 #' @param external_target (optionaL) If specified, will fix to this external_target, and animate over Target.
 #' @param use_initial_points (optional) If target is not specified and this argument is TRUE, will add the initial unweighted proposed points to the output to be plotted. (default is TRUE)
 #' @param use_weights (optional) If FALSE, will ignore particle weights in the scatter plot. If TRUE, will use the particle weights. (defaults to TRUE)
+#' @param mcmc (optional) If TRUE, the user is indicating that the output is from an MCMC algorithm. This will set use_initial_points=FALSE and use_weights=FALSE no matter what the user sets these arguments to. (default is FALSE)
 #' @param max_size (optional) The maximum size of the points in the plot. (default=1)
 #' @param alpha (optional) The transparency of the points in the plot. (default=0.1)
 #' @param xlimits (optional) Input of the form c(start,end), which specifies the ends of the x-axis.
@@ -203,6 +212,7 @@ animate_scatter = function(output,
                                  external_target=NULL,
                                  use_initial_points=TRUE,
                                  use_weights=TRUE,
+                           mcmc=FALSE,
                                  max_size=1,
                                  alpha=0.1,
                                  xlimits=NULL,
@@ -240,6 +250,7 @@ animate_scatter = function(output,
                    external_target = external_target,
                    use_initial_points = use_initial_points,
                    use_weights = use_weights,
+                   mcmc = mcmc,
                    max_size=max_size,
                    alpha=alpha,
                    xlimits=xlimits,

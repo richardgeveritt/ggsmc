@@ -8,6 +8,7 @@ AncestorValue = Target = ExternalTarget = ParameterName = Parameter = Dimension 
 #' @param external_target (optional) The external target to plot. (default is to use all external targets, or to ignore if the column is not present)
 #' @param use_initial_points (optional) If target is not specified and this argument is TRUE, will add the initial unweighted proposed points to the output to be plotted. (default is TRUE)
 #' @param use_weights (optional) If FALSE, will ignore particle weights in the line graph. If TRUE, will use the particle weights. (defaults to TRUE)
+#' @param mcmc (optional) If TRUE, the user is indicating that the output is from an MCMC algorithm. This will set use_initial_points=FALSE and use_weights=FALSE no matter what the user sets these arguments to. (default is FALSE)
 #' @param max_line_width (optional) The maximum size of the points in the plot. (default=1)
 #' @param alpha (optional) The transparency of the lines in the plot. (default=0.1)
 #' @param xlimits (optional) Input of the form c(start,end), which specifies the ends of the x-axis.
@@ -20,6 +21,7 @@ plot_time_series = function(output,
                                   external_target=NULL,
                                   use_initial_points=TRUE,
                                   use_weights=TRUE,
+                            mcmc=FALSE,
                                   max_line_width=1,
                                   alpha=0.1,
                                   xlimits=NULL,
@@ -33,6 +35,12 @@ plot_time_series = function(output,
   if (!is.null(external_target) && !("ExternalTarget" %in% names(output)))
   {
     stop("ExternalTarget column not found in output.")
+  }
+
+  if (mcmc==TRUE)
+  {
+    use_initial_points = FALSE
+    use_weights = FALSE
   }
 
   target_data = extract_target_data(output,target,external_target,use_initial_points)
@@ -212,12 +220,13 @@ plot_time_series = function(output,
 #' @param external_target (optional) The external target to plot. (default is to use all external targets, or to ignore if the column is not present)
 #' @param use_initial_points (optional) If target is not specified and this argument is TRUE, will add the initial unweighted proposed points to the output to be plotted. (default is TRUE)
 #' @param use_weights (optional) If FALSE, will ignore particle weights in the line graph. If TRUE, will use the particle weights. (defaults to TRUE)
+#' @param mcmc (optional) If TRUE, the user is indicating that the output is from an MCMC algorithm. This will set use_initial_points=FALSE and use_weights=FALSE no matter what the user sets these arguments to. (default is FALSE)
 #' @param max_line_width (optional) The maximum size of the points in the plot. (default=1)
 #' @param alpha (optional) The transparency of the lines in the plot. (default=0.1)
 #' @param xlimits (optional) Input of the form c(start,end), which specifies the ends of the x-axis.
 #' @param ylimits (optional) Input of the form c(start,end), which specifies the ends of the y-axis.
 #' @param duration (optional) The duration of the animation. (defaults to producing an animation that uses 10 frames per second)
-#' @param animate_plot (optiional) If TRUE, will return an animation. If FALSE, returns a gganim object that can be furher modified before animating. (defaults to FALSE)
+#' @param animate_plot (optiional) If TRUE, will return an animation. If FALSE, returns a gganim object that can be further modified before animating. (defaults to FALSE)
 #' @param save_filename (optional) If specified, the animation will be saved to a gif with this filename. (default is not to save)
 #' @param save_path (optional) If specified along with save_filename, will save the gif to save_path/save_filename. (defaults to working directory)
 #' @return An animated line graph, which successively adds points along the time axis.
@@ -228,6 +237,7 @@ animate_reveal_time_series = function(output,
                                                   external_target=NULL,
                                                   use_initial_points=TRUE,
                                                   use_weights=TRUE,
+                                      mcmc=FALSE,
                                                   max_line_width=1,
                                                   alpha=0.1,
                                                   xlimits=NULL,
@@ -243,6 +253,7 @@ animate_reveal_time_series = function(output,
                              external_target = external_target,
                              use_initial_points = use_initial_points,
                              use_weights = use_weights,
+                       mcmc = mcmc,
                              max_line_width = max_line_width,
                              alpha = alpha,
                              xlimits = xlimits,
@@ -329,6 +340,7 @@ animate_time_series = function(output,
                              external_target = external_target,
                              use_initial_points = use_initial_points,
                              use_weights = use_weights,
+                       mcmc = FALSE,
                              max_line_width = max_line_width,
                              alpha = alpha,
                              xlimits = xlimits,
