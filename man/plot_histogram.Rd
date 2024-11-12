@@ -12,6 +12,7 @@ plot_histogram(
   external_target = NULL,
   use_initial_points = TRUE,
   use_weights = TRUE,
+  mcmc = FALSE,
   bins = 30,
   xlimits = NULL,
   ylimits = NULL,
@@ -32,6 +33,8 @@ plot_histogram(
 \item{use_initial_points}{(optional) If target is not specified and this argument is TRUE, will add the initial unweighted proposed points to the output to be plotted. (default is TRUE)}
 
 \item{use_weights}{(optional) If FALSE, will ignore particle weights in the histogram. If TRUE, will use the particle weights. (defaults to TRUE)}
+
+\item{mcmc}{(optional) If TRUE, the user is indicating that the output is from an MCMC algorithm. This will set use_initial_points=FALSE and use_weights=FALSE no matter what the user sets these arguments to. (default is FALSE)}
 
 \item{bins}{(optional) Number of bins for the histogram. (default 30)}
 

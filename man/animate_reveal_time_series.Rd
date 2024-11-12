@@ -11,6 +11,7 @@ animate_reveal_time_series(
   external_target = NULL,
   use_initial_points = TRUE,
   use_weights = TRUE,
+  mcmc = FALSE,
   max_line_width = 1,
   alpha = 0.1,
   xlimits = NULL,
@@ -34,6 +35,8 @@ animate_reveal_time_series(
 
 \item{use_weights}{(optional) If FALSE, will ignore particle weights in the line graph. If TRUE, will use the particle weights. (defaults to TRUE)}
 
+\item{mcmc}{(optional) If TRUE, the user is indicating that the output is from an MCMC algorithm. This will set use_initial_points=FALSE and use_weights=FALSE no matter what the user sets these arguments to. (default is FALSE)}
+
 \item{max_line_width}{(optional) The maximum size of the points in the plot. (default=1)}
 
 \item{alpha}{(optional) The transparency of the lines in the plot. (default=0.1)}
@@ -44,7 +47,7 @@ animate_reveal_time_series(
 
 \item{duration}{(optional) The duration of the animation. (defaults to producing an animation that uses 10 frames per second)}
 
-\item{animate_plot}{(optiional) If TRUE, will return an animation. If FALSE, returns a gganim object that can be furher modified before animating. (defaults to FALSE)}
+\item{animate_plot}{(optiional) If TRUE, will return an animation. If FALSE, returns a gganim object that can be further modified before animating. (defaults to FALSE)}
 
 \item{save_filename}{(optional) If specified, the animation will be saved to a gif with this filename. (default is not to save)}
 

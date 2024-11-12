@@ -12,6 +12,7 @@ animate_density(
   external_target = NULL,
   use_initial_points = TRUE,
   use_weights = TRUE,
+  mcmc = FALSE,
   xlimits = NULL,
   ylimits = NULL,
   default_title = FALSE,
@@ -35,6 +36,8 @@ animate_density(
 \item{use_initial_points}{(optional) If target is not specified and this argument is TRUE, will add the initial unweighted proposed points to the output to be plotted. (default is TRUE)}
 
 \item{use_weights}{(optional) If FALSE, will ignore particle weights in the density. If TRUE, will use the particle weights. (defaults to TRUE)}
+
+\item{mcmc}{(optional) If TRUE, the user is indicating that the output is from an MCMC algorithm. This will set use_initial_points=FALSE and use_weights=FALSE no matter what the user sets these arguments to. (default is FALSE)}
 
 \item{xlimits}{(optional) Input of the form c(start,end), which specifies the ends of the x-axis.}
 

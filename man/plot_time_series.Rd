@@ -11,6 +11,7 @@ plot_time_series(
   external_target = NULL,
   use_initial_points = TRUE,
   use_weights = TRUE,
+  mcmc = FALSE,
   max_line_width = 1,
   alpha = 0.1,
   xlimits = NULL,
@@ -29,6 +30,8 @@ plot_time_series(
 \item{use_initial_points}{(optional) If target is not specified and this argument is TRUE, will add the initial unweighted proposed points to the output to be plotted. (default is TRUE)}
 
 \item{use_weights}{(optional) If FALSE, will ignore particle weights in the line graph. If TRUE, will use the particle weights. (defaults to TRUE)}
+
+\item{mcmc}{(optional) If TRUE, the user is indicating that the output is from an MCMC algorithm. This will set use_initial_points=FALSE and use_weights=FALSE no matter what the user sets these arguments to. (default is FALSE)}
 
 \item{max_line_width}{(optional) The maximum size of the points in the plot. (default=1)}
 
