@@ -1,9 +1,9 @@
 pandoc: 3.1.11
-pkgdown: 2.1.0
+pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
   Visualising: Visualising.html
-last_built: 2024-08-30T14:30Z
+last_built: 2024-11-12T14:33Z
 urls:
   reference: https://richardgeveritt.github.io/ggsmc/reference
   article: https://richardgeveritt.github.io/ggsmc/articles
