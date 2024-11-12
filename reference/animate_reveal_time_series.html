@@ -49,6 +49,7 @@
 <span>  external_target <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  use_initial_points <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  use_weights <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  mcmc <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  max_line_width <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  alpha <span class="op">=</span> <span class="fl">0.1</span>,</span>
 <span>  xlimits <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -88,6 +89,10 @@
 <dd><p>(optional) If FALSE, will ignore particle weights in the line graph. If TRUE, will use the particle weights. (defaults to TRUE)</p></dd>
 
 
+<dt id="arg-mcmc">mcmc<a class="anchor" aria-label="anchor" href="#arg-mcmc"></a></dt>
+<dd><p>(optional) If TRUE, the user is indicating that the output is from an MCMC algorithm. This will set use_initial_points=FALSE and use_weights=FALSE no matter what the user sets these arguments to. (default is FALSE)</p></dd>
+
+
 <dt id="arg-max-line-width">max_line_width<a class="anchor" aria-label="anchor" href="#arg-max-line-width"></a></dt>
 <dd><p>(optional) The maximum size of the points in the plot. (default=1)</p></dd>
 
@@ -109,7 +114,7 @@
 
 
 <dt id="arg-animate-plot">animate_plot<a class="anchor" aria-label="anchor" href="#arg-animate-plot"></a></dt>
-<dd><p>(optiional) If TRUE, will return an animation. If FALSE, returns a gganim object that can be furher modified before animating. (defaults to FALSE)</p></dd>
+<dd><p>(optiional) If TRUE, will return an animation. If FALSE, returns a gganim object that can be further modified before animating. (defaults to FALSE)</p></dd>
 
 
 <dt id="arg-save-filename">save_filename<a class="anchor" aria-label="anchor" href="#arg-save-filename"></a></dt>

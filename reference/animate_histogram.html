@@ -50,6 +50,7 @@
 <span>  external_target <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  use_initial_points <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  use_weights <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  mcmc <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  bins <span class="op">=</span> <span class="fl">30</span>,</span>
 <span>  xlimits <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  ylimits <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -91,6 +92,10 @@
 
 <dt id="arg-use-weights">use_weights<a class="anchor" aria-label="anchor" href="#arg-use-weights"></a></dt>
 <dd><p>(optional) If FALSE, will ignore particle weights in the histogram. If TRUE, will use the particle weights. (defaults to TRUE)</p></dd>
+
+
+<dt id="arg-mcmc">mcmc<a class="anchor" aria-label="anchor" href="#arg-mcmc"></a></dt>
+<dd><p>(optional) If TRUE, the user is indicating that the output is from an MCMC algorithm. This will set use_initial_points=FALSE and use_weights=FALSE no matter what the user sets these arguments to. (default is FALSE)</p></dd>
 
 
 <dt id="arg-bins">bins<a class="anchor" aria-label="anchor" href="#arg-bins"></a></dt>

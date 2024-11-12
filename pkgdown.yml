@@ -3,7 +3,7 @@ pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
   Visualising: Visualising.html
-last_built: 2024-11-12T14:36Z
+last_built: 2024-11-12T14:52Z
 urls:
   reference: https://richardgeveritt.github.io/ggsmc/reference
   article: https://richardgeveritt.github.io/ggsmc/articles
