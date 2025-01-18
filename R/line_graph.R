@@ -196,12 +196,12 @@ plot_time_series = function(output,
 
   if ( (!is.null(xlimits)) && (is.numeric(xlimits)) && (is.vector(xlimits)) )
   {
-    plot = plot + ggplot2::xlim(xlimits[1],xlimits[2])
+    plot = plot + ggplot2::coord_cartesian(xlim=c(xlimits[1],xlimits[2]))
   }
 
   if ( (!is.null(ylimits)) && (is.numeric(ylimits)) && (is.vector(ylimits)) )
   {
-    plot = plot + ggplot2::ylim(ylimits[1],ylimits[2])
+    plot = plot + ggplot2::coord_cartesian(ylim=c(ylimits[1],ylimits[2]))
   }
 
   plot = plot +

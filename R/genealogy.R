@@ -643,12 +643,12 @@ plot_genealogy = function(output,
   {
     if (vertical)
     {
-      plot = plot + ggplot2::xlim(axis_limits[1],axis_limits[2])
+      plot = plot + ggplot2::coord_cartesian(xlim=c(xlimits[1],xlimits[2]))
       plot = plot + ggplot2::scale_y_continuous(breaks = integer_breaks())
     }
     else
     {
-      plot = plot + ggplot2::ylim(axis_limits[1],axis_limits[2])
+      plot = plot + ggplot2::coord_cartesian(ylim=c(ylimits[1],ylimits[2]))
       plot = plot + ggplot2::scale_x_continuous(breaks = integer_breaks())
     }
   }
