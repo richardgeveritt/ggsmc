@@ -20,5 +20,5 @@ Imports: poorman, ggplot2, gganimate
 Suggests: knitr, rmarkdown, testthat
 VignetteBuilder: knitr
 Depends: 
-    R (>= 2.10)
+    R (>= 3.50)
 License: MIT + file LICENSE
