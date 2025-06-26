@@ -314,7 +314,7 @@ animate_reveal_time_series = function(output,
 #' @param xlimits (optional) Input of the form c(start,end), which specifies the ends of the x-axis.
 #' @param ylimits (optional) Input of the form c(start,end), which specifies the ends of the y-axis.
 #' @param duration (optional) The duration of the animation. (defaults to producing an animation that uses 10 frames per second)
-#' @param animate_plot (optiional) If TRUE, will return an animation. If FALSE, returns a gganim object that can be furher modified before animating. (defaults to FALSE)
+#' @param animate_plot (optiional) If TRUE, will return an animation. If FALSE, returns a gganim object that can be further modified before animating. (defaults to FALSE)
 #' @param save_filename (optional) If specified, the animation will be saved to a gif with this filename. (default is not to save)
 #' @param save_path (optional) If specified along with save_filename, will save the gif to save_path/save_filename. (defaults to working directory)
 #' @return An animated line graph, showing how the lines evolve through the sequence of targets.

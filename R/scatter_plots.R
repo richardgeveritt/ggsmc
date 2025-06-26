@@ -198,7 +198,7 @@ plot_scatter = function(output,
 #' @param shadow_mark_proportion_of_max_size (optional) If set, the animation will leave behind shadow points, of a size (and transparency) specified by this proportion. (default to not set)
 #' @param shadow_wake_length (optional) If set, the animation will leave a shadow wake behind each point, of a duration given by this parameter (proportion of the entire animation length). (default to not set)
 #' @param duration (optional) The duration of the animation. (defaults to producing an animation that uses 10 frames per second)
-#' @param animate_plot (optiional) If TRUE, will return an animation. If FALSE, returns a gganim object that can be furher modified before animating. (defaults to FALSE)
+#' @param animate_plot (optiional) If TRUE, will return an animation. If FALSE, returns a gganim object that can be further modified before animating. (defaults to FALSE)
 #' @param save_filename (optional) If specified, the animation will be saved to a gif with this filename. (default is not to save)
 #' @param save_path (optional) If specified along with save_filename, will save the gif to save_path/save_filename. (defaults to working directory)
 #' @return A scatter plot in a ggplot figure.

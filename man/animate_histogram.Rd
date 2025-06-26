@@ -50,7 +50,7 @@ animate_histogram(
 
 \item{duration}{(optional) The duration of the animation. (defaults to producing an animation that uses 10 frames per second)}
 
-\item{animate_plot}{(optiional) If TRUE, will return an animation. If FALSE, returns a gganim object that can be furher modified before animating. (defaults to FALSE)}
+\item{animate_plot}{(optiional) If TRUE, will return an animation. If FALSE, returns a gganim object that can be further modified before animating. (defaults to FALSE)}
 
 \item{save_filename}{(optional) If specified, the animation will be saved to a gif with this filename. (default is not to save)}
 

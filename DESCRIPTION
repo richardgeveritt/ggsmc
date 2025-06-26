@@ -1,7 +1,7 @@
 Package: ggsmc
 Type: Package
 Title: Visualising Output from Sequential Monte Carlo and Ensemble-Based Methods
-Version: 0.1.2.1
+Version: 0.1.2.2
 Authors@R: 
     person(given = c("Richard","G"),
            family = "Everitt",
@@ -13,7 +13,7 @@ Description: Functions for plotting, and animating, the output of importance sam
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 URL: https://github.com/richardgeveritt/ggsmc, https://richardgeveritt.github.io/ggsmc/
 BugReports: https://github.com/richardgeveritt/ggsmc/issues
 Imports: poorman, ggplot2, gganimate
