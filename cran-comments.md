@@ -1,1 +1,5 @@
-I have been through the devtools checks I think I need to do, and can't see any issues.
+## R CMD check results
+
+0 errors | 0 warnings | 1 note
+
+* This is a new release.
