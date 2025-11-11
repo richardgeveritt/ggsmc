@@ -1,7 +1,7 @@
 Package: ggsmc
 Type: Package
 Title: Visualising Output from Sequential Monte Carlo and Ensemble-Based Methods
-Version: 0.1.2.2
+Version: 0.2.0
 Authors@R: 
     person(given = c("Richard","G"),
            family = "Everitt",
