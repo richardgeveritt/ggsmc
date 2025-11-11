@@ -11,13 +11,13 @@ Source:
 [`DESCRIPTION`](https://github.com/richardgeveritt/ggsmc/blob/main/DESCRIPTION)
 
 Everitt RG (2025). *ggsmc: Visualising Output from Sequential Monte
-Carlo and Ensemble-Based Methods*. R package version 0.1.2.2,
+Carlo and Ensemble-Based Methods*. R package version 0.2.0,
 <https://github.com/richardgeveritt/ggsmc>.
 
     @Manual{,
       title = {ggsmc: Visualising Output from Sequential Monte Carlo and Ensemble-Based Methods},
       author = {Richard G Everitt},
       year = {2025},
-      note = {R package version 0.1.2.2},
+      note = {R package version 0.2.0},
       url = {https://github.com/richardgeveritt/ggsmc},
     }
