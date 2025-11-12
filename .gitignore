@@ -51,3 +51,14 @@ rsconnect/
 .DS_Store
 docs
 inst/doc
+
+^.*\.Rproj$
+^\.Rproj\.user$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^\.github$
+^LICENSE\.md$
+^CRAN-SUBMISSION$
+^cran-comments\.md$
+^revdep$
